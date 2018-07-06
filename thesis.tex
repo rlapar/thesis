@@ -1,0 +1,60 @@
+\documentclass[
+	digital,
+	oneside,
+	table,
+	nolot,
+	color
+]{fithesis3}
+
+\usepackage[
+  main=english
+]{babel}
+
+\usepackage{paratype}
+
+\thesissetup{
+    %date          = \the\year/\the\month/\the\day,
+    university    = mu,
+    faculty       = fi,
+    type          = mgr,
+    author        = Radovan Lap\'{a}r,
+    gender        = m,
+    advisor       = John Smith,
+    title         = {thesis},
+    TeXtitle      = {Thesis},
+    keywords      = {keyword1, keyword2, ...},
+    TeXkeywords   = {keyword1, keyword2, \ldots},
+    abstract      = {This is the abstract of my thesis, which can
+                     span multiple paragraphs.},
+    thanks        = {These are the acknowledgements for my thesis, which can
+                     span multiple paragraphs.},
+    %bib           = example.bib,
+}
+
+\usepackage{makeidx}      %% The `makeidx` package contains
+\makeindex                %% helper commands for index typesetting.
+%% These additional packages are used within the document:
+\usepackage{paralist} %% Compact list environments
+\usepackage{amsmath}  %% Mathematics
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{url}      %% Hyperlinks
+\usepackage{markdown} %% Lightweight markup
+\usepackage{listings} %% Source code highlighting
+\lstset{
+  basicstyle      = \ttfamily,%
+  identifierstyle = \color{black},%
+  keywordstyle    = \color{blue},%
+  keywordstyle    = {[2]\color{cyan}},%
+  keywordstyle    = {[3]\color{olive}},%
+  stringstyle     = \color{teal},%
+  commentstyle    = \itshape\color{magenta}}
+\usepackage{floatrow} %% Putting captions above tables
+\floatsetup[table]{capposition=top}
+
+\begin{document}
+
+    \include{./tex/chapters/introduction}
+    \include{./tex/chapters/rsa}
+
+\end{document}

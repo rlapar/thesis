@@ -1,0 +1,86 @@
+\chapter{Public-Key Cryptosystems}
+
+\textbf{TODO } signature
+
+In this chapter, we will present basic overview of public-key cryptosystems, focusing mainly on the RSA, the most commonly and widely used public-key cryptosystem. 
+
+Before 1977 every used cryptosystem was private-key (or symmetric), where both communicating parties Alice and Bob shared the same secret key. The same key was then used for encryption and decryption respectively. However, the main issue was how to securely distribute shared secret key between Alice and Bob. Either completely secure channel was used with no eavesdropping possible, or some key exchange method like Diffie-Hellman key exchange\cite{diffie_hellman} was used. The problem of distribution of the private key served as the motivation behind the concept of public-key cryptosystem (or assymetric) invented by Diffie and Hellman \cite{diffie_hellman}\footnote{\url{https://www-ee.stanford.edu/~hellman/publications/24.pdf}}. Public-key cryptosystems are undoubtedly the building blocks of modern cryptography and internet security as of today. In practice, we use them basically for any kind of secure transmission of information via internet like money transfers, government communication, secure messaging on social networks and countless others.
+
+In public-key cryptosystem each user has to generate a pair of private/public key $(d,e)$. Public key $e$ is revealed and used to encrypt messages $m$. Private key $d$ is kept secret and used to decrypt ciphertexts $c$. Public-key cryptosystems have the following four properties:
+
+\begin{itemize}
+
+	\item[(a)] $d$ and $e$ are inverse to each other, formally:
+
+$d(e(m)) = m$
+
+	\item[(b)] both $e$ and $d$ are easy to compute
+
+	\item[(c)] it is impossible or at least infeasible to compute $d$ just by knowing the public-key $e$
+
+	\item[(d)] if a message $m$ is first deciphered an then encrypted, the result is the same, formally:
+    
+$e(d(m)) = m$
+
+\end{itemize}
+
+\section{RSA cryptosystem}
+
+On of the first public-key as well as the most commonly used cryptosystem today is RSA. It was publicly described by Rivest, Shamir and Adleman (thus RSA) in 1978\cite{RSA_paper}. RSA gained popularity because of its simplicity and over the years many various implementations of this protocol exist in field of software libraries (OpenSSL, Microsoft CryptoAPI, Libcrypt, $\cdots$), cards (Yubikey, Infineon, $\cdots$) or HSM's.
+
+\textbf{TODO} add some more
+
+\subsection*{Key pair generation}
+
+Every entity that wants to generate a pair of keys is following these steps:
+
+\begin{enumerate}
+
+\item Generate two huge random distinct primes $p$, $q$
+\item Compute modulus $n = pq$
+\item Choose any public exponent $e$, such that $2 < e < \varphi(n)$\footnote{Euler's totient function, in this case $\varphi(n) = (p-1)(q-1)$} and $e$ is coprime to $\varphi(n)$
+\item Compute public exponent $d \equiv e^{-1} \pmod{\varphi(n)}$\footnote{easily computable by Extended Euclidean algorithm}
+
+\end{enumerate}
+
+Detailed key generation process is explained in \textbf{TODO THESIS}. The resulted key pair is thus:
+
+\begin{itemize}
+
+\item public key $(n, e)$
+
+\item private key $(d, p, q)$
+
+\end{itemize}
+
+\subsection*{RSA cryptographic primitives}
+
+\textbf{TODO } citacie z Matus Nemec thesis
+
+Every message $m$ can be represented as a positive integer between 0 and $n-1$.\footnote{in case of longer messages we would just need to split the message into blocks of integers, where every block would have a value of at most $n-1$} Following cryptographic primitives are present in RSA scheme for message $m$:
+
+\begin{itemize}
+
+\item \textit{encryption} $c \equiv m^e \pmod{n}$
+\item \textit{decryption} $m \equiv c^d \pmod{n}$
+\item \textit{signature} $s \equiv m^d \pmod{n}$
+\item \textit{signature verification} $m \equiv s^e \pmod{n}$
+
+\end{itemize}
+
+These power modulo operations can be computed very effectively.
+
+\subsection*{attacks}
+\subsection*{bias}
+\subsection*{sources}
+
+
+\textbf{NOTES:}
+\begin{itemize}
+\item convention Alice and Bob
+\item RSA no proof on security of factorization
+\item one-way function
+\item one-way permutation
+\item factorization/discrete log
+\item \url{https://en.wikipedia.org/wiki/Public-key_cryptography}
+\end{itemize}
