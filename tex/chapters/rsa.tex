@@ -2,9 +2,13 @@
 
 In this chapter, we will present basic overview of public-key cryptosystems, focusing mainly on the RSA, the most commonly and widely used public-key cryptosystem. 
 
-Before 1977 every used cryptosystem was private-key (or symmetric), where both communicating parties Alice and Bob shared the same secret key. The same key was then used for encryption and decryption respectively. However, the main issue was how to securely distribute shared secret key between Alice and Bob. Either completely secure channel was used with no eavesdropping possible, or some key exchange method like Diffie-Hellman key exchange\cite{diffie_hellman} was used. The problem of distribution of the private key served as the motivation behind the concept of public-key cryptosystem (or assymetric) invented by Diffie and Hellman \cite{diffie_hellman}\footnote{\url{https://www-ee.stanford.edu/~hellman/publications/24.pdf}}. Public-key cryptosystems are undoubtedly the building blocks of modern cryptography and internet security as of today. In practice, we use them basically for any kind of secure transmission of information via internet like money transfers, government communication, secure messaging on social networks and countless others.
+\subsection*{Private-Key Cryptosystems}
 
-In public-key cryptosystem each user has to generate a pair of private/public key $(d,e)$. Public key $e$ is revealed and used to encrypt messages $m$. Private key $d$ is kept secret and used to decrypt ciphertexts $c$. Public-key cryptosystems have the following four properties:
+Before 1977 every used cryptosystem was private-key (or symmetric), where both communicating parties Alice and Bob\footnote{in cryptographic terminology, two parties are commonly referred to as Alice and Bob} shared the same secret key. The secret key was then used for encryption and decryption respectively. However, the main issue was how to securely distribute shared secret key between Alice and Bob. Either completely secure channel was used with no eavesdropping possible, or some key exchange method like Diffie-Hellman key exchange\cite{diffie_hellman} was used. The problem of distribution of the private key served as the motivation behind the concept of public-key (assymetric) cryptosystem invented by Diffie and Hellman \cite{diffie_hellman}\footnote{\url{https://www-ee.stanford.edu/~hellman/publications/24.pdf}}. Public-key cryptosystems are undoubtedly the building blocks of modern cryptography and internet security as of today. In practice, we use them basically for any kind of secure transmission of information via internet like money transfers, government communication, secure messaging on social networks and countless others.
+
+\subsection*{Public-Key Cryptosystems}
+
+In public-key cryptosystem each user has to generate a pair of private/public key $(d,e)$. Public key $e$ is revealed and used to encrypt messages $m$. Private key $d$ is kept secret and used to decrypt ciphertext $c$. Public-key cryptosystems have the following four properties:
 
 \begin{itemize}
 
@@ -58,9 +62,8 @@ The problem of one-way authentication or the message signature is another common
 
 \section{RSA cryptosystem}
 
-On of the first public-key as well as the most commonly used cryptosystem today is RSA. It was publicly described by Rivest, Shamir and Adleman (thus RSA) in 1978\cite{RSA_paper}. RSA gained popularity because of its simplicity and over the years many various implementations of this protocol exist in field of software libraries (OpenSSL, Microsoft CryptoAPI, Libcrypt, $\cdots$), cards (Yubikey, Infineon, $\cdots$) or HSM's.
+On of the first public-key as well as the most commonly used cryptosystem today is RSA. It was publicly described by Rivest, Shamir and Adleman (thus RSA) in 1978\cite{RSA_paper}. RSA gained popularity because of its simplicity, because it uses relativelly simple power modulo operations. It can be implemented in various ways and over the years many different implementations of this protocol have arised. It is widely used in field of software libraries (OpenSSL, Microsoft CryptoAPI, Libcrypt, $\cdots$), cards (Yubikey, Infineon, $\cdots$) or HSM's\footnote{hardware security module}.
 
-\textbf{TODO} add some more
 
 \subsection*{Key pair generation}
 
@@ -101,6 +104,24 @@ Every message $m$ can be represented as a positive integer between 0 and $n-1$.\
 \end{itemize}
 
 These power modulo operations can be computed very effectively.
+
+\subsection{Generation bias}
+
+While implementing RSA, many individual sources implement finding candidate primes $p,q$, and public/private exponents $d,e$ differently. Some of them are actively avoiding various properties of primes, which can then lead to the restriction on sample space of available prime numbers:
+
+\begin{itemize}
+
+\item \textit{OpenSSL} is rejecting any candidate, which is congruent to 1 modulo any prime up to 17863 as first reported by Mironov \cite{Mironov Svenda1 [20]}
+
+\item smartcard \textit{Infineon JTOP 80K} is generating such primes, which when divided by 11 give a remainder of 1 or 10, by 37 a remainder of 1, 10 or 26 and others
+
+\item some sources like \textbf{TODO} are using only Blum primes\footnote{A prime $p$ is a Blum prime if $p \equiv 3 \pmod{4}$}, which means, that the resulting public key is always congruent to 1
+
+\end{itemize}
+
+These decisions in the process of generation leave significant bias in some sources. When connecting given public-key to its source, one can look at these properties and with high probability differentiate between sources and correctly classify public-key.
+
+We looked at some basic properties for our dataset and found bias in several sources. Full list can be seen in \textbf{TODO Appendix 1}. These features are used for machine learning classifiers.
 
 \subsection*{attacks}
 \subsection*{bias}
