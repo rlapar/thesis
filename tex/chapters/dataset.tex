@@ -1,1 +1,30 @@
 \chapter{Dataset}
+
+For this thesis, we were provided with the dataset consisting of more than 30 sources collected from different software libraries, hardware authentication devices (or cards) and HSM's\footnote{Hardware security modules}. 
+Some of the software libraries had the option of so-called FIPS module, which is a certain security standard, that put some requirements on generated primes and their distribution, namely available in \textit{PGP SDK 4}, \textit{Libgcrypt} and \textit{OpenSSL}. Furthermore, every source had one or more development versions. 
+
+Considering both of these options, we split our dataset into 64 distinct sources based on their version and whether or not they had the FIPS module activated when generating primes. Every source was represented by a couple of CSV files, with fields n, e, d, p, q and t (time of generation). Three key lengths were present (512b, 1024b and 2048b), with most of the data originated from 512b or 1024b.
+
+All in all, a total of more than 146 million keys were collected with roughly 75.5 million of 512b and 65.4 million of 1024b keys. These two datasets were used for machine learning and preparing classification models. A complete overview of the dataset can be seen in \textbf{TODO APPENDIX}.
+
+In the article by CROCS \textbf{TODO CITE SVENDA}, they merged the different sources into 13 disjoint groups using clustering on the mask of 9 selected bits. Using the naive Bayes classifier, they were able to classify a random sample of keys with the accuracy of 40.34 \%. Therefore, the first step in this thesis was to pick up on these results and further extend the accuracy by using other classifiers while focusing specifically on neural networks.
+
+
+
+\section{Dataset analysis}
+
+Before attempting to create a working classifier, the analysis of the dataset and subsequent feature engineering was necessary. We scanned the whole dataset, extracting features from public product $n$. We focused mainly on the bit value on every position and the remainder when divided by a specific number. With every feature, we counted the relative frequency of every possible value.
+
+\subsection{Modular analysis}
+
+At first, we 
+
+\subsection{Bit analysis}
+
+\begin{itemize}
+
+\item analysis of the dataset
+\item feature engineering
+\item merge grou
+
+\end{itemize}
