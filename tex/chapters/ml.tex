@@ -8,37 +8,41 @@ Perceptron is a simple probabilistic model, which takes several weighted real in
 
 \vspace{3mm}
 
-\begin{minipage}[c]{0.35\textwidth}
-\includegraphics[width=\textwidth]{tex/images/perceptron}
-\end{minipage}
+\begin{figure}[h]
+\raggedright
+\begin{subfigure}{.35\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{tex/images/perceptron}
+  \caption{Artificial neuron}
+\end{subfigure}%
 \hfill
-\begin{minipage}[c]{0.55\textwidth}
+\begin{subfigure}{.55\textwidth}
+  \centering
+  \begin{itemize}
 
+	\item $x_1, \cdots, x_n$ are real \textbf{inputs}
+	\item $x_0$ is always equal to 1
+	\item $w_0, w_1, \cdots, w_n$ are real \textbf{weights}
+	\item $\xi$ is inner \textbf{potential}, \\$\xi = w_0 + \Sigma_{i=1}^n w_i x_i$
+	\item $y$ is real \textbf{output} given as \\ $y = \sigma(\xi)$
+	\item $\sigma$ is an \textbf{activation function}
 
-\begin{itemize}
-
-\item \textbf{TODO} <---- figure caption 
-\item $x_1, \cdots, x_n$ are real \textbf{inputs}
-\item $x_0$ is always equal to 1
-\item $w_0, w_1, \cdots, w_n$ are real \textbf{weights}
-\item $\xi$ is inner \textbf{potential}, \\$\xi = w_0 + \Sigma_{i=1}^n w_i x_i$
-\item $y$ is real \textbf{output} given as $y = \sigma(\xi)$
-\item $\sigma$ is an \textbf{activation function}
-
-\end{itemize}
-\end{minipage}
+	\end{itemize}
+\end{subfigure}
+\end{figure}
 
 \section{activation}
 
-An activation function $\sigma: \mathbb{R} \rightarrow \mathbb{R}$ is applied to the inner potential $\xi$, and it defines the output value of perceptron. It introduces a powerful tool into machine learning, and that is \textbf{non-linearity}. Without the activation, the potential by itself is a simple polynomial of a degree of one. That would limit the learning ability of the neural network into being a simple regression model. However, using different activation function, we can adapt the model to more complicated mappings.
+An activation function $\sigma: \mathbb{R} \rightarrow \mathbb{R}$ is applied to the inner potential $\xi$, and it defines the output value of perceptron. It introduces a powerful tool into machine learning, and that is \textbf{non-linearity}. Without the activation, the potential by itself is a simple polynomial of a degree of one. That would limit the learning ability of the neural network into being a simple regression model. However, using different activation functions, we can adapt the model to more complicated mappings.
 
 \begin{figure}[h]
 
 \centering
-\includegraphics[width=0.5\textwidth]{tex/images/activation-vis}
-\caption{Visualization of an activation function $\sigma(\xi) = 1$ for $\xi \geq 0$ and $\sigma(\xi) = 0$ for $\xi < 0$, which defines a separation hyperplane in n-dimensional space.}
+\includegraphics[width=0.45\textwidth]{tex/images/activation-vis}
+\caption{Visualization of binary step activation function, which defines a separation hyperplane in n-dimensional space.}
 \end{figure}
 
+\noindent
 Some desirable properties of an activation function include \textbf{TODO}\footnote{\url{https://en.wikipedia.org/wiki/Activation_function\#Comparison_of_activation_functions}}
 
 \begin{itemize}
@@ -53,61 +57,198 @@ Some desirable properties of an activation function include \textbf{TODO}\footno
 
 Here are some examples of activation functions:
 
+\textbf{TODO activation description}
 \textbf{TODO} - cite \url{https://towardsdatascience.com/activation-functions-and-its-types-which-is-better-a9a5310cc8f}
 
-\begin{tabular}{| p{25mm} | c | l | l |}
+\subsection*{Identity}
 
-\hline
+\begin{figure}[H]
+\raggedright
+\begin{subfigure}{.25\textwidth}
+  \centering
+  \[ f(x) = x \]
+\end{subfigure}%
+\begin{subfigure}{.25\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{tex/images/activation/identity}
+\end{subfigure}
+\end{figure}
 
-Name & Plot & Equation & Description \\
+\noindent
+Effectively remain the potential unchanged. 
 
-\hline
+\subsection*{Binary step}
 
-Identity & \begin{minipage}{.2\textwidth}
-      \includegraphics[width=\textwidth]{tex/images/activation/identity}
-    \end{minipage} & $f(x) = x$ & - \\
+\begin{figure}[H]
+\raggedright
+\begin{subfigure}{.35\textwidth}
+  \centering
+   \[
+f(x) = \begin{cases}
+       0 & x < 0 \\
+       1 & x \geq 0 \\
+     \end{cases} \]
+\end{subfigure}%
+\begin{subfigure}{.25\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{tex/images/activation/binstep}
+\end{subfigure}
+\end{figure}
+
+\noindent
+Basic activation function, transforms potential into a binary signal. However, this function is not differentiable.
       
-Binary step & \begin{minipage}{.2\textwidth}
-      \includegraphics[width=\textwidth]{tex/images/activation/binstep}
-    \end{minipage} & - & -  \\
-    
-Sigmoid & \begin{minipage}{.2\textwidth}
-      \includegraphics[width=\textwidth]{tex/images/activation/sigmoid}
-    \end{minipage} & - & - \\
+\subsection*{Sigmoid}
 
-tanh & \begin{minipage}{.2\textwidth}
-      \includegraphics[width=\textwidth]{tex/images/activation/tanh}
-    \end{minipage} & - & - \\
-    
-ReLU & \begin{minipage}{.2\textwidth}
-      \includegraphics[width=\textwidth]{tex/images/activation/relu}
-    \end{minipage} & - & - \\
-    
-Leaky ReLU & \begin{minipage}{.2\textwidth}
-      \includegraphics[width=\textwidth]{tex/images/activation/lrelu}
-    \end{minipage} & - & -\\
-    
-Randomized \newline Leaky ReLU & \begin{minipage}{.2\textwidth}
-      \includegraphics[width=\textwidth]{tex/images/activation/rlrelu}
-    \end{minipage} & - & -\\
-    
-Softmax & \begin{minipage}{.2\textwidth}
-      \includegraphics[width=\textwidth]{tex/images/activation/softmax}
-    \end{minipage} & -  & -\\
-    
-% Maxout & \begin{minipage}{.2\textwidth}
-%       \includegraphics[width=\textwidth]{example-image-a}
-%     \end{minipage} & - & - & - \\
-    
-\hline
+\begin{figure}[H]
+\raggedright
+\begin{subfigure}{.28\textwidth}
+  \centering
+  \[ f(x) = \frac{1}{1 + e^{-x}} \]
+\end{subfigure}%
+\begin{subfigure}{.25\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{tex/images/activation/sigmoid}
+\end{subfigure}
+\end{figure}
 
-\end{tabular}
+\noindent
+Smoothened binary step activation function, maps a real value potential into $(0,1)$ range. It introduces non-linearity. One of the most popular functions in the ANN's, mainly in the early era of machine learning. It suffers from vanishing gradient problem\footnote{describe} \textbf{TODO} and have slow convergence. Furthermore, it is not zero centered, which make optimization harder.
+ 
+\subsection*{TanH}
+
+\begin{figure}[H]
+\raggedright
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \[ f(x) = tanh(x) = \frac{(e^x - e^{-x})}{(e^x + e^{(-x)})} \]
+\end{subfigure}%
+\begin{subfigure}{.25\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{tex/images/activation/tanh}
+\end{subfigure}
+\end{figure}
+
+\noindent
+Unlike sigmoid, hyperbolic tangent is zero centered. It usually performs better than sigmoid. However, it stills suffers from vanishing gradient problem.
+
+\subsection*{Rectified linear unit (ReLU)}
+
+\begin{figure}[H]
+\raggedright
+\begin{subfigure}{.35\textwidth}
+  \centering
+   \[
+f(x) = \begin{cases}
+       0 & x < 0 \\
+       x & x \geq 0 \\
+     \end{cases} \]  
+\end{subfigure}%
+\begin{subfigure}{.25\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{tex/images/activation/relu}
+\end{subfigure}
+\end{figure}
+
+\noindent
+One of the most popular function in the recent years. As opposed to previous ones, it does not have an issue with vanishing gradient. It is simple and efficient. The limitation is that it should only be used within hidden layers of a model, often combined with softmax in the output layer. It turned out to be very useful in deep learning.
+
+\subsection*{Leaky ReLU}
+
+\begin{figure}[H]
+\raggedright
+\begin{subfigure}{.38\textwidth}
+  \centering
+  \[
+f(x) = \begin{cases}
+       0.01x & x < 0 \\
+       1 & x \geq 0 \\
+     \end{cases} \]  
+\end{subfigure}%
+\begin{subfigure}{.25\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{tex/images/activation/lrelu}
+\end{subfigure}
+\end{figure}
+
+\noindent
+One issue present in ReLU is that it allows the gradient to die off, which is not necessarily a bad thing, though it may result in dead neurons that will never activate on specific data points. To counter this, leaky ReLU's were introduced. To keep the updates alive, they add a small slope into their negative parts (usually with the factor of around 0.01).
+   
+\subsection*{Randomized ReLU}
+
+\begin{figure}[H]
+\raggedright
+\begin{subfigure}{.35\textwidth}
+  \centering
+  \[
+f(r, x) = \begin{cases}
+       rx & x < 0 \\
+       1 & x \geq 0 \\
+     \end{cases} \] 
+\end{subfigure}%
+\begin{subfigure}{.25\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{tex/images/activation/rlrelu}
+\end{subfigure}
+\end{figure}
+
+\noindent
+Another variant of ReLU randomizes the factor in leaky ReLU's.
+
+\subsection*{Softmax}
+
+\begin{figure}[H]
+\raggedright
+\begin{subfigure}{.25\textwidth}
+  \centering
+  \[ f(x_j) = \frac{e^{x_j}}{\sum_i e^{x_i}} \]
+\end{subfigure}%
+\begin{subfigure}{.25\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{tex/images/activation/softmax}
+\end{subfigure}
+\end{figure}
+
+\noindent
+Softmax is usually used alongside the ReLU's in the output layer of a deep neural network. It has two nice properties:
+
+\begin{itemize}
+
+\item each value ranges in $[0, 1]$
+\item the sum of all values is always 1
+
+\end{itemize}
+
+This is useful when modeling a particular probability distribution. It is used as the estimate of the class distribution for a given input.
+
+\subsection*{Maxout}
+
+\textbf{TODO}
+
+\section{Artificial neural network}
+
+Artificial neural network or feed-forward neural network is a directed acyclic graph of artificial neurons organized into several layers, where the following holds:
+
+\begin{itemize}
+
+\item the first layer is called the \textit{input layer}, and we feed the input directly into it
+\item the last layer is called the \textit{output layer}, and it provides the output from ANN
+\item the other layers are called the \textit{hidden layers}
+\item every two neighboring layers $i$ and $i+1$ make a complete bipartite graph
+
+\end{itemize}
+
+\includegraphics[width=0.8\textwidth]{tex/images/ann}
 
 \section{loss}
+cross entropy
 \section{gradient descend + backprop}
-\section{ANN}
-\section{FeedForward}
 \section{DeepNN}
+\section{problems}
+vanishing gradient problem
+dead neurons (RELU)
+\section{Technizues}
+dropout
 \section{other ML models}
 
 As this thesis focuses mostly on NN, we will just mention other used models.
