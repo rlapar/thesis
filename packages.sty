@@ -1,0 +1,121 @@
+\ProvidesPackage{packages}
+	\usepackage[
+		main=english
+	]{babel}       % Multilingual support
+	\usepackage[utf8]{inputenc}       % UTF-8 encoding
+	\usepackage{pmboxdraw}			  % Characters like ├
+	\usepackage[T1]{fontenc}          % T1 font encoding
+	\usepackage[                      % A sans serif font that blends well with Palatino
+  		scaled=0.86
+	]{berasans}
+	\usepackage[                      % Clickable links
+		colorlinks = true,
+  		plainpages = false,               % We have multiple page numberings
+  		pdfpagelabels                     % Generate pdf page labels
+	]{hyperref}
+	\newcommand\colorAutoref[1]{{\hypersetup{linkcolor=red}\autoref{#1}}}  %% allows for calls to \autoref{} that have a different color from other links.
+	\usepackage{blindtext}            % Lorem ipsum generator
+	\usepackage[				% for bibliography
+		backend=biber,			% use biber instead of bibtex
+		style=alphabetic,    
+		urldate=iso,      
+		citestyle=alphabetic, 
+		% sorting=none,	
+		% sortlocale=auto,
+		url=true 					
+	]{biblatex}
+	% \usepackage{enumitem}	
+	\usepackage{longtable}
+	\usepackage{tabulary}
+	\newcolumntype{_}{>{\global\let\currentrowstyle\relax}}
+	\newcolumntype{^}{>{\currentrowstyle}}
+		\newcommand{\rowstyle}[1]{\gdef\currentrowstyle{#1}%
+  			#1\ignorespaces
+		}
+		
+	\usepackage{tabu}
+	\usepackage{xcolor}
+	\definecolor{FItableOdd}{HTML}{FFF9E5}
+	\definecolor{FItableEven}{HTML}{FFECB3}
+	\definecolor{CodeBackground}{HTML}{F5F5F5}
+	\rowcolors{1}{FItableOdd}{FItableEven}	
+	
+	\definecolor{CodeRed}{HTML}{B85450}
+	\definecolor{CodeBlue}{HTML}{6C8EBF}
+	\usepackage{csquotes}
+	\usepackage{float}
+	\usepackage{pdflscape}
+	\usepackage{caption}
+	\usepackage[titles]{tocloft}
+	\usepackage{paralist} %% Compact list environments
+	\usepackage{amsmath}  %% Mathematics
+	\usepackage{amsthm}
+	\usepackage{amsfonts}
+	\usepackage{listings} 
+	\usepackage[margin=1cm]{geometry}
+	\usepackage[newfloat]{minted} %% code package
+	% \usepackage{multicol}
+    % \usepackage{mwe} % new package from Martin scharrergit st
+    % \usepackage{caption}
+    \usepackage{subcaption}
+    % \usepackage{wrapfig}
+    % \usepackage{adjustbox}
+	\captionsetup[listing]{position=below,skip=-7pt}		%%
+	\usepackage{parcolumns}
+	\newenvironment{code}{\captionsetup{type=listing}}{}
+	% \usemintedstyle{monokai}
+	\setminted[ruby]{
+		frame=lines,
+		framesep=2mm,
+		% baselinestretch=1.2,
+		fontsize=\footnotesize,
+		linenos,
+		numbersep=5pt
+	}
+	\setminted[yaml]{
+		frame=lines,
+		framesep=2mm,
+		% baselinestretch=1.2,
+		fontsize=\footnotesize,
+		linenos,
+		numbersep=5pt
+	}
+	\setminted[json]{
+		frame=lines,
+		framesep=2mm,
+		% baselinestretch=1.2,
+		fontsize=\footnotesize,
+		linenos,
+		numbersep=5pt
+	}
+	\setminted[javascript]{
+		frame=lines,
+		framesep=2mm,
+		% baselinestretch=1.2,
+		fontsize=\footnotesize,
+		linenos,
+		numbersep=5pt
+	}
+	\setminted[powershell]{
+		frame=lines,
+		framesep=2mm,
+		% baselinestretch=1.2,
+		fontsize=\footnotesize,
+		linenos,
+		numbersep=5pt
+	}
+	% shrink space between enumerate and itemize items
+	\usepackage{enumitem}	
+	\setitemize{itemsep=1pt}
+	\setenumerate{itemsep=1pt}
+	% only chapters, sections and subsections in toc
+	\setcounter{secnumdepth}{3}
+	\setcounter{tocdepth}{3}
+	% allows stretching spaces between words fors correct block indention
+	\emergencystretch 2em
+	% redbox in minted environment
+	\usepackage{etoolbox}
+	\makeatletter
+	\AtBeginEnvironment{minted}{\dontdofcolorbox}
+	\def\dontdofcolorbox{\renewcommand\fcolorbox[4][]{##4}}
+	\makeatother

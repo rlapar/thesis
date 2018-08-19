@@ -1,74 +1,104 @@
 \documentclass[
-	digital,
-	oneside,
+	printed,
+	twoside,
+	color,
 	table,
 	nolot,
-	color
+	nolof,
+	nocover
 ]{fithesis3}
 
-\usepackage[
-  main=english
-]{babel}
+% load init of fithesis macros
+\include{./tex/titlepages}
 
-\usepackage{paratype}
+% load custom packages
+\usepackage{packages}
 
-\thesissetup{
-    %date          = \the\year/\the\month/\the\day,
-    university    = mu,
-    faculty       = fi,
-    type          = mgr,
-    author        = Radovan Lap\'{a}r,
-    gender        = m,
-    advisor       = John Smith,
-    title         = {thesis},
-    TeXtitle      = {Thesis},
-    keywords      = {keyword1, keyword2, ...},
-    TeXkeywords   = {keyword1, keyword2, \ldots},
-    abstract      = {This is the abstract of my thesis, which can
-                     span multiple paragraphs.},
-    thanks        = {These are the acknowledgements for my thesis, which can
-                     span multiple paragraphs.},
-    %bib           = example.bib,
-}
+% apply fithesis styles now, so we can modify some of them before \begin{document}
+\thesisload
 
-\usepackage{makeidx}      %% The `makeidx` package contains
-\makeindex                %% helper commands for index typesetting.
-%% These additional packages are used within the document:
-\usepackage{paralist} %% Compact list environments
-\usepackage{amsmath}  %% Mathematics
-\usepackage{amsthm}
-\usepackage{amsfonts}
-\usepackage{url}      %% Hyperlinks
-\usepackage{markdown} %% Lightweight markup
-\usepackage{listings} %% Source code highlighting
-\lstset{
-  basicstyle      = \ttfamily,%
-  identifierstyle = \color{black},%
-  keywordstyle    = \color{blue},%
-  keywordstyle    = {[2]\color{cyan}},%
-  keywordstyle    = {[3]\color{olive}},%
-  stringstyle     = \color{teal},%
-  commentstyle    = \itshape\color{magenta}}
-\usepackage{floatrow} %% Putting captions above tables
-\floatsetup[table]{capposition=top}
+% custom hyphenations
+% \hyphenation{con-sis-ten-cy}
 
-\setlength{\parskip}{5em}
+\makeatletter
 
-% custom packages
-\usepackage{multicol}
-\usepackage{mwe} % new package from Martin scharrergit st
-\usepackage{caption}
-\usepackage{subcaption}
-\usepackage{wrapfig}
-\usepackage{adjustbox}
+% makes subsubsections italic
+% makes smaller spaces between and after the subsubsection header
+% \renewcommand\subsubsection{%
+% 	\@startsection{subsubsection}{3}{\z@}{%
+%   	-2.25ex plus-1ex minus-.2ex}{0.6ex plus.2ex}{%
+% 	\reset@font\normalsize\it}
+%}
 
+%remove vertical spaces between chapters in table of contents	
+% \renewcommand*\l@chapter[2]{%
+% 	\ifnum \c@tocdepth >0\relax
+% 	\addpenalty{-\@highpenalty}%
+% 	%\addvspace{1.0em \@plus\p@}%
+% 	\setlength\@tempdima{1.5em}%
+% 	\begingroup
+% 	\parindent \z@ \rightskip \@pnumwidth
+% 	\parfillskip -\@pnumwidth
+% 	\leavevmode \bfseries
+% 	\advance\leftskip\@tempdima
+% 	\hskip -\leftskip
+% 	#1\nobreak\hfil \nobreak\hb@xt@\@pnumwidth{\hss #2}\par
+% 	\penalty\@highpenalty
+% 	\endgroup
+% 	\else
+% 	\@dottedtocline{0}{0em}{1.5em}{#1}{#2}
+% 	\fi
+% }
+
+% \renewcommand\thesis@blocks@preamble{%
+% 	\thesis@blocks@coverMatter
+% 	\thesis@blocks@cover
+% 	\thesis@blocks@titlePage
+% 	\thesis@blocks@assignment
+% 	\thesis@blocks@frontMatter
+% 	\thesis@blocks@declaration
+% 	\thesis@blocks@thanks
+% 	\thesis@blocks@clearRight
+% 	\thesis@blocks@abstract
+% 	\thesis@blocks@keywords
+% 	\thesis@blocks@tables
+%  }
+
+% include table of listings in header -> repairs page numbering
+% \renewcommand\thesis@blocks@tables{%
+% 	\thesis@blocks@toc
+% 	\thesis@blocks@lot
+% 	\thesis@blocks@lof
+% 	\lstlistoflistings
+% }
+% \makeatother
+
+% autoref should use capital letters in Chapter and Section
+% \providecommand*{\listingautorefname}{Listing}
+% \renewcommand*{\chapterautorefname}{Chapter}
+% \renewcommand*{\sectionautorefname}{Section}
+% \renewcommand*{\subsectionautorefname}{Subsection}
+
+% use this for two-side
+% \setlength{\oddsidemargin}{36pt} 
+% \setlength{\evensidemargin}{13pt}
+
+% use thus for one-side
+% \setlength{\oddsidemargin}{23pt} 
+% \setlength{\evensidemargin}{23pt}
+
+% use this for both one and two-side
+\setlength{\textwidth}{5.5in}
+
+\addbibresource{bibliography.bib}
 
 \begin{document}
-
-    \include{./tex/chapters/introduction}
-    \include{./tex/chapters/rsa}
-    \include{./tex/chapters/ml}
-    \include{./tex/chapters/dataset}
-    \include{./tex/chapters/notes}
-    
+  \include{./tex/chapters/introduction}
+  \include{./tex/chapters/rsa}
+  \include{./tex/chapters/ml}
+  \include{./tex/chapters/dataset}
+  \include{./tex/chapters/notes}
+	\printbibliography
+	\appendix
 \end{document}
+

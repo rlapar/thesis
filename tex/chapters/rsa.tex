@@ -4,7 +4,7 @@ In this chapter, we will present basic overview of public-key cryptosystems, foc
 
 \subsection*{Private-Key Cryptosystems}
 
-Before 1977 every used cryptosystem was private-key (or symmetric), where both communicating parties Alice and Bob\footnote{in cryptographic terminology, two parties are commonly referred to as Alice and Bob} shared the same secret key. The secret key was then used for encryption and decryption respectively. However, the main issue was how to securely distribute shared secret key between Alice and Bob. Either completely secure channel was used with no eavesdropping possible, or some key exchange method like Diffie-Hellman key exchange\cite{diffie_hellman} was used. The problem of distribution of the private key served as the motivation behind the concept of public-key (assymetric) cryptosystem invented by Diffie and Hellman \cite{diffie_hellman}\footnote{\url{https://www-ee.stanford.edu/~hellman/publications/24.pdf}}. Public-key cryptosystems are undoubtedly the building blocks of modern cryptography and internet security as of today. In practice, we use them basically for any kind of secure transmission of information via internet like money transfers, government communication, secure messaging on social networks and countless others.
+Before 1977 every used cryptosystem was private-key (or symmetric), where both communicating parties Alice and Bob\footnote{in cryptographic terminology, two parties are commonly referred to as Alice and Bob} shared the same secret key. The secret key was then used for encryption and decryption respectively. However, the main issue was how to securely distribute shared secret key between Alice and Bob. Either completely secure channel was used with no eavesdropping possible, or some key exchange method like Diffie-Hellman key exchange\cite{diffie_hellman} was used. The problem of distribution of the private key served as the motivation behind the concept of public-key (assymetric) cryptosystem invented by Diffie and Hellman \cite{diffie_hellman}. Public-key cryptosystems are undoubtedly the building blocks of modern cryptography and internet security as of today. In practice, we use them basically for any kind of secure transmission of information via internet like money transfers, government communication, secure messaging on social networks and countless others.
 
 \subsection*{Public-Key Cryptosystems}
 
@@ -62,7 +62,7 @@ The problem of one-way authentication or the message signature is another common
 
 \section{RSA cryptosystem}
 
-On of the first public-key as well as the most commonly used cryptosystem today is RSA. It was publicly described by Rivest, Shamir and Adleman (thus RSA) in 1978\cite{RSA_paper}. RSA gained popularity because of its simplicity, because it uses relativelly simple power modulo operations. It can be implemented in various ways and over the years many different implementations of this protocol have arised. It is widely used in field of software libraries (OpenSSL, Microsoft CryptoAPI, Libcrypt, $\cdots$), cards (Yubikey, Infineon, $\cdots$) or HSM's\footnote{hardware security module}.
+On of the first public-key as well as the most commonly used cryptosystem today is RSA. It was publicly described by Rivest, Shamir and Adleman (thus RSA) in 1978\cite{rsa_paper}. RSA gained popularity because of its simplicity, because it uses relativelly simple power modulo operations. It can be implemented in various ways and over the years many different implementations of this protocol have arised. It is widely used in field of software libraries (OpenSSL, Microsoft CryptoAPI, Libcrypt, $\cdots$), cards (Yubikey, Infineon, $\cdots$) or HSM's\footnote{hardware security module}.
 
 
 \subsection*{Key pair generation}
@@ -78,7 +78,7 @@ Every entity that wants to generate a pair of keys is following these steps:
 
 \end{enumerate}
 
-Detailed key generation process is explained in \textbf{TODO THESIS}. The resulted key pair is thus:
+Detailed key generation process is explained in \cite{thesis_matus_nemec}. The resulted key pair is thus:
 
 \begin{itemize}
 
