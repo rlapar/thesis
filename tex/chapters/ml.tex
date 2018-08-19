@@ -151,7 +151,7 @@ f(x) = \begin{cases}
 \end{figure}
 
 \noindent
-One of the most popular function in the recent years. As opposed to previous ones, it does not have an issue with vanishing gradient. It is simple and efficient. The limitation is that it should only be used within hidden layers of a model, often combined with softmax in the output layer. It turned out to be very useful in deep learning.
+One of the most popular function in the recent years. As opposed to previous ones, it does not have an issue with vanishing gradient. It is simple and efficient. The limitation is that it should only be used within hidden layers of a model, often combined with softmax in the output layer. It turned out to be very useful in deep learning, where traditional activation functions struggle. For example in \cite{relu_faster}, the convolutional network was able to converge six times faster with ReLU, than with tanh.
 
 \subsection*{Leaky ReLU}
 
@@ -231,14 +231,52 @@ Artificial neural network or feed-forward neural network is a directed acyclic g
 
 \begin{itemize}
 
-\item the first layer is called the \textit{input layer}, and we feed the input directly into it
-\item the last layer is called the \textit{output layer}, and it provides the output from ANN
+\item the first layer is called the \textit{input layer}, and the output of neurons is equal to the input vector $\overrightarrow{X}$
+
+\item the last layer is called the \textit{output layer}, and it provides the output $\overrightarrow{Y}$
+
 \item the other layers are called the \textit{hidden layers}
+
+\item outputs of each neuron (except for the output layer) serve as inputs of neurons in the higher layer
+
 \item every two neighboring layers $i$ and $i+1$ make a complete bipartite graph
+
+\item no non-neighboring layers have a connection between them
+
+\end{itemize}
+
+\noindent
+In this section we are going to use the following terminology:
+
+\begin{itemize}
+  \item every neuron is represented as a distinct natural number (i.e neuron 1, 2, and so forth)
+  \item $\xi_i$ is the inner potential of the neuron $i$
+  \item $y_i$ is the output of the neuron $i$
+  \item $w_{ji}$ is the weight from neuron $i$ to neuron $j$
+  \item $j_{\leftarrow}$ is the set of all neurons $i$ such that there exist an edge $w_{ji}$
+  \item $j_{\rightarrow}$ is the set of all neurons $i$ such that there exist an edge $w_{ij}$
 
 \end{itemize}
 
 \includegraphics[width=0.8\textwidth]{tex/images/ann}
+
+The neural network is continuously evolving, the states and connections of neurons are changing, weights are adapting. In term of these changes within a period, we can divide the network dynamics into three subcategories:
+
+\begin{itemize}
+  \item \textit{organizational} - change in topology
+  \item \textit{active} - change in state
+  \item \textit{adaptive} - change in configuration
+\end{itemize}
+
+\subsection*{Active dynamics}
+
+Initially are all weights set randomly. The values in the input layer are set to the input vector $\overrightarrow{X}$. The forward propagation algorithm is then applied. Starting from the lowest layer, each layer using the output from the previous one updates its neurons. Neuron $j$ updates its inner potential:
+
+$$ \xi_j = w_0 + \sum_{i \in j_{\leftarrow} w_{ji} y_i} $$
+
+The output of neuron $j$ is $y_j = \sigma_j (\xi_j)$. The exception is the input layer, where $y_j = \xi_j$.
+
+\subsection*{Adaptive dynamics}
 
 \section{loss}
 cross entropy
