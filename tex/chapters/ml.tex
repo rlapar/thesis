@@ -1,10 +1,10 @@
-\chapter{ML}
+\chapter{Neural networks}
 
 \section{Artificial neuron}
 
 Artificial neurons, also called perceptrons were developed in the late 1950s and early 1960s, firstly introduced by Rosenblatt in his paper \cite{perceptron}. His idea was to develop a model capable of simulating the activities present in the human brain cell, in order to create artificial intelligence. As it turned out, simulating the brain using such a simple model as the perceptron is impossible. However, later research discovered a considerable potential in the field of classification and regression, which lead to design of modern artificial neural networks as we know them today.
 
-Perceptron is a simple probabilistic model, which takes several weighted real inputs and produces one real output.
+Perceptron\cite{nn_book} is a simple probabilistic model, which takes several weighted real inputs and produces one real output.
 
 \vspace{3mm}
 
@@ -55,10 +55,8 @@ Some desirable properties\cite{wiki:activation} of an activation function includ
 
 \end{itemize}
 
-Here are some examples of activation functions:
-
-\textbf{TODO activation description}
-\textbf{TODO} - cite \url{https://towardsdatascience.com/activation-functions-and-its-types-which-is-better-a9a5310cc8f}
+\noindent
+Here are some examples of activation functions\cite{activation_list}:
 
 \subsection*{Identity}
 
@@ -113,7 +111,7 @@ Basic activation function, transforms potential into a binary signal. However, t
 \end{figure}
 
 \noindent
-Smoothened binary step activation function, maps a real value potential into $(0,1)$ range. It introduces non-linearity. One of the most popular functions in the ANN's, mainly in the early era of machine learning. It suffers from vanishing gradient problem\footnote{describe} \textbf{TODO} and have slow convergence. Furthermore, it is not zero centered, which make optimization harder.
+Smoothened binary step activation function, maps a real value potential into $(0,1)$ range. It introduces non-linearity. One of the most popular functions in the ANN's, mainly in the early era of machine learning. It suffers from vanishing gradient problem\footnote{described in subsection \ref{vanishing_gradient}} and have slow convergence. Furthermore, it is not zero centered, which make optimization harder.
  
 \subsection*{TanH}
 
@@ -224,7 +222,7 @@ This is useful when modeling a particular probability distribution. It is used a
 
 \section{Artificial neural network}
 
-Artificial neural network or feed-forward neural network is a directed acyclic graph of artificial neurons organized into several layers, where the following holds:
+Artificial neural network\cite{nn_book} or feed-forward neural network is a directed acyclic graph of artificial neurons organized into several layers, where the following holds:
 
 \begin{itemize}
 
@@ -296,9 +294,9 @@ It is widely used in linear regression analysis.
 
 \subsection*{Cross entropy}
 
-Another very popular loss function, which we used is \textit{cross entropy loss}. It is a straightforward modification of a basic likelihood function with logarithms over the probability $p$. It penalizes heavily for being very confident and very wrong. 
+Another very popular loss function, which we used is \textit{cross entropy loss}\cite{cross_entropy}. It is a straightforward modification of a basic likelihood function with logarithms over the probability $p$. It penalizes heavily for being very confident and very wrong. 
 
-In order to transform the output vector $\overrightarrow{Y}$ into the probability distribution $\overrightarrow{P(\overrightarrow{Y})}$ we usually use softmax activation function in the output layer (as described in section \ref{subsection:softmax}). With the output transformed into probability vector, we can use the cross entropy:
+In order to transform the output vector $\overrightarrow{Y}$ into the probability distribution $P(\overrightarrow{Y})$ we usually use softmax activation function in the output layer (as described in section \ref{subsection:softmax}). With the output transformed into probability vector, we can use the cross entropy:
 
 $$ E(\overrightarrow{w}) =  \sum_{k=1}^{p} E_k(\overrightarrow{w}) = \sum_{k=1}^{p} \sum_{j \in \text{OL}} - d(\overrightarrow{X_k})_j \ln{P(y_j(\overrightarrow{w}, \overrightarrow{X_k}))}$$
 
@@ -313,23 +311,25 @@ The learning algorithm is computing the sequence of weight vectors $\overrightar
 \item $\overrightarrow{w}^{(0)}$ is the initial vector set randomly (usually weights close to 0)
 \item in the $(i+1)$-th step is $\overrightarrow{w}^{(t+1)}$ computed as:
 
-$$ w_{ji} = w_{ji}^{(t)} + \Delta w_{ji}^{(t)} $$\footnote{\textbf{TODO} align left}
- 
-$$ \Delta w_{ji}^{(t)} = - \epsilon(t) \frac{\partial E}{\partial w_{ji}}(\overrightarrow{w}^{(t)})$$
+\begin{flalign}
+\notag w_{ji} & = w_{ji}^{(t)} + \Delta w_{ji}^{(t)} & \\
+\notag \Delta w_{ji}^{(t)} & = - \epsilon(t) \frac{\partial E}{\partial w_{ji}}(\overrightarrow{w}^{(t)}) & 
+\end{flalign}
 
 \item $\Delta w_{ji}^{(t)}$ is the weight difference in the step $(t+1)$ and $0 < \epsilon(t) < 1$ is the learning rate in the step $(t+1)$
 
-$$  \frac{\partial E}{\partial w_{ji}} = \sum_{k=1}^p  \frac{\partial E_k}{\partial w_{ji}} $$
+\begin{flalign}
+\notag \frac{\partial E}{\partial w_{ji}} & = \sum_{k=1}^p  \frac{\partial E_k}{\partial w_{ji}} & \\
+\notag \frac{\partial E_k}{\partial w_{ji}} & = \frac{\partial E_k}{\partial y_j} \cdot \sigma_{j}^{'}(\xi_j) \cdot y_i & 
+\end{flalign}
 
-$$  \frac{\partial E_k}{\partial w_{ji}} =  \frac{\partial E_k}{\partial y_j} \cdot \sigma_{j}^{'}(\xi_j) \cdot y_i$$
-
-\[   
-\frac{\partial E_k}{\partial y_j}  = 
+\begin{flalign}
+\notag \frac{\partial E_k}{\partial y_j} &  = 
      \begin{cases}
        y_j - d(\overrightarrow{X_k})_j & \quad\text{for } j \in \text{ OL} \\
        \sum_{r \in j^{\rightarrow}} \frac{\partial E_k}{\partial y_r} \cdot \sigma_{r}^{'}(\xi_r) \cdot w_{rj} & \quad\text{otherwise} \\
-     \end{cases}
-\]
+     \end{cases} &
+\end{flalign}
 
 \end{itemize}
 
@@ -387,24 +387,69 @@ The problems of online algorithm:
 
 \end{itemize}
 
-\textbf{TODO} refer to 2.8 problems vanishing gradient
+\section{Issues}
 
+There are widely known issues when working with neural networks, which have to be taken into consideration when working with models. In this section, we will mention just a couple, which we encountered and had to deal with.
 
-\section{DeepNN}
-\section{problems}
-vanishing gradient problem
-dead neurons (RELU)
-\section{Technizues}
-dropout
-\section{other ML models}
+\subsection{Data set split}
 
-As this thesis focuses mostly on NN, we will just mention other used models.
-\section{evaluation}
-\section{notes}
+Very simple, but very crucial mechanism used in machine learning is to define three separate sets (\textit{train}, \textit{valid} and \textit{test}). These sets have to be disjoint. It is necessary to use \textit{valid} set during the training process and different \textit{test} set for model evaluation, once the model is trained. The reason behind is that always the model will have a slight bias towards the \textit{valid} test compared to the independent \textit{test} set.
 
-CITE kniha.pdf
+\subsection{Vanishing gradient problem}
 
+\label{vanishing_gradient}
 
+The \textit{vanishing gradient problem}\cite{vanishing_gradient} is a difficulty found in training ANN's. The problem is, that in some cases the gradient will be vanishingly small with the impact on weight update. It gets more apparent with many-layered feedforward networks as well as with recurrent networks. Activation functions such as \textit{hyperbolic tangent} and \textit{sigmoid} suffer from vanishing gradient, while others like ReLU or Leaky ReLU do not.
+
+\subsection{Dead neurons}
+
+\textbf{TODO } write or remove
+
+\section{Model evaluation}
+
+After the training process, a huge emphasis is put into the model evaluation. With the incorrect evaluation methods, even the poorly trained model can have a good overall score. Several factors have to be taken into consideration like the uneven distribution of data classes, false negatives, and false positives or the classification interchanging between two groups.
+
+\subsection{Confusion matrix}
+
+In the field of machine learning and specifically the problem of statistical classification, a \textit{confusion matrix}\cite{conf_matrix} is a two-dimensional matrix $n \times n$, where $n$ is the number of classes. Each row of the matrix represents the instances in a predicted class while each column represents the instances in an actual class. It is the most verbose output of the evaluation. We can see the wrongly classified classes, but also the classes which the model misclassified into. 
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.4\textwidth]{tex/images/conf_matrix}
+\label{conf_matrix}
+\caption{Example of a classification matrix.}
+\end{figure}
+
+\noindent
+In Figure \ref{conf_matrix}, we can see the classification matrix for four classes. The correctly classified cases lie on the main diagonal. Several observations about our model can be seen. First of all, our model almost always misclassifies class \textit{C} as class \textit{D}. Furthermore, the model has difficulties distinguishing between classes \textit{A} and \textit{B} (it would be a good idea to merge these classes).
+
+\subsection{Metrics}
+
+There are four standard metrics for model evaluation: \textbf{accuracy}, \textbf{precision}, \textbf{recall} and \textbf{f1}. Let us take simple binary confusion matrix:
+
+\vspace{3mm}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|r|c c|}
+
+\hline 
+& $A$ & $\neg A$ \\
+\hline 
+$A$ & TP & FP \\
+$\neg A$ & FN & TN\footnote{true positive / false positive / false negative / true negative} \\
+\hline
+
+\end{tabular}
+
+\end{table}
+
+\begin{align*}
+\textit{accuracy } & = \frac{TP + TN}{TP + FP + FN + TN} & \\
+\textit{precision } & = \frac{TP}{TP + FP} & \\
+\textit{recall } & = \frac{TP}{TP + FN} & \\
+\textit{F1 } & = \frac{2 \times \textit{ precision } \times \textit{ recall}}{\textit{precision } + \textit{ recall}} &
+\end{align*}
 
 
 
