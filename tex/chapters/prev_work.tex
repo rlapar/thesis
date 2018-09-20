@@ -1,8 +1,10 @@
 \chapter{Previous work}
 
-This thesis serves as an addition to an already ongoing research on this topic by CROCS team. They have already done some significant progress in this area.
+This thesis serves as an addition to an already ongoing research on this topic by CROCS team. They have already done some significant progress in this area. 
 
-In their first publication the million key question\ $\cdots$. https://crocs.fi.muni.cz/public/papers/usenix2016
+In their first publication\cite{svenda_1}, they generated about 60 million key pairs from 22 open and closed-source libraries and 16 smartcards. A significant bias in some sources was discovered by them, which could be reflected in the bitmask of the 2nd to 7th most significant bit, second least significant bit and the result of modulus modulo 3. This restricted the sample space of available public keys. For some sources, a specific key was more likely to occur and on the other hand, it could totally dismiss keys from out of its sample space.
+
+In the subsequent work, Peter Sekan in his thesis\cite{thesis_sekan} made a clustering analysis base on this mask, which divided the sources into 13 groups. Using a Naive Bayes classifier, he was able to identify sources like PGP SDK 4 FIPS with high probability, while others not at all. He achieved an overall success rate of 33.44 \%. Later in the article, the rate was increased to 40.34 \%.
 
 The second publication https://crocs.fi.muni.cz/public/papers/acsac2017
 
