@@ -1,11 +1,7 @@
 \chapter{dataset}
-
 \label{appendix-dataset}
 
-% Please add the following required packages to your document preamble:
-% \usepackage[table,xcdraw]{xcolor}
-% If you use beamer only pass "xcolor=table" option, i.e. \documentclass[xcolor=table]{beamer}
-\begin{table}[]
+\begin{table}[H]
 \begin{tabular}{l|l|l|l|l|l|}
 \hline
 \multicolumn{1}{|l|}{\textbf{\#}}                         & \textbf{Source}              & \textbf{512}      & \textbf{1024}     & \textbf{2048}    & \textbf{Total}                             \\ \hline
@@ -65,6 +61,14 @@
 \multicolumn{1}{|l|}{\cellcolor[HTML]{FFFC9E}\textbf{27}} & Microsoft CryptoAPI          & 1100000           & 1098997           & 110000           & 2308997                                    \\
 \rowcolor[HTML]{FFFC9E} 
 \multicolumn{1}{|l|}{\cellcolor[HTML]{FFFC9E}\textbf{28}} & Microsoft CNG                & 1100000           & 1100000           & 120000           & 2320000                                    \\
+
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\begin{tabular}{l|l|l|l|l|l|}
+\hline
+\multicolumn{1}{|l|}{\textbf{\#}}                         & \textbf{Source}              & \textbf{512}      & \textbf{1024}     & \textbf{2048}    & \textbf{Total}                             \\ \hline
 \rowcolor[HTML]{FFFC9E} 
 \multicolumn{1}{|l|}{\cellcolor[HTML]{FFFC9E}\textbf{29}} & Microsoft.NET                & 1100000           & 800000            & 136180           & 2036180                                    \\
 \rowcolor[HTML]{FFFC9E} 
@@ -125,6 +129,14 @@
 \multicolumn{1}{|l|}{\cellcolor[HTML]{FFFC9E}\textbf{57}} & Nettle 3.3                   & 1100000           & 1100000           & 110000           & 2310000                                    \\
 \rowcolor[HTML]{FFCCC9} 
 \multicolumn{1}{|l|}{\cellcolor[HTML]{FFCCC9}\textbf{58}} & Oberthur Cosmo 64            & 0                 & 121750            & 0                & 121750                                     \\
+
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\begin{tabular}{l|l|l|l|l|l|}
+\hline
+\multicolumn{1}{|l|}{\textbf{\#}}                         & \textbf{Source}              & \textbf{512}      & \textbf{1024}     & \textbf{2048}    & \textbf{Total}                             \\ \hline
 \rowcolor[HTML]{FFFC9E} 
 \multicolumn{1}{|l|}{\cellcolor[HTML]{FFFC9E}\textbf{59}} & OpenSSL 2.0.12 FIPS          & 2200000           & 2200000           & 220000           & 4620000                                    \\
 \rowcolor[HTML]{FFFC9E} 
@@ -139,4 +151,6 @@
 \multicolumn{1}{|l|}{\cellcolor[HTML]{FFFC9E}\textbf{64}} & WolfSSL 3.10.2               & 1100000           & 1100000           & 110000           & 2310000                                    \\ \hline
                                                           & \textit{Total}               & \textit{75592882} & \textit{65482384} & \textit{5545071} & \cellcolor[HTML]{FFFFFF}\textit{146620337} \\ \cline{2-6} 
 \end{tabular}
+
+\caption{Complete dataset table, the yellow rows are software libraries, the red rows represent cards and the green ones represent HSM's}
 \end{table}

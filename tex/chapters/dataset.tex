@@ -11,13 +11,28 @@ In the article by CROCS lab\cite{svenda_1}, different sources were merged into 1
 
 \section{Dataset analysis}
 
-Before attempting to create a working classifier, the analysis of the dataset and subsequent feature engineering was necessary. We scanned the whole dataset, extracting features from public product $n$. We focused mainly on the bit value on every position and the remainder when divided by a specific number. With every feature, we counted the relative frequency of every possible value.
+Before attempting to create a working classifier, the analysis of the dataset and subsequent feature engineering was necessary. We scanned the whole dataset, extracting features from public product $n$. We focused mainly on the bit value on every position and the remainder when divided by a specific number. With every feature, we counted the relative frequency of every possible value. Because of the huge number of keys, we needed to run this analysis distributively on Metacentrum\footnote{distributed cloud computing over CESTNET}.
 
 \subsection{Modular analysis}
 
-As in the full CROCS report\cite{svenda_full}, we did a similar analysis on the full dataset. 
+As in the full CROCS report\cite{svenda_full}, we did a similar analysis on the full dataset. With every key, we computed a modulo over first 30 natural numbers, starting with 3, while focusing mainly on prime numbers. We were looking for any irregularities in distribution of the remainders. Specifically, with prime numbers $p$, the remainder should be uniformly distributed between 1 and $p-1$. Several sources showed bias, namely:
+
+\begin{itemize}
+
+\item \textit{mod 3} - sources 2,3 (G\&D SmartCafe 4.x and 6.0), 11-14 (OpenSSL without FIPS module) and 19, 20, 21 (NXP J2D081, NXP J2E145G, YubiKey NEO) were always giving a remainder of 1.
+
+\item \textit{mod 4} - sources 1, 2, 3 (G\&D SmartCafe) 4 (GNU Crypto 2.0.1) 6, 7, 8, 9 (NXP J2A*, NXPJ3A*, NXP JCOP 41 V2.2.1), 10 (Oberthur Cosmo Dual 72K) and 19, 20, 21 were always giving a remainder of 1. Sources that were giving a remainder of 1 modulo 3 and 4 are using Blum integers.
+
+\item \textit{module 11} - sources 16, 17, 18 (Infineon, Yubikey and Yubikey Nano) were giving only remainders of 1 or 10. Sources 11, 12, 13, 14, 19, 20 had slight bias towards the remainder of 1.
+
+\end{itemize}
+
+\noindent
+Full results of bit analysis can be seen in appendix \ref{appendix-modular-analysis}.
 
 \subsection{Bit analysis}
+
+\textbf{TODO}
 
 \begin{itemize}
 
