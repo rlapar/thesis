@@ -90,8 +90,6 @@ Detailed key generation process is explained in \cite{thesis_matus_nemec}. The r
 
 \subsection*{RSA cryptographic primitives}
 
-\textbf{TODO } citacie z Matus Nemec thesis
-
 Every message $m$ can be represented as a positive integer between 0 and $n-1$.\footnote{in case of longer messages we would just need to split the message into blocks of integers, where every block would have a value of at most $n-1$} Following cryptographic primitives are present in RSA scheme for message $m$:
 
 \begin{itemize}
@@ -103,6 +101,7 @@ Every message $m$ can be represented as a positive integer between 0 and $n-1$.\
 
 \end{itemize}
 
+\noindent
 These power modulo operations can be computed very effectively.
 
 \subsection{Generation bias}
@@ -111,20 +110,18 @@ While implementing RSA, many individual sources implement finding candidate prim
 
 \begin{itemize}
 
-\item \textit{OpenSSL} is rejecting any candidate, which is congruent to 1 modulo any prime up to 17863 as first reported by Mironov \cite{Mironov Svenda1 [20]}
+\item \textit{OpenSSL} is rejecting any candidate, which is congruent to 1 modulo any prime up to 17863 as first reported by Mironov\cite{mironov}
 
 \item smartcard \textit{Infineon JTOP 80K} is generating such primes, which when divided by 11 give a remainder of 1 or 10, by 37 a remainder of 1, 10 or 26 and others
 
-\item some sources like \textbf{TODO} are using only Blum primes\footnote{A prime $p$ is a Blum prime if $p \equiv 3 \pmod{4}$}, which means, that the resulting public key is always congruent to 1
+\item some sources like \textit{G\&D SmartCafe 4.x} and \textit{G\&D SmartCafe 6.0} are using only Blum primes\footnote{A prime $p$ is a Blum prime if $p \equiv 3 \pmod{4}$}, which means, that the resulting public key is always congruent to 1
 
 \end{itemize}
 
 These decisions in the process of generation leave significant bias in some sources. When connecting given public-key to its source, one can look at these properties and with high probability differentiate between sources and correctly classify public-key.
 
-We looked at some basic properties for our dataset and found bias in several sources. Full list can be seen in \textbf{TODO Appendix 1}. These features are used for machine learning classifiers.
+We looked at some basic properties for our dataset and found bias in several sources. Full list can be seen in appendix \ref{appendix-analysis}. These features are used for machine learning classifiers.
 
-\subsection*{attacks}
-\subsection*{bias}
 \subsection*{sources}
 
 
