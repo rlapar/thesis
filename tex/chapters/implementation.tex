@@ -1,13 +1,49 @@
 \chapter{Implementation}
 
-As a part of this thesis, we designed a simple tool able to work with our dataset and execute various tasks over it. It was designed to be efficient with memory to be able to run huge datasets in local machine, as well as in Metacentrum. The whole tool is written in Python 3.4, because of compatibility on Metacentrum.
+As a part of this thesis, we designed a simple tool able to work with our dataset and execute various tasks over it. The main idea was to unify the interface for models, so many different models can be run just via command line. This proved to be essential when running many models concurrently in Metacentrum or in the local machine. 
+
+The whole tool is written in Python 3.6 and it is accessible via one command-line interface.
+
+\section{Used technologies}
+
+\subsection{pandas}
+\subsection{TensorFlow}
+
+TensorFlow\cite{tensorflow} is an open source software library for high performance numerical computation. Tensorflow was developed by the Google Brain team for internal Google use. It was released under the Apache 2.0 open source license on November 9, 2015 Its flexible architecture allows easy deployment of computation across a variety of platforms (CPUs, GPUs, TPUs), and from desktops to clusters of servers to mobile and edge devices. Originally developed by researchers and engineers from the Google Brain team within Google’s AI organization, it comes with strong support for machine learning and deep learning and the flexible numerical computation core is used across many other scientific domains. Its core is written in C++ and CUDA, thus it is highly optimized for parallel computations on GPU.
+
+\subsection{Keras}
+
+Keras\cite{keras} is arguably one of the most popular python tensorflow frontends for a quick and simple definition of networks. In comparison to tensorflow, Keras is very layer-oriented and has an intuitive user friendly API. All models, that we trained were defined over Keras framework. The simplicity of Keras framework can be shown in an example of a concrete model, that we used. The whole model is defined in just 5 lines of code:
+
+\begin{minted}[ framesep=2mm,
+                autogobble,
+                frame=lines]{python}
+import keras
+inputs = keras.layers.Input(shape=(input_dimension,))
+x = keras.layers.Dense(1024, activation='relu')(inputs)
+outputs = keras.layers.Dense(output_dimension, activation='softmax')(x)
+model = keras.models.Model(inputs=inputs, outputs=outputs)
+model.compile(loss=keras.losses.categorical_crossentropy,
+              optimizer=keras.optimizers.Adadelta(),
+              metrics=['acc'])
+
+\end{minted}
+
+\subsection{Scikit-learn}
+ 
+Before trying any neural network models, we tried to use simple models first. We chose the sklearn\cite{scikit} package, the native package for basic machine learning and evaluation. We used classifiers such as KNN, Naive Bayes, decision trees or support vector classifiers\footnote{List of all possible classifiers can be found in \url{http://scikit-learn.org/stable/supervised\_learning.html\#supervised-learning}}. 
 
 \begin{itemize}
 
-\item tf
-\item keras
 \item pandas
-\item sklearn
 \item click
+\item docker
 
 \end{itemize}
+
+\section{Tasks}
+\subsection{SCAN}
+\subsection{ANALYZE}
+\subsection{GENERATE}
+\subsection{TRAIN}
+\subsection{CLASSIFY}
