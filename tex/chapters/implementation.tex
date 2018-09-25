@@ -6,7 +6,10 @@ The whole tool is written in Python 3.6 and it is accessible via one command-lin
 
 \section{Used technologies}
 
-\subsection{pandas}
+\subsection{Pandas}
+
+To work with CSV files of a length of more than 30 million lines, one does need to use the appropriate framework for it. We chose the pandas\cite{pandas} library. Actively supported today by a community, it is a BSD-licensed library providing high-performance, low-level optimized and easy-to-use data structures for data analysis for \textit{Python} programming language. Pandas stores its data in so-called dataframes\cite{pandas-df}, which are working on the same principle as in the \textit{R} language. They can store two-dimensional size-mutable heterogeneous tabular data and allow arithmetic operations align on both row and column. Furthermore, pandas can work with with huge CSV files using python generators.
+
 \subsection{TensorFlow}
 
 TensorFlow\cite{tensorflow} is an open source software library for high performance numerical computation. Tensorflow was developed by the Google Brain team for internal Google use. It was released under the Apache 2.0 open source license on November 9, 2015 Its flexible architecture allows easy deployment of computation across a variety of platforms (CPUs, GPUs, TPUs), and from desktops to clusters of servers to mobile and edge devices. Originally developed by researchers and engineers from the Google Brain team within Google’s AI organization, it comes with strong support for machine learning and deep learning and the flexible numerical computation core is used across many other scientific domains. Its core is written in C++ and CUDA, thus it is highly optimized for parallel computations on GPU.
@@ -33,13 +36,15 @@ model.compile(loss=keras.losses.categorical_crossentropy,
  
 Before trying any neural network models, we tried to use simple models first. We chose the sklearn\cite{scikit} package, the native package for basic machine learning and evaluation. We used classifiers such as KNN, Naive Bayes, decision trees or support vector classifiers\footnote{List of all possible classifiers can be found in \url{http://scikit-learn.org/stable/supervised\_learning.html\#supervised-learning}}. 
 
-\begin{itemize}
+\subsection{Docker}
 
-\item pandas
-\item click
-\item docker
+Initially, the tool was developed on the local Linux machine, because it was dependent on third-party Unix binaries, as well as it was later deployed to Metacentrum cloud, which is Unix native. However, we needed to develop and run it also on other architectures. One approach is to install virtual machines on the desired host, setup Unix environment and then run the tool. The better, more modern approach would be to use containers, namely Docker\cite{docker}.
 
-\end{itemize}
+Docker encapsulates the application, running environment, dependencies and architecture into a self-contained unit that can run anywhere. It is a more lightweight virtual machine because containers in comparison to virtual machines share the host system's kernel with other containers\cite{docker-blog}. By defining dockerfile, we provided any user the option to run this tool on its own local host.
+
+\subsection{Click}
+
+As our tool provides only command line interface, we chose the Click package\cite{click}, a command line interface creation kit. It provides decorator options for defining arguments and options with validation and automatic help generation. As a framework, it suited the necessary needs for the application and sped up the development process.
 
 \section{Tasks}
 \subsection{SCAN}
