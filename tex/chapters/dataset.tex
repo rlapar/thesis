@@ -28,16 +28,57 @@ As in the full CROCS report\cite{svenda_full}, we did a similar analysis on the 
 \end{itemize}
 
 \noindent
-Full results of bit analysis can be seen in appendix \ref{appendix-modular-analysis}.
+Full results of modular analysis can be seen in appendix \ref{appendix-modular-analysis}.
 
 \subsection{Bit analysis}
 
-\textbf{TODO}
+Another analysis focused on full bit analysis. Similarly, as in the previous one, we computed the relative frequency (or probability of 0) on every bit position with each source. This kind of analysis took the more significant amount of time and needed to be computed distributively on CESNET cloud. It took a couple of hours compared to the estimated time of up to one week when computing on the local machine.
+
+The analysis shown a significant bias in the first 6 most significant bits, mostly:
 
 \begin{itemize}
 
-\item analysis of the dataset
-\item feature engineering
-\item merge grou
+\item \textbf{1st MSB} was always 1 (for bit length padding) with one exception of source 15 (PGP SDK FIPS 4), which contained a majority of its keys with shorter bit length.
+
+\item \textbf{2nd - 4th MSB} could distinguish a lot of groups (i.e. 16-18 or 1-3), because of wider probability distribution.
+
+\item \textbf{5th - 6th MSB} still had slight bias in probability distribution for some groups (4, 19-21, 31-40)
+
+\item \textbf{2nd LSB} could distinguish mostly groups that were using Blum primes (1-4, 6-10, 19-21)
 
 \end{itemize}
+
+\noindent
+Full results of bit analysis can be seen in appendix \ref{appendix-bit-analysis}.
+
+\subsection{Feature engineering}
+
+Based on the previous analysis we extracted the following features from the public key to feed to the network:
+
+\begin{itemize}
+
+\item all moduli remainders up to 30 represented as binary vector\footnote{For example for $x \equiv 1 \pmod{5}$, the feature vector is $(1,0,0,0)$, $x \equiv 2 \pmod{5}$ - $(0,1,0,0)$, $\cdots$}
+
+\item First 6 MSB and 2nd LSB
+
+\end{itemize}
+
+\noindent
+The performance of the network was similar regardless of using the full key, or just the biased bits.
+
+\subsection{Source grouping}
+If we look closely on the full analysis in appendix \label{appendix-analysis}, we can see that based on the feature engineering we can natively group sources, that share the distribution. We obtain 13 groups\footnote{Same grouping was obtained by cluster analysis in \cite{svenda_1}}:
+
+\begin{tabular}{|r|l||r|l||r|l|}
+
+\hline
+
+\textbf{G1} & 1 & \textbf{G6} & 10 & \textbf{G10} & 19, 20, 21 \\
+\textbf{G2} & 2, 3 & \textbf{G7} & 11, 12, 13, 14 & \textbf{G11} & 22 - 29 \\
+\textbf{G3} & 4 & \textbf{G8} & 15 & \textbf{G12} & 30 - 40 \\
+\textbf{G4} & 5 & \textbf{G9} & 16, 17, 18 & \textbf{G13} & 41 - 64 \\
+\textbf{G5} & 6, 7, 8, 9 & & & & \\
+
+\hline
+
+\end{tabular}
