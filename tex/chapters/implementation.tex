@@ -47,7 +47,23 @@ Docker encapsulates the application, running environment, dependencies and archi
 As our tool provides only command line interface, we chose the Click package\cite{click}, a command line interface creation kit. It provides decorator options for defining arguments and options with validation and automatic help generation. As a framework, it suited the necessary needs for the application and sped up the development process.
 
 \section{Tasks}
+
+\textbf{TODO} write how we used tasks in flow
+
+During the implementation process, several distinct tasks were implemented in order to work with the original dataset, prepare the data for models to train and then classify. The following diagram shows the flow of the application and its data:
+
+\begin{figure}[H]
+
+\centering
+\includegraphics[width=0.5\textwidth]{tex/images/thesis_model}
+\caption{TODO}
+
+\end{figure}
+
 \subsection{SCAN}
+
+The original dataset was in the form of a directory hierarchy, where there was no specific namespace for different key length and sources.
+
 \subsection{ANALYZE}
 \subsection{GENERATE}
 \subsection{TRAIN}
