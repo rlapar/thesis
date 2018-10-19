@@ -71,8 +71,58 @@ Models that are performing well can be used, evaluated and tested via \textbf{CL
 
 \section{SCAN task}
 
-The original dataset was in the form of a directory hierarchy, where there was no specific namespace for different key length and sources.
+The original dataset was in the form of a directory hierarchy, where there was no specific namespace for different key length and sources. We needed a task to be able to create groups of sources, that would be corresponding to the same label. The using this grouping generate a new dataset, which is better structured and easier to analyze.
 
+SCAN task is using simple string matching with required (positive) keywords and forbidden (negative) keywords. Then it iteratively loops through all CSV files in given root directory and looks for CSV files that contain any positive keyword and not containing any negative keyword. Keywords are passed to the task via JSON structure. In Here is an example of a JSON filter we defined over the original dataset, which scan all sources from group 13 with bitlength of 1024: 
+
+\begin{minted}[ framesep=2mm,
+                autogobble,
+                frame=lines]{json}
+{
+    ...
+    "13": {
+        "required": [
+            "Botan_1-5-6",
+            "Botan_1-11-29",
+            ...
+            "WolfSSL_3-9-0",
+            "WolfSSL_3-10-2"
+        ],
+        "forbidden": [
+            "PGP_SDK_4_FIPS",
+            "Libgcrypt_1-7-6_FIPS",
+            "512",
+            "2048"
+        ]
+    }
+}
+
+\end{minted}
+
+\noindent
+As a result, we obtain a JSON file, which contains groups of sources with given label and a list of individual sources with the number of keys in them. This JSON file is used further by GENERATE task:
+
+\begin{minted}[ framesep=2mm,
+                autogobble,
+                frame=lines]{json}
+{
+    ...
+     "13": {
+            "group_name": "13",
+            "keys_total": 31911043,
+            "sources": [
+                {
+                    "length": 50001,
+                    "name": "Feitian JavaCOS A22",
+                    "path": "/Card/Feitian JavaCOS A22 1024b/UnknownICSN 1.csv",
+                    "read_lines": 0
+                },
+                ...
+            ]
+     }
+}
+
+\end{minted}
 \section{ANALYZE task}
 \section{GENERATE task}
 \section{TRAIN task}
