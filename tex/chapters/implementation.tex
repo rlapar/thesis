@@ -48,23 +48,32 @@ As our tool provides only command line interface, we chose the Click package\cit
 
 \section{Tasks}
 
-\textbf{TODO} write how we used tasks in flow
+During the implementation process, several distinct tasks were implemented in order to work with the original dataset, prepare the data for models to train and then classify. Figure \ref{figure-model} shows the flow of the application and its data. We obtained a dataset in the form of around 300\textbf{TODO check} CSV files. First of all, we wanted to automate extracting the keys from distinct files and set up class labels to it. 
 
-During the implementation process, several distinct tasks were implemented in order to work with the original dataset, prepare the data for models to train and then classify. The following diagram shows the flow of the application and its data:
+Therefore, \textbf{SCAN} task was implemented. We used it mainly to transform given dataset into more compact one, which could be used more efficiently for analysis and generating new ones.
+
+The newly generated compact dataset was then subjected to full analysis of features. For this purpose \textbf{ANALYZE} task was implemented. We used it to generate the relative frequency of features, that we presented in the chapter \label{chapter-analysis}.
+
+Another task \textbf{GENERATE} was used to prepare custom generated datasets for machine learning models. Its main purpose was to be able to generate datasets with different class labels, replicate keys in training dataset, skip group, skip files, merge several groups into one and others. We used this task throughout the whole training process to create datasets for models and tune them if the model was struggling in training.
+
+The main task \textbf{TRAIN} was applied to the custom generated datasets. Its main purpose was to be able to feed data into the model, monitor performance and report the results of the training. Models are sharing the same interface. This allows to implement new model relatively simply and use the whole task for any model.
+
+Models that are performing well can be used, evaluated and tested via \textbf{CLASSIFY} task using the same shared core with \textbf{TRAIN}.
 
 \begin{figure}[H]
 
 \centering
-\includegraphics[width=0.5\textwidth]{tex/images/thesis_model}
-\caption{TODO}
+\label{figure-model}
+\includegraphics[width=0.65\textwidth]{tex/images/thesis_model}
+\caption{Diagram of the application flow shows 5 distinct tasks (SCAN, ANALYZE, GENERATE, TRAIN, CLASSIFY) that we used to work with our dataset and perform machine learning on them.}
 
 \end{figure}
 
-\subsection{SCAN}
+\section{SCAN task}
 
 The original dataset was in the form of a directory hierarchy, where there was no specific namespace for different key length and sources.
 
-\subsection{ANALYZE}
-\subsection{GENERATE}
-\subsection{TRAIN}
-\subsection{CLASSIFY}
+\section{ANALYZE task}
+\section{GENERATE task}
+\section{TRAIN task}
+\section{CLASSIFY task}
