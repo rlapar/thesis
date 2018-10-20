@@ -73,7 +73,7 @@ Models that are performing well can be used, evaluated and tested via \textbf{CL
 
 The original dataset was in the form of a directory hierarchy, where there was no specific namespace for different key length and sources. We needed a task to be able to create groups of sources, that would be corresponding to the same label. The using this grouping generate a new dataset, which is better structured and easier to analyze.
 
-SCAN task is using simple string matching with required (positive) keywords and forbidden (negative) keywords. Then it iteratively loops through all CSV files in given root directory and looks for CSV files that contain any positive keyword and not containing any negative keyword. Keywords are passed to the task via JSON structure. In Here is an example of a JSON filter we defined over the original dataset, which scan all sources from group 13 with bitlength of 1024: 
+\textit{SCAN} task is using simple string matching with required (positive) keywords and forbidden (negative) keywords. Then it iteratively loops through all CSV files in given root directory and looks for CSV files that contain any positive keyword and not containing any negative keyword. Keywords are passed to the task via JSON structure. In Here is an example of a JSON filter we defined over the original dataset, which scan all sources from group 13 with bitlength of 1024: 
 
 \begin{minted}[ framesep=2mm,
                 autogobble,
@@ -100,7 +100,7 @@ SCAN task is using simple string matching with required (positive) keywords and 
 \end{minted}
 
 \noindent
-As a result, we obtain a JSON file, which contains groups of sources with given label and a list of individual sources with the number of keys in them. This JSON file is used further by GENERATE task. Below we show the example of a generated JSON file from the previous filter:
+As a result, we obtain a JSON file, which contains groups of sources with given label and a list of individual sources with the number of keys in them. This JSON file is used further by \textit{GENERATE} task. Below we show the example of a generated JSON file from the previous filter:
 
 \begin{minted}[ framesep=2mm,
                 autogobble,
@@ -123,7 +123,58 @@ As a result, we obtain a JSON file, which contains groups of sources with given 
 }
 
 \end{minted}
+
 \section{ANALYZE task}
+
+The problem with working with huge CSV files is memory consumption, as we usually are not able to load all keys into RAM at once. Fortunately, pandas\cite{pandas} library offers reading and processing such files in chunks of lines. 
+
+When analyzing a huge file, we iterate it in chunks, extracting values for features from every key and then just incrementing the corresponding counter. In the end, we print the analysis to the user.
+
+\begin{figure}[h]
+
+\centering
+\includegraphics[width=0.5\textwidth]{tex/images/analyze_task}
+\caption{\textit{ANALYZE} task flow.}
+
+\end{figure}
+
+Using \textit{SCAN} and \textit{GENERATE} we transformed the dataset to fit our purposes. We extracted all keys from each of available 64 sources of different key lengths and merged them all into single CSV files\footnote{i.e. for source 01 with we obtained 3 files, each with 512/1024/2048 keys respectively}. 
+
+Having the dataset decoupled into several smaller CSV files, we could actually perform an analysis on each of these files distributively in the CESNET cloud.
+
+\subsection{Feature Maker}
+
+When analyzing the dataset, we obtained features to use in machine learning. Having them hardcoded would not be the best approach, as new features may occur or some features may not be used for some specific model. 
+
+That is why we designed the Feature Maker. It is essentially a class, that is dedicated to the transformation of a raw key into the specific feature vector. Features may be added during runtime dynamically, usually via a configuration file. It gives us freedom of choosing a different set of features with every model (or during the analysis as well). Also, adding new feature does not change any other code, but the Feature Maker class itself. The features implemented so far:
+
+\begin{itemize}
+
+\item \textit{modulo} - can return either binary vector class (useful for machine learning) or remainder as a decimal number (useful for analysis)
+\item \textit{bit} - returns specific bit (useful for mask in machine learning and analysis)
+\item \textit{line} - returns whole line (shortcut of taking every bit)
+\item \textit{xor} - return xor of two specified bits
+
+\end{itemize}
+
+\noindent
+Using this class is a question of couple lines of code. In the following simplified example, we define the feature maker, assigned three features to it (modulo 3, modulo 7 and 38-th LSB), then call the \texttt{get\_features\_from\_keys} which extract features for us. Adding or removing features can be performed between 2nd and 4th line of code:
+
+\begin{minted}[ framesep=2mm,
+                autogobble,
+                frame=lines]{python}
+
+fm = FeatureMaker()
+fm.add('mod3')
+fm.add('mod', {'n': 7})
+fm.add('bit', {'i': 37})
+features = fm.get_features_from_keys(keys)
+
+\end{minted}
+
 \section{GENERATE task}
 \section{TRAIN task}
 \section{CLASSIFY task}
+
+\section{Docker}
+\section{Metacentrum}

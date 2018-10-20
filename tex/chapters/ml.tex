@@ -302,7 +302,7 @@ $$ E(\overrightarrow{w}) =  \sum_{k=1}^{p} E_k(\overrightarrow{w}) = \sum_{k=1}^
 
 \subsection{Gradient descent and backpropagation}
 
-To update weights according to the given loss function, we need to compute the gradient at any given point on the function in the hyperplane. The gradient vector points towards the closest local minimum. It is the direction in which we want to update our weights.
+Stochastic gradient descent\cite{deep_learning_SGD} and its variants are probably the most used optimization algorithms for machine learning in general. To update weights according to the given loss function, we need to compute the gradient at any given point on the function in the hyperplane. The gradient vector points towards the closest local minimum. It is the direction in which we want to update our weights.
 
 The learning algorithm is computing the sequence of weight vectors $\overrightarrow{w}^{(0)}, \overrightarrow{w}^{(1)}, \overrightarrow{w}^{(2)}, \cdots$, where:
 
