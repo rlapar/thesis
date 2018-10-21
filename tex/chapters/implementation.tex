@@ -71,7 +71,7 @@ Models that are performing well can be used, evaluated and tested via \textbf{CL
 
 \section{SCAN task}
 
-The original dataset was in the form of a directory hierarchy, where there was no specific namespace for different key length and sources. We needed a task to be able to create groups of sources, that would be corresponding to the same label. The using this grouping generate a new dataset, which is better structured and easier to analyze.
+The original dataset was in the form of a directory hierarchy, where there was no specific namespace for different key length and sources. We needed a task to be able to create groups of sources, that would be corresponding to the same label. The using this grouping generate a new dataset, which is wel; structured and easier to analyze.
 
 \textit{SCAN} task is using simple string matching with required (positive) keywords and forbidden (negative) keywords. Then it iteratively loops through all CSV files in given root directory and looks for CSV files that contain any positive keyword and not containing any negative keyword. Keywords are passed to the task via JSON structure. In Here is an example of a JSON filter we defined over the original dataset, which scan all sources from group 13 with bitlength of 1024: 
 
@@ -173,8 +173,30 @@ features = fm.get_features_from_keys(keys)
 \end{minted}
 
 \section{GENERATE task}
+
+One of the most important tasks we had to implement was \textit{GENERATE} task. Given our modified dataset, we needed to generate smaller samples on which we could train different models. The whole process is managed by a Generator object, which reads the data specified by sources in a JSON file provided from \textit{SCAN} task. It is responsible for preparing the datasets for \textit{TRAIN} task. The Generator provides functionality to:
+
+\begin{itemize}
+
+\item generate single large CSV file
+\item generate triplet of CSV files (train / test / valid) with ratio provided by the user
+\item shuffle target CSV file
+\item relabel individual groups and merge several groups together 
+\item skip any source or the whole group of sources
+\item take an arbitrary number of keys per group
+\item take an arbitrary number of keys per line (meaning taking several keys as one line in target CSV file)
+\item multiply keys in training data (useful for sampling, when a group has a limited amount of keys)
+
+\end{itemize}
+
+The advantage of such an approach is that using the same original dataset, the user can generate a number of different datasets with his custom labels just by changing the configuration.
+
+\textbf{TODO algorithm flow}
+
+
 \section{TRAIN task}
 \section{CLASSIFY task}
 
+\section{CLI}
 \section{Docker}
 \section{Metacentrum}
