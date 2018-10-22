@@ -1,0 +1,17 @@
+\chapter{Examples of application command}
+\label{appendix-running}
+
+\textbf{TODO} example docker
+
+\begin{minted}[ framesep=2mm,
+                autogobble,
+                frame=lines]{shell}
+
+# docker build . -t rsaml --file Dockerfile
+
+# docker run -v /Users/radovan/rsaml/sources:/opt/dataset -v /Users/radovan/rsaml/results:/opt/rsa-ml/results -v /Users/radovan/rsaml/datasets:/opt/rsa-ml/datasets -i -t rsaml:latest /bin/bash
+
+\end{minted}
+
+
+

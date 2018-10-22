@@ -38,9 +38,32 @@ Before trying any neural network models, we tried to use simple models first. We
 
 \subsection{Docker}
 
+\label{docker}
+
 Initially, the tool was developed on the local Linux machine, because it was dependent on third-party Unix binaries, as well as it was later deployed to Metacentrum cloud, which is Unix native. However, we needed to develop and run it also on other architectures. One approach is to install virtual machines on the desired host, setup Unix environment and then run the tool. The better, more modern approach would be to use containers, namely Docker\cite{docker}.
 
 Docker encapsulates the application, running environment, dependencies and architecture into a self-contained unit that can run anywhere. It is a more lightweight virtual machine because containers in comparison to virtual machines share the host system's kernel with other containers\cite{docker-blog}. By defining dockerfile, we provided any user the option to run this tool on its own local host.
+
+\subsection{Python generators}
+
+During the training process, we were working with huge files with over a couple of millions of lines. Even as raw strings, that could take up to 2 GB of memory. Furthermore, we transformed the keys into numpy arrays, which was infeasible memory-wise as it could take easily more than 20-25 GB of RAM. Rather than allocating such memory in Metacentrum, one can provide a better solution - python generators\cite{python-gen}. 
+
+Generator functions allow you to declare a function that behaves like an iterator, i.e. it can be used in a for loop. The main advantage is that the data is fetched during the runtime as the iteration of the for loop is always called on demand.
+
+\begin{minted}[ framesep=2mm,
+                autogobble,
+                frame=lines]{python}
+def get_data():
+	n = 1
+	while True:
+		yield n
+		n += 1
+		
+for n in generate_numbers():
+	...
+\end{minted}
+
+This simple example shows how to generate natural numbers. Instead of natural numbers we simply take a chunk of lines from the source CSV file resulting in saving the memory consumption. Therefore we can run huge datasets also in local machine as well as take smaller resources on Metacentrum, thus increasing our chance of running our job in the 
 
 \subsection{Click}
 
@@ -189,14 +212,63 @@ One of the most important tasks we had to implement was \textit{GENERATE} task. 
 
 \end{itemize}
 
-The advantage of such an approach is that using the same original dataset, the user can generate a number of different datasets with his custom labels just by changing the configuration.
+The advantage of such an approach is that using the same original dataset, the user can generate a number of different datasets with his custom labels just by changing the configuration. Given the user's settings, the Generator works in a couple of steps:
 
-\textbf{TODO algorithm flow}
+\begin{enumerate}
 
+\item prepare the temporary CSV file that will store the new lines
+
+\item prepare new labels mapping (user can merge different sources together, some labels might be unused)
+
+\item iterate through sources specified in JSON
+
+\item skip sources or groups that user specified
+
+\item prepare a random sample of lines that will be read from the source, then read these lines in batches
+
+\item prepare the line for the big CSV file (user can take more keys as one line in the final CSV)
+
+\item multiply training sample by the ratio specified by the user
+
+\item append line to the temporary file
+
+\item shuffle temporary file and return as a new file (the final dataset)
+
+\end{enumerate}
+
+\noindent
+All user's settings are specified in section \ref{cli}.
 
 \section{TRAIN task}
 \section{CLASSIFY task}
 
 \section{CLI}
-\section{Docker}
+\label{cli}
+
 \section{Metacentrum}
+
+The final step of the implementation process was to run the code in the cloud. We used batch jobs\cite{metacentrum} that run in the CESNET cloud - Metacentrum. One can simply run these scripts with more powerful resources that his local machine. We used it, in particular, to try many models in parallel, usually running for a couple of days. Batch jobs were run via a shell script. Example can be found in appendix \ref{appendix-metacentrum}.
+
+\section{Multi platform development}
+
+As we are using the third party binary, that is necessary for shuffling the datasets in \textit{GENERATE} task, the application needs to run in Linux Debian.
+
+We were developing the application on Debian and Mac OS X. To be able to run it in Mac OS X we had to use the Docker container specified in the section \ref{docker}.
+
+For this purpose we provided our code with simple dockerfile, that can run the application in its native environment on any platform:
+
+\begin{minted}[ framesep=2mm,
+                autogobble,
+                frame=lines]{docker}
+
+FROM python:3.6-slim
+RUN mkdir -p /opt/rsa-ml
+WORKDIR /opt/rsa-ml
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY . .
+
+\end{minted}
+
+\noindent
+Example of usage can be found in appendix \ref{appendix-running}.
