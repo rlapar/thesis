@@ -46,6 +46,8 @@ Docker encapsulates the application, running environment, dependencies and archi
 
 \subsection{Python generators}
 
+\label{python-generators}
+
 During the training process, we were working with huge files with over a couple of millions of lines. Even as raw strings, that could take up to 2 GB of memory. Furthermore, we transformed the keys into numpy arrays, which was infeasible memory-wise as it could take easily more than 20-25 GB of RAM. Rather than allocating such memory in Metacentrum, one can provide a better solution - python generators\cite{python-gen}. 
 
 Generator functions allow you to declare a function that behaves like an iterator, i.e. it can be used in a for loop. The main advantage is that the data is fetched during the runtime as the iteration of the for loop is always called on demand.
@@ -92,7 +94,7 @@ Models that are performing well can be used, evaluated and tested via \textbf{CL
 
 \end{figure}
 
-\section{SCAN task}
+\subsection{SCAN task}
 
 The original dataset was in the form of a directory hierarchy, where there was no specific namespace for different key length and sources. We needed a task to be able to create groups of sources, that would be corresponding to the same label. The using this grouping generate a new dataset, which is wel; structured and easier to analyze.
 
@@ -147,7 +149,7 @@ As a result, we obtain a JSON file, which contains groups of sources with given 
 
 \end{minted}
 
-\section{ANALYZE task}
+\subsection{ANALYZE task}
 
 The problem with working with huge CSV files is memory consumption, as we usually are not able to load all keys into RAM at once. Fortunately, pandas\cite{pandas} library offers reading and processing such files in chunks of lines. 
 
@@ -165,7 +167,9 @@ Using \textit{SCAN} and \textit{GENERATE} we transformed the dataset to fit our 
 
 Having the dataset decoupled into several smaller CSV files, we could actually perform an analysis on each of these files distributively in the CESNET cloud.
 
-\subsection{Feature Maker}
+\subsection*{Feature Maker}
+
+\label{feature-maker}
 
 When analyzing the dataset, we obtained features to use in machine learning. Having them hardcoded would not be the best approach, as new features may occur or some features may not be used for some specific model. 
 
@@ -195,7 +199,7 @@ features = fm.get_features_from_keys(keys)
 
 \end{minted}
 
-\section{GENERATE task}
+\subsection{GENERATE task}
 
 One of the most important tasks we had to implement was \textit{GENERATE} task. Given our modified dataset, we needed to generate smaller samples on which we could train different models. The whole process is managed by a Generator object, which reads the data specified by sources in a JSON file provided from \textit{SCAN} task. It is responsible for preparing the datasets for \textit{TRAIN} task. The Generator provides functionality to:
 
@@ -239,8 +243,63 @@ The advantage of such an approach is that using the same original dataset, the u
 \noindent
 All user's settings are specified in section \ref{cli}.
 
-\section{TRAIN task}
-\section{CLASSIFY task}
+\subsection{TRAIN task}
+
+The main task defined was task \textit{TRAIN}. As we provided all the tasks to prepare our datasets, we needed to implement the process of training the classifiers. The main idea was to split the process into two main logical units. The responsibility of the first one is to load the datasets a pass them on to the models. The second unit is models themselves.
+
+\subsection*{Loader}
+
+The \texttt{Loader} interface is a part of the core of the application. It provides two main function to feed data to the models:
+
+\begin{itemize}
+
+\item \texttt{get\_data()} - loads the whole file into memory and returns the numpy arrays, that can be fetched into the model (was necessary when working with models from scikit learn, that could not work with python generators). This is not suitable for larger files as they often don't fit into memory at once.
+
+\item \texttt{get\_data\_generator()} - as mentioned in subsection \ref{python-generators}, when working with large files, it is more desirable to read them in chunks. Keras models do support training using python generators if we do provide one.
+
+Reading the CSV in chunks using pandas, we extracted the features in every generator iteration and then yielded the data for the neural networks.
+
+\end{itemize}
+
+\noindent
+As we were using two types of classifiers (from \textit{sklearn} and \textit{keras} libraries) and two types of datasets from \textit{GENERATE} task (either one big CSV file, or the CSV triplet), we provided two classes, that implemented this common interface:
+
+\begin{itemize}
+
+\item \texttt{LoaderSingle} - receive only one CSV file, and the split set ratios of the dataset. It computes the random permutation on lines, which are then distributed into their train / valid / test sets respectively. It directly corresponds to the single CSV files generated from \textit{GENERATE} task and it was implemented first.
+
+\item \texttt{LoaderDataset} - the later implementation, receives the CSV triplet (train / test / valid) and does not need to compute the random permutation (which is memory consuming by itself). It directly corresponds to the CSV triplet from \textit{GENERATE} task.
+
+\end{itemize}
+
+\noindent
+The feature extraction from individual keys was done by \texttt{FeatureMaker} class with features specified by the user. More details were mentioned in the subsection \ref{feature-maker}
+
+\subsection*{Models}
+
+When designing the models, the main focus was put on extensibility. We implemented a common \texttt{Model} as a plain abstract class using the python \textit{abc} module\footnote{\url{https://docs.python.org/3/library/abc.html}}. This allowed us to implement many models while keeping the same interface. Furthermore, as it is expected, that this application will be used later in the research, it is simple to add any another model just by implementing this interface and its methods:
+
+\begin{itemize}
+
+\item \texttt{fit()} and \texttt{fit\_generator()} - the model is given training and validation data in the form of either numpy arrays (\texttt{fit}) or an iterator (\texttt{fit\_generator}). The model trains itself.
+
+\item \texttt{predict()} - given the input numpy vector, the model returns the prediction
+
+\item \texttt{score()} - given the test data, the model returns an evaluation of itself
+
+\item \texttt{get\_model\_info()} - return description as a string (used for logging the output)
+
+\item \texttt{save()} - save model to given directory path
+
+\item \texttt{load()} - load model from given directory path
+
+\end{itemize} 
+
+\textbf{TODO} SciKit Classifier interface
+\textbf{TODO} Keras Classifiers
+
+
+\subsection{CLASSIFY task}
 
 \section{CLI}
 \label{cli}
