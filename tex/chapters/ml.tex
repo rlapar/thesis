@@ -402,6 +402,7 @@ Very simple, but very crucial mechanism used in machine learning is to define th
 The \textit{vanishing gradient problem}\cite{vanishing_gradient} is a difficulty found in training ANN's. The problem is, that in some cases the gradient will be vanishingly small with the impact on weight update. It gets more apparent with many-layered feedforward networks as well as with recurrent networks. Activation functions such as \textit{hyperbolic tangent} and \textit{sigmoid} suffer from vanishing gradient, while others like ReLU or Leaky ReLU do not.
 
 \section{Model evaluation}
+\label{nn-metrics}
 
 After the training process, a huge emphasis is put into the model evaluation. With the incorrect evaluation methods, even the poorly trained model can have a good overall score. Several factors have to be taken into consideration like the uneven distribution of data classes, false negatives, and false positives or the classification interchanging between two groups.
 

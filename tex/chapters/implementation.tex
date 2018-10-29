@@ -293,14 +293,76 @@ When designing the models, the main focus was put on extensibility. We implement
 
 \end{itemize} 
 
-\textbf{TODO} SciKit Classifier interface
-\textbf{TODO} Keras Classifiers
+We implemented an interface to work with models from \texttt{scikit} library and multilayer perceptrons from \texttt{keras} library. For both of them, we implemented interfaces, that were direct children of the common \texttt{Model} interface. They implemented all the necessary interface methods to adapt them to used libraries. All the used models then inherited from this interface. The hierarchy can be seen in figure \ref{model-inheritance}.
 
+\begin{figure}[H]
+
+\centering
+\includegraphics[width=0.75\textwidth]{tex/images/model_inheritance}
+\caption{The hierarchy of implementation of the common \texttt{Model} interface. The second level groups the common logic for given library, the bottom level are individual implementations.}
+\label{model-inheritance}
+
+\end{figure}
+
+From \texttt{scikit} we implemented most of the models listed in the documentation\footnote{\url{http://scikit-learn.org/stable/supervised\_learning.html\#supervised-learning}} (i. e. \texttt{KNN, NB, DecisionTree, SVC} and others). From \texttt{keras}, we implemented different multilayer perceptrons with topology specified by the user. Topology specifies hidden layers with their activation and the number of neurons, loss function, metrics, optimizer and activation of the output layer as JSON (example below).
+
+\begin{minted}[ framesep=2mm,
+                autogobble,
+                frame=lines]{json}
+
+ "Keras10": {"base": "KerasSimpleClassifier",
+             "name": "Keras Multilayer Perceptron",
+             "topology": {"hidden_layers": [{"activation": "relu",
+                                             "number_of_neurons": 4096}],
+                          "loss": "categorical_crossentropy",
+                          "metrics": ["acc"],
+                          "optimizer": "Adadelta",
+             "output_layer": {"activation": "softmax"}}},
+
+\end{minted}
+
+\noindent
+The models are trained in epochs, and after the training ends, they are evaluated with metrics defined in subsection \ref{nn-metrics}.
 
 \subsection{CLASSIFY task}
 
+The last (and for the end user, the most important one) is the \textit{CLASSIFY} task. The user compares trained models to target CSV file and can either evaluate the model based on the labels given in the CSV file (similarly as in \textit{TRAIN} task) or can generate new labels for his dataset (useful for tagging unknown data).
+
 \section{CLI}
 \label{cli}
+
+This subsection serves as simple documentation to the command line interface. The user can configure the application with the arguments or YAML configuration file (by default \textit{settings.yml}). For every task, we will describe the possible options. CLI was designed using click library.
+
+\textbf{TODO help}
+
+\subsection*{General settings}
+
+The application is run via command \texttt{python3 cli.py [OPTIONS] TASK}\footnote{\textit{TASK} can be one of \textit{analyze, classify, generate, scan, train}}. The general options include:
+
+\begin{itemize}
+
+\item \texttt{--help} - Show help message an exit.
+\item \texttt{--help-task TASK} - Show help message for specific task
+\item \texttt{--settings PATH} - Path to custom yaml settings (if not specified, the default one is used)
+
+\end{itemize}
+
+\subsection*{SCAN}
+
+Requires three arguments:
+
+\begin{itemize}
+
+\item \texttt{--scandir PATH} - Directory to scan.
+\item \texttt{--filter PATH} - Path to filter JSON to apply.
+\item \texttt{--output-json PATH} - Path to the newly created sources JSON file.
+
+\end{itemize}
+
+\subsection*{ANALYZE}
+\subsection*{GENERATE}
+\subsection*{TRAIN}
+\subsection*{CLASSIFY}
 
 \section{Metacentrum}
 
