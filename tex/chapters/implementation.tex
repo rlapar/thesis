@@ -331,7 +331,7 @@ The last (and for the end user, the most important one) is the \textit{CLASSIFY}
 \section{CLI}
 \label{cli}
 
-This subsection serves as simple documentation to the command line interface. The user can configure the application with the arguments or YAML configuration file (by default \textit{settings.yml}). For every task, we will describe the possible options. CLI was designed using click library.
+This subsection serves as simple documentation to the command line interface. The user can configure the application with the arguments or YAML configuration file (by default \textit{settings.yml}). Command line arguments have priority over YAML settings. For every task, we will describe the possible options. CLI was designed using click library.
 
 \subsection*{General settings}
 
@@ -347,20 +347,146 @@ The application is run via command \texttt{python3 cli.py [OPTIONS] TASK}\footno
 
 \subsection*{SCAN}
 
+\noindent
 Requires three arguments:
 
 \begin{itemize}
 
-\item \texttt{--scandir PATH} - Directory to scan.
-\item \texttt{--filter PATH} - Path to filter JSON to apply.
-\item \texttt{--output-json PATH} - Path to the newly created sources JSON file.
+\item \texttt{--scandir PATH} - directory to scan.
+\item \texttt{--filter PATH} - path to filter JSON to apply.
+\item \texttt{--output-json PATH} - path to the newly created sources JSON file.
 
 \end{itemize}
 
 \subsection*{ANALYZE}
+
+\noindent
+Arguments:
+
+\begin{itemize}
+
+\item \texttt{--analyzed-csv PATH} - CSV file to analyze (required).
+\item \texttt{--analysis-output PATH} - file to save analysis to. If not specified, then print to stdout.
+\item \texttt{--json-format} - boolean flag, if true, then analysis is printed as JSON (used for further automatization).
+
+\end{itemize}
+
+\noindent
+All arguments can be setup alternatively in YAML file. Further configuration in YAML include:
+
+\begin{itemize}
+
+\item \texttt{common.batch\_size} - chunk of data read in every iteration.
+\item \texttt{common.keys\_per\_feature} - applies to FeatureMaker, should be set to 1 (usually, we analyze CSV files with each line representing only one key).
+\item \texttt{fm.key\_length} - 512, 1024 or 2048
+\item \texttt{fm.binary\_only} - whether or not the features should be represented by binary vectors only (for analysis should be setup to 0)
+\item \texttt{fm.features} - features to analyze
+
+\end{itemize}
+
+\noindent
+Supported features include\footnote{Features are described in subsection \label{feature-maker}}:
+
+\begin{itemize}
+
+\item \texttt{['bit', \{'i': x\}]} (where \texttt{x} is bit index)
+\item \texttt{['mod', \{'n': x\}]} (where \texttt{x} is divisor)
+\item \texttt{'line'} (shortcut for taking every bit) 
+\item \texttt{'mod3'} (shortcut for \texttt{['mod', \{ 'n': 3 \}]})
+\item \texttt{'mod4'} (shortcut for mod 4)
+\item \texttt{['xor', \{'indices': (x, y)\}]} (where \texttt{(x, y)} are bit pairs)
+
+\end{itemize}
+
 \subsection*{GENERATE}
+
+\textbf{TODO}
+
+\noindent
+Arguments:
+
+\begin{itemize}
+
+\item \texttt{--datapath}
+\item \texttt{--single/--dataset}
+\item \texttt{--shuffle/--no-shuffle}
+\item \texttt{--sources-path}
+\item \texttt{--relabel}
+
+\end{itemize}
+
+\noindent
+YAML:
+
+\begin{itemize}
+
+\item \texttt{common.batch\_size}
+\item \texttt{common.keys\_per\_feature}
+\item \texttt{common.valid\_ratio}
+\item \texttt{common.test\_ratio}
+\item \texttt{common.number\_of\_groups}
+\item \texttt{generate.keys\_per\_group}
+\item \texttt{generate.skipped\_groups}
+\item \texttt{generate.skipped\_files}
+\item \texttt{generate.train\_keys\_multiplicity}
+\item \texttt{generate.merge\_groups}
+
+\end{itemize}
+
 \subsection*{TRAIN}
+
+\noindent
+Arguments:
+
+\begin{itemize}
+
+\item \texttt{--datapath}
+\item \texttt{--single/--dataset}
+\item \texttt{--incremental/--no-incremental}
+\item \texttt{--results-to-file/--results-to-stdout}
+\item \texttt{--model}
+
+\end{itemize}
+
+\noindent
+YAML:
+
+\begin{itemize}
+
+\item \texttt{common.batch\_size}
+\item \texttt{common.keys\_per\_feature}
+\item \texttt{common.valid\_ratio}
+\item \texttt{common.test\_ratio}
+\item \texttt{common.number\_of\_groups}
+\item \texttt{train.epochs}
+\item \texttt{train.model}
+
+\end{itemize}
+
 \subsection*{CLASSIFY}
+
+\noindent
+Arguments:
+
+\begin{itemize}
+
+\item \texttt{--classifier}
+\item \texttt{--source-csv}
+\item \texttt{--compare-labels/--assign-labels}
+\item \texttt{--target-csv}
+
+\end{itemize}
+
+\noindent
+YAML:
+
+\begin{itemize}
+
+\item \texttt{common.batch\_size}
+\item \texttt{common.keys\_per\_feature}
+\item \texttt{common.number\_of\_groups}
+
+\end{itemize}
 
 \section{Metacentrum}
 
