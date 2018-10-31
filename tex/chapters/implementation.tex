@@ -306,6 +306,7 @@ We implemented an interface to work with models from \texttt{scikit} library and
 
 From \texttt{scikit} we implemented most of the models listed in the documentation\footnote{\url{http://scikit-learn.org/stable/supervised\_learning.html\#supervised-learning}} (i. e. \texttt{KNN, NB, DecisionTree, SVC} and others). From \texttt{keras}, we implemented different multilayer perceptrons with topology specified by the user. Topology specifies hidden layers with their activation and the number of neurons, loss function, metrics, optimizer and activation of the output layer as JSON (example below).
 
+\label{models-json}
 \begin{minted}[ framesep=2mm,
                 autogobble,
                 frame=lines]{json}
@@ -418,14 +419,14 @@ YAML:
 
 \begin{itemize}
 
-\item \texttt{common.batch\_size} - same as with \textit{ANALYZE}
+\item \texttt{common.batch\_size} - same as with \textit{ANALYZE}.
 \item \texttt{common.keys\_per\_feature} -  specifies how many keys should be put into one line of target CSV.
 \item \texttt{common.valid\_ratio} - the percentage of validation data (a number between 0 and 1). Applicable only to \texttt{--dataset} option.
 \item \texttt{common.test\_ratio} - the percentage of test data (a number between 0 and 1). Applicable only to \texttt{--dataset} option.
-\item \texttt{common.number\_of\_groups} - number of groups of the source dataset
-\item \texttt{generate.keys\_per\_group} - how many keys are taken per each group (the generator automatically scales this number within its sources)
-\item \texttt{generate.skipped\_groups} - which groups should not be included in the final dataset (i. e. \texttt{skipped\_groups: ["3", "8"]})
-\item \texttt{generate.skipped\_files} - which sources should not be included in the final dataset 
+\item \texttt{common.number\_of\_groups} - number of groups of the source dataset.
+\item \texttt{generate.keys\_per\_group} - how many keys are taken per each group (the generator automatically scales this number within its sources).
+\item \texttt{generate.skipped\_groups} - which groups should not be included in the final dataset (i. e. \texttt{skipped\_groups: ["3", "8"]}).
+\item \texttt{generate.skipped\_files} - which sources should not be included in the final dataset.
 \item \texttt{generate.train\_keys\_multiplicity} - dictionary, where the key specifies the group and the value specifies the multiplicity ratio for train keys. Applicable only to \texttt{--dataset} option.
 \item \texttt{generate.merge\_groups} - lists of merged groups (i.e. \texttt{[6,7,8,9]}  merges groups 6, 7, 8, 9 together).
 
@@ -433,35 +434,33 @@ YAML:
 
 \subsection*{TRAIN}
 
-\textbf{TODO}
-
 \noindent
 Arguments:
 
 \begin{itemize}
 
-\item \texttt{--datapath PATH} 
-\item \texttt{--single/--dataset}
-\item \texttt{--incremental/--no-incremental}
-\item \texttt{--results-to-file/--results-to-stdout}
-\item \texttt{--model}
+\item \texttt{--datapath PATH} - same as with \textit{GENERATE}.
+\item \texttt{--single/--dataset} - same as with \textit{GENERATE}.
+\item \texttt{--incremental/--no-incremental} - boolean flag, with the incremental approach, python generators are used to fetch the data to the model, else the whole data is loaded into the memory (by default incremental).
+\item \texttt{--results-to-file/--results-to-stdout} - print the train information to the result directory or stdout (by default directory is chosen).
+\item \texttt{--model} - name of the used classifier (correspond to the key in models.json). Can be specified in YAML as well.
 
 \end{itemize}
 
-\textbf{TODO models.json}
+Models are loaded from the models.json file. Key represents the name of the model passed to CLI. The base class is provided to load model dynamically. Further information is provided, which are necessary for a model interface for the specific library (for keras we specified name and topology). Example from this JSON file was shown in the description of the \textit{TRAIN} task in the subsection \ref{models-json}.
 
-\noindent
-YAML:
+Further configuration is set via YAML file:
 
 \begin{itemize}
 
-\item \texttt{common.batch\_size}
-\item \texttt{common.keys\_per\_feature}
-\item \texttt{common.valid\_ratio}
-\item \texttt{common.test\_ratio}
-\item \texttt{common.number\_of\_groups}
-\item \texttt{train.epochs}
-\item \texttt{train.model}
+\item \texttt{common.batch\_size} - same as with \textit{ANALYZE}.
+\item \texttt{common.keys\_per\_feature} - same as with \textit{GENERATE}. Specifies how many keys are present in one line of the CSV.
+\item \texttt{common.valid\_ratio} - the percentage of validation data (a number between 0 and 1). Applicable only to \texttt{--single} option.
+\item \texttt{common.test\_ratio} - the percentage of test data (a number between 0 and 1). Applicable only to \texttt{--single} option.
+\item \texttt{common.number\_of\_groups} - same as with \textit{GENERATE}.
+\item \texttt{train.epochs} - number of train epochs (applies to keras models).
+\item \texttt{train.model} - name of the used model (CLI argument is prioritized).
+\item \texttt{fm.*} - for all the settings for feature maker  apply the same description as with ANALYZE, but \texttt{fm.binary\_only} should be in this case 1 instead of 0 (binary vectors for modulo features are better for classifiers).
 
 \end{itemize}
 
@@ -472,10 +471,10 @@ Arguments:
 
 \begin{itemize}
 
-\item \texttt{--classifier}
-\item \texttt{--source-csv}
-\item \texttt{--compare-labels/--assign-labels}
-\item \texttt{--target-csv}
+\item \texttt{--classifier PATH} - path to the model trained by \textit{TRAIN} task
+\item \texttt{--source-csv PATH} - source CSV to classify
+\item \texttt{--compare-labels/--assign-labels} - boolean flag. If labels are compared, then the modeIf assign labels option is chosen, then the model adds labels to the entries in CSV and store them into the new CSV file.l is evaluated to the given dataset (the same process as with evaluation in \textit{TRAIN} task). If assign labels option is chosen, then the model adds labels to the entries in CSV and store them into the new CSV file.
+\item \texttt{--target-csv PATH} - applicable when \texttt{--assign-labels} is set. Path to the target labeled CSV file.
 
 \end{itemize}
 
@@ -484,15 +483,10 @@ YAML:
 
 \begin{itemize}
 
-\item \texttt{common.batch\_size}
-\item \texttt{common.keys\_per\_feature}
-\item \texttt{common.number\_of\_groups}
+\item \texttt{common.*} - the same as with \textit{TRAIN} (for \textit{CLASSIFY} only options \texttt{common.batch\_size}, \texttt{common.keys\_per\_feature} and \texttt{common.number\_of\_groups} are relevant).
 
 \end{itemize}
 
-\section{Metacentrum}
-
-The final step of the implementation process was to run the code in the cloud. We used batch jobs\cite{metacentrum} that run in the CESNET cloud - Metacentrum. One can simply run these scripts with more powerful resources that his local machine. We used it, in particular, to try many models in parallel, usually running for a couple of days. Batch jobs were run via a shell script. Example can be found in appendix \ref{appendix-metacentrum}.
 
 \section{Multi platform development}
 
@@ -517,3 +511,7 @@ COPY . .
 
 \noindent
 Example of usage can be found in appendix \ref{appendix-running}.
+
+\section{Metacentrum}
+
+The final step of the implementation process was to run the code in the cloud. We used batch jobs\cite{metacentrum} that run in the CESNET cloud - Metacentrum. One can simply run these scripts with more powerful resources that his local machine. We used it, in particular, to try many models in parallel, usually running for a couple of days. Batch jobs were run via a shell script. Example can be found in appendix \ref{appendix-metacentrum}.
