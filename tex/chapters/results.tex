@@ -1,13 +1,74 @@
 \chapter{Results}
 
+Various models were tried using our application. The results were then compared to the existing ones from the CROCS research. We started with simple models from \texttt{scikit} library, which were able to work with smaller datasets (of around 65000 samples). We were able to reach accuracy ranging from 7.5 - 33.5 \% on average:
+
+\begin{figure}[H]
+
+\centering
+
+\begin{tabular}{|l|l|}
+\hline 
+Classifier & $\sim$ accuracy \\
+\hline 
+RadiusNeighborsClassifier & 7.50 \% \\
+QuadraticDiscriminantAnalysis & 7.68 \% \\
+ExtraTreeClassifier & 12.62 \% \\
+MLPClassifier & 12.65 \% \\
+DecisionTreeClassifier & 12.71 \% \\
+KNeighborsClassifier & 16.92 \% \\
+SGDClassifier & 20.70 \% \\
+PassiveAggressiveClassifier & 21.72 \% \\
+AdaBoostClassifier & 22.34 \% \\
+GaussianNB & 27.51 \% \\
+MultinomialNB & 28.22 \% \\
+LinearSVC & 29.93 \% \\
+LinearDiscriminantAnalysis & 30.81 \% \\
+NuSVC & 30.93 \% \\
+RidgeClassifier & 31.14 \% \\
+BernoulliNB & 31.21 \% \\
+RidgeClassifierCV & 31.22 \% \\
+SVC & 32.57 \% \\
+BaggingClassifier & 32.74 \% \\
+RandomForestClassifier & 33.04 \% \\
+ExtraTreesClassifier & 33.26 \% \\
+GradientBoostingClassifier & 33.57 \% \\ 
+\hline
+\end{tabular}
+
+
+
+\end{figure}
+
+\section{Multi layer perceptrons}
+
+Before any models were trained, we performed an analysis of the dataset and applied feature engineering and extracted the features described in the subsection \ref{feature-engineering}. We took the whole key (as a binary vector of respective key length 512 / 1024 /2048) and all its moduli up to 30. Modulus was also represented as a binary vector. For example, the feature modulo 7 could result in 6 different vectors, each having a different index set to 1 and representing one of 6 possible remainders. In the end, we obtained one large binary vector which we fed to the models.
+
+\subsection*{Grid search}
+
+Apart from the features extracted from the analysis, all the other tried features seem to have a uniform distribution within its domain. On the first look, the model to be used is not apparent, so we decided to use the technique called \textbf{grid search}\cite{grid-search} for finding the most suitable topology and configuration. 
+
+When there are a couple of hyperparameters, the common practice is to perform grid search. For each hyperparameter, the user select a small finite set of possible values to explore. The grid search algorithm then trains a models for every joint specification of hyperparameter values in the Cartesian product of the set of values for each individual hyperparameter. The experiment then yields the best model.
+
+We used this approach mainly to find the optimal choice of the topology (meaning the number of hidden layers and the number of neurons within each layer) and the selected activations in each layer.
+
+We were gradually testing topologies from zero up to two hidden layers, with the number of neurons being the powers of 2 starting from 8 up to 4096. The activation functions used were sigmoid, hyperbolic tangent, ReLU and leaky ReLU. This gives us around 160 different configurations to run, which is an ideal use case for cloud computing. Running for a couple of days, we were able to compare all this different configurations on the same datasets.
+
 \begin{itemize}
 
-\item scikit learn
-\item mutlilayer perceptron w/ feature engineering on 13 groups
-\item mutlilayer perceptron w/ feature enggineering on 64 groups
-\item more sophisticated model with binary classifiers
-\item deep learning
-\item all together
-\item possibly voting classifier
+\item the choice of activation not tat impact (lRealu > ReLU == sigmoid > tanh)
+\item topology impact (last hidden layer > neurons the better)
 
 \end{itemize}
+
+\begin{itemize}
+
+\item randomized data (no research)
+\item grid search topology
+\item grid search activation
+\item features
+\item 13 groups
+\item binary classifiers
+\item 64 groups
+
+\end{itemize}
+

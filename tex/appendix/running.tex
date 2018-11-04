@@ -1,17 +1,181 @@
 \chapter{Examples of application command}
+
 \label{appendix-running}
 
-\textbf{TODO} example docker
+In this appendix you can found examples of how to run various commands on the application. To run general help:
 
 \begin{minted}[ framesep=2mm,
                 autogobble,
                 frame=lines]{shell}
 
-# docker build . -t rsaml --file Dockerfile
-
-# docker run -v /Users/radovan/rsaml/sources:/opt/dataset -v /Users/radovan/rsaml/results:/opt/rsa-ml/results -v /Users/radovan/rsaml/datasets:/opt/rsa-ml/datasets -i -t rsaml:latest /bin/bash
+python3 cli.py --help
 
 \end{minted}
+
+\section*{ANALYZE}
+
+To run help about task:
+
+\begin{minted}[ framesep=2mm,
+                autogobble,
+                frame=lines]{shell}
+
+python3 cli.py --help-task
+
+\end{minted}
+
+\noindent
+The example below show the usage of the analyze task. First of all, setup YAML:
+
+\begin{minted}[ framesep=2mm,
+                autogobble,
+                frame=lines]{yaml}
+
+common:
+  batch_size: 500000
+  keys_per_feature: 1
+...  
+fm:
+  key_length: 1024
+  binary_only: 0
+  features:
+  - ['mod', {'n': 3}]
+  - ['mod', {'n': 4}]
+  - ['mod', {'n': 5}]
+
+\end{minted}
+
+\noindent
+Then run command:
+
+\begin{minted}[ framesep=2mm,
+                autogobble,
+                frame=lines]{shell}
+
+cli.py analyze --analyzed-csv <PATH/TO/CSV> \
+--analysis-output <PATH/TO/OUTPUT> \
+--json-format
+
+\end{minted}
+
+\noindent
+This will run the analyze task and on the \texttt{<PATH/TO/CSV>} file, that have 1 key per line of length 1024 bits in batches of 500000 lines. The analyzed features are moduli of 3, 4 and 5. The output is saved in \texttt{<PATH/TO/OUTPUT>} json file. The output can look like:
+
+\begin{minted}[ framesep=2mm,
+                autogobble,
+                frame=lines]{json}
+
+"feature_counter": {
+  ...
+  "2": {
+    "('mod', 5)": {
+      "[1]": 16821,
+      "[2]": 11206,
+      "[3]": 11006,
+      "[4]": 10967      
+    },
+    "('mod', 4)": {
+    ...  
+  },
+  ...
+},
+"group_counter": {
+  ...
+  "('mod', 5)": {
+    "[1]": {
+      "1": 23371,
+      "2": 16821,
+      ...
+    },
+    ...
+  },
+  ...
+}  
+
+\end{minted}
+
+\noindent
+Feature counter shows the counts for features per each group (\texttt{group.feature.value}). Here we can see, that group 2 has bias towards the remainder 1 when divided by 5. The group counter shows the counts for groups per each feature (\texttt{feature.value.group}). Here we can see, that even though the group 2 has bias towards 1 and group 1 is uniformly distributed modulo 5, there is higher chance of getting group 1 than 2. The result could mean, that the neural network would be biased towards the group 1, if this would be the training data.
+
+
+\section*{GENERATE}
+\section*{TRAIN}
+\section*{CLASSIFY}
+\section*{Running in docker environment}
+
+When not on a Debian machine, one can run the application in the docker environment. The user has to bind the used volumes for dataset, results and generated data. User then build the container and runs it iterativelly by the following commands:
+
+\begin{minted}[ framesep=2mm,
+                autogobble,
+                frame=lines]{shell}
+
+docker build . -t rsaml --file Dockerfile
+
+docker run -v <path_to_dataset>:/opt/dataset \
+-v <path_to_results>:/opt/rsa-ml/results \
+-v <path_to_generated_datasets>:/opt/rsa-ml/datasets \
+-i -t rsaml:latest /bin/bash
+
+\end{minted}
+
+\section*{Running on metacentrum}
+\label{appendix-metacentrum}
+
+To run the application on Metacenturm we run the shell script, that:
+
+\begin{itemize}
+
+\item specified desired resources (number of processors, memory, scratch memory and maximum runtime)
+
+\item loaded the necessary dependencies
+
+\item installed third party modules locally (in our case \texttt{click})
+
+\item ran the application
+
+\end{itemize}
+
+\noindent
+The example of used script is showed below:
+
+\begin{minted}[ framesep=2mm,
+                autogobble,
+                frame=lines]{shell}
+
+#PBS -l select=1:ncpus=1:mem=8gb:scratch_local=4gb
+#PBS -l walltime=3:00:00
+
+# sets home directory
+DATADIR="/storage/brno6/home/xlapar"
+
+cd $DATADIR/git/rsa-ml/
+
+module add tensorflow-1.5.0-cpu-python3
+module add python34-modules-gcc
+
+# install click
+export PYTHONUSERBASE=$DATADIR/.local
+export PATH=$PYTHONUSERBASE/bin:$PATH
+export PYTHONPATH=$PYTHONUSERBASE/lib/python3.4/site-packages:$PYTHONPATH
+pip install click --user --process-dependency-links
+
+# export for click
+export LC_ALL=C.UTF-8
+export LANG=C.UTF-8
+
+python3 $DATADIR/git/rsa-ml/cli.py train \
+--dataset --incremental \
+--datapath $DATADIR/data/datasets/dataset_1 \
+--settings $DATADIR/settings/generate/groups_13/1024.yaml \
+--model $MODEL
+
+\end{minted}
+
+
+
+
+
+
 
 
 

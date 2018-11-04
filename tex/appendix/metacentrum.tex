@@ -5,7 +5,53 @@ To run the application on Metacenturm we run the shell script, that:
 
 \begin{itemize}
 
+\item specified desired resources (number of processors, memory, scratch memory and maximum runtime)o run the application on Metacenturm we run the shell script, that:
+
+\begin{itemize}
+
 \item specified desired resources (number of processors, memory, scratch memory and maximum runtime)
+
+\item loaded the necessary dependencies
+
+\item installed third party modules locally (in our case \texttt{click})
+
+\item ran the application
+
+\end{itemize}
+
+\begin{minted}[ framesep=2mm,
+                autogobble,
+                frame=lines]{shell}
+
+#PBS -l select=1:ncpus=1:mem=8gb:scratch_local=4gb
+#PBS -l walltime=3:00:00
+
+# sets home directory
+DATADIR="/storage/brno6/home/xlapar/"
+
+cd /storage/brno6/home/xlapar/git/rsa-ml/
+
+module add tensorflow-1.5.0-cpu-python3
+module add python34-modules-gcc
+
+# install click
+export PYTHONUSERBASE=/storage/brno6/home/xlapar/.local
+export PATH=$PYTHONUSERBASE/bin:$PATH
+export PYTHONPATH=$PYTHONUSERBASE/lib/python3.4/site-packages:$PYTHONPATH
+pip install click --user --process-dependency-links
+
+# export for click
+export LC_ALL=C.UTF-8
+export LANG=C.UTF-8
+
+python3 /storage/brno6/home/xlapar/git/rsa-ml/cli.py train \
+--dataset --incremental \
+--datapath /storage/brno6/home/xlapar/data/datasets/dataset_1 \
+--settings /storage/brno6/home/xlapar/settings/generate/groups_13/1024.yaml \
+--model $MODEL
+
+\end{minted}
+
 
 \item loaded the necessary dependencies
 

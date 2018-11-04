@@ -26,6 +26,7 @@ $e(d(m)) = m$
 
 \end{itemize}
 
+\noindent
 The encryption function $e$ has to meet two necessary requirements:
 
 \begin{itemize}
@@ -120,17 +121,4 @@ While implementing RSA, many individual sources implement finding candidate prim
 
 These decisions in the process of generation leave significant bias in some sources. When connecting given public-key to its source, one can look at these properties and with high probability differentiate between sources and correctly classify public-key.
 
-We looked at some basic properties for our dataset and found bias in several sources. Full list can be seen in appendix \ref{appendix-analysis}. These features are used for machine learning classifiers.
-
-\subsection*{sources}
-
-
-\textbf{NOTES:}
-\begin{itemize}
-\item convention Alice and Bob
-\item RSA no proof on security of factorization
-\item one-way function
-\item one-way permutation
-\item factorization/discrete log
-\item \url{https://en.wikipedia.org/wiki/Public-key_cryptography}
-\end{itemize}
+We looked at some basic properties for our dataset and found bias in several sources. Full list can be seen in appendix \ref{appendix-analysis}. These features are used for machine learning classifiers. More details about the dataset can be seen in section \ref{dataset}.
