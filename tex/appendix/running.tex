@@ -20,7 +20,7 @@ To run help about task:
                 autogobble,
                 frame=lines]{shell}
 
-python3 cli.py --help-task
+python3 cli.py analyze --help-task
 
 \end{minted}
 
@@ -99,11 +99,178 @@ Feature counter shows the counts for features per each group (\texttt{group.feat
 
 
 \section*{GENERATE}
+
+To run help about task:
+
+\begin{minted}[ framesep=2mm,
+                autogobble,
+                frame=lines]{shell}
+
+python3 cli.py generate --help-task
+
+\end{minted}
+
+\noindent
+The example below was used to generate a uniform dataset for 13 groups from our  modified dataset. YAML configuration:
+
+\begin{minted}[ framesep=2mm,
+                autogobble,
+                frame=lines]{yaml}
+
+common:
+  batch_size: 1000000
+  keys_per_feature: 1
+  valid_ratio: 0.2
+  test_ratio: 0.2
+  number_of_groups: 64 # the original dataset has 64 sources
+...  
+generate:
+  keys_per_group: 200000
+  skipped_groups: []
+  skipped_files: []
+  train_keys_multiplicity: # replicate training data in small sources
+    1: 2
+    2: 2
+    5: 4
+    17: 2
+    18: 3
+    21: 5
+  merge_groups: # merge sources in the same group
+  - [2,3]
+  - [6,7,8,9]
+  - [11,12,13,14]
+  - [19,20,21]
+  - [22,23,24,25,26,27,28,29]
+  - [30,31,32,33,34,35,36,37,38,39,40]
+  - [41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64]
+\end{minted}
+
+\noindent
+To generate the new dataset we used the JSON file for 1024 bit sources with command:
+
+\begin{minted}[ framesep=2mm,
+                autogobble,
+                frame=lines]{shell}
+
+cli.py generate --sources-path sources/grouped_1024.json --dataset \
+--datapath <PATH_TO_NEW_DATASET> --shuffle --relabel 
+
+\end{minted}
+
 \section*{TRAIN}
+
+To run help about task:
+
+\begin{minted}[ framesep=2mm,
+                autogobble,
+                frame=lines]{shell}
+
+python3 cli.py train --help-task
+
+\end{minted}
+
+\noindent
+The following example shows configuration from our train runs. YAML:
+
+\begin{minted}[ framesep=2mm,
+                autogobble,
+                frame=lines]{yaml}
+
+common:
+  batch_size: 2048
+  keys_per_feature: 1
+  valid_ratio: 0.2
+  test_ratio: 0.2
+  number_of_groups: 13 # newly generated 13 sources
+...  
+train:
+  epochs: 4
+fm:
+  key_length: 1024
+  binary_only: 1
+  features:
+  - 'line'
+  - 'mod3'
+  - 'mod4'
+  - ['mod', {'n': 5}]
+  - ...
+\end{minted}
+
+\noindent
+Command:
+
+\begin{minted}[ framesep=2mm,
+                autogobble,
+                frame=lines]{shell}
+
+python3 cli.py train --dataset --incremental \
+--datapath <PATH_TO_NEW_DATASET> \
+--model Keras28
+
+\end{minted}
+
+\noindent
+Model topology configuration:
+
+\begin{minted}[ framesep=2mm,
+                autogobble,
+                frame=lines]{json}
+
+"Keras28": {"base": "KerasDeepClassifier",
+             "name": "Keras ReLU Deep NN",
+             "topology": {"hidden_layers": [{"activation": "relu",
+                                             "number_of_neurons": 128},
+                                            {"activation": "relu",
+                                             "number_of_neurons": 1024}],
+                          "loss": "categorical_crossentropy",
+                          "metrics": ["acc"],
+                          "optimizer": "Adadelta",
+                          "output_layer": {"activation": "softmax"}}},
+
+\end{minted}
+
+The results are saved in \texttt{results} directory with incrementing \texttt{run\_id}. Each run stores \texttt{classifier}, \texttt{config.txt} (configuration from YAML), \texttt{run\_info.txt} (information about dataset, features, model and time of run) and \texttt{results.txt} (evaluation - confusion matrix and accuracy table).
+
 \section*{CLASSIFY}
+
+To run help about task:
+
+\begin{minted}[ framesep=2mm,
+                autogobble,
+                frame=lines]{shell}
+
+python3 cli.py classify --help-task
+
+\end{minted}
+
+\noindent
+The YAML configuration is similar to train task (fileds \textit{common} and \texttt{fm}). To run the classifier on custom dataset and evaluate its performance:
+
+\begin{minted}[ framesep=2mm,
+                autogobble,
+                frame=lines]{shell}
+
+python3 cli.py classify --classifier <PATH_TO_CLASSIFIER> \
+--source-csv <PATH_TO_CSV> --compare-labels
+
+\end{minted}
+
+\noindent
+To run the classifier on custom dataset and assign new labels, one does need to provide the path to the newly labeled dataset:
+
+\begin{minted}[ framesep=2mm,
+                autogobble,
+                frame=lines]{shell}
+
+python3 cli.py classify --classifier <PATH_TO_CLASSIFIER> \
+--source-csv <PATH_TO_CSV> --assign-labels \
+--target-csv <PATH_TO_LABELED_CSV>
+
+\end{minted}
+
 \section*{Running in docker environment}
 
-When not on a Debian machine, one can run the application in the docker environment. The user has to bind the used volumes for dataset, results and generated data. User then build the container and runs it iterativelly by the following commands:
+When not on a Debian machine, one can run the application in the docker environment. The user has to bind the used volumes for dataset, results and generated data. User then build the container and runs it interactivelly by the following commands:
 
 \begin{minted}[ framesep=2mm,
                 autogobble,
