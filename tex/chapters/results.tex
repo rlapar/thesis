@@ -70,8 +70,31 @@ The model had one hidden layer of 256 ReLU neurons, the output layer with softma
 \caption{Comparison of results of CROCS lab and our model.}
 \label{comparison-results}
 
-
 \end{sidewaysfigure}
+
+\noindent
+When comparing the Naive Bayes model and the optimized neural network we can see, that:
+
+\begin{itemize}
+
+\item neural network model was able to adapt to the more complex dataset, when compared the scikit models. That is why the best-evaluated scikit model lags behind simple keras classifiers in accuracy.
+
+\item our classifier was able to increase the overall accuracy by almost 3 \% when compared to the methods used by CROCS lab and almost 10 \% when compared to the best results achieved in \cite{thesis_sekan}.
+
+\item a neural network is substantially better in classifying Group 9 (Yubikey 1 \& Infineon JTOP 80K). Given the recent problems with Infineon keys \cite{svenda_2}, discovering their keys with high probability could have been used for potential attack.
+
+\item it performs slightly better on groups 8, 10, 11, 12, 13. 
+
+\item when using a batch of 10+ keys, it can better differentiate groups 11, 12, beating Naive Bayes by 15 - 19 \% (group 11 contains very popular libraries like Crpyto++ and Microsoft crypto libraries).
+
+\item when using a batch of 5+ keys, it can better differentiate group 13 beating Naive Bayes by 17.64 \% with accuracy 73.2 \%. The group 13 contains the highest number of sources, so the bigger success rate applies to a bigger set of sources.
+
+\item the network has really struggled with the group 4 \textbf{TODO}
+
+\end{itemize}
+
+
+
 
 
 \textbf{TODO}
@@ -79,6 +102,38 @@ The model had one hidden layer of 256 ReLU neurons, the output layer with softma
 
 \item binary classifiers
 \item 64 groups
+\item tried to split groups (but uniform)
 
 \end{itemize}
 
+\begin{tabular}{|r|c|c|}
+\hline
+& G$_{8}$ & $\neg$G$_{8}$ \\
+G$_{8}$ & 256242 & 0 \\
+$\neg$G$_{8}$ & 17632 & 1199866 \\
+\hline
+\end{tabular}
+
+Accuracy = 98.80 \%
+
+Precision = 100 \%
+
+Recall = 93.56 \%
+
+F1 = 96.67 \%
+
+\begin{tabular}{|r|c|c|}
+\hline
+& G$_{9}$ & $\neg$G$_{9}$ \\
+G$_{9}$ & 22991 & 6687 \\
+$\neg$G$_{9}$ & 0 & 1993217 \\
+\hline
+\end{tabular}
+
+Accuracy = 99.67 \%
+
+Precision = 77.47 \%
+
+Recall = 1.14 \%
+
+F1 = 22.47 \%
