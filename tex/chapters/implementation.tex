@@ -73,9 +73,9 @@ As our tool provides only command line interface, we chose the Click package\cit
 
 \section{Tasks}
 
-During the implementation process, several distinct tasks were implemented in order to work with the original dataset, prepare the data for models to train and then classify. Figure \ref{figure-model} shows the flow of the application and its data. We obtained a dataset in the form of around 2000 CSV files. First of all, we wanted to automate extracting the keys from distinct files and set up class labels to it. 
+During the implementation process, several distinct tasks were implemented in order to work with the original dataset, prepare the data for models to train and then classify. Figure \ref{figure-model} shows the flow of the application and its data. We named these tasks \textbf{SCAN, ANALYZE, GENERATE, TRAIN} and \textbf{CLASSIFY}.
 
-Therefore, \textbf{SCAN} task was implemented. We used it mainly to transform given dataset into more compact one, which could be used more efficiently for analysis and generating new ones.
+We obtained a dataset in the form of around 2000 CSV files. First of all, we wanted to automate extracting the keys from distinct files and set up class labels to it. Therefore, \textbf{SCAN} task was implemented. We used it mainly to transform given dataset, which was difficult to extract keys from into more compact one. The transformed dataset could be used more efficiently for analysis and generating new ones.
 
 The newly generated compact dataset was then subjected to full analysis of features. For this purpose \textbf{ANALYZE} task was implemented. We used it to generate the relative frequency of features, that we presented in the chapter \label{chapter-analysis}.
 
@@ -329,164 +329,10 @@ The models are trained in epochs, and after the training ends, they are evaluate
 
 The last (and for the end user, the most important one) is the \textit{CLASSIFY} task. The user compares trained models to target CSV file and can either evaluate the model based on the labels given in the CSV file (similarly as in \textit{TRAIN} task) or can generate new labels for his dataset (useful for tagging unknown data).
 
-\section{CLI}
+\section{Command line interface}
 \label{cli}
 
-This subsection serves as simple documentation to the command line interface. The user can configure the application with the arguments or YAML configuration file (by default \textit{settings.yml}). Command line arguments have priority over YAML settings. For every task, we will describe the possible options. CLI was designed using click library. The examples of CLI usage can be found in appendix \ref{appendix-running}.
-
-\subsection*{General settings}
-
-The application is run via command \texttt{python3 cli.py [OPTIONS] TASK}\footnote{\textit{TASK} can be one of \textit{analyze, classify, generate, scan, train}}. The general options include:
-
-\begin{itemize}
-
-\item \texttt{--help} - Show help message an exit.
-\item \texttt{--help-task TASK} - Show help message for specific task
-\item \texttt{--settings PATH} - Path to custom yaml settings (if not specified, the default one is used)
-
-\end{itemize}
-
-\subsection*{SCAN}
-
-\noindent
-Requires three arguments:
-
-\begin{itemize}
-
-\item \texttt{--scandir PATH} - directory to scan.
-\item \texttt{--filter PATH} - path to filter JSON to apply.
-\item \texttt{--output-json PATH} - path to the newly created sources JSON file.
-
-\end{itemize}
-
-\subsection*{ANALYZE}
-
-\noindent
-Arguments:
-
-\begin{itemize}
-
-\item \texttt{--analyzed-csv PATH} - CSV file to analyze (required).
-\item \texttt{--analysis-output PATH} - file to save analysis to. If not specified, then print to stdout.
-\item \texttt{--json-format} - boolean flag, if true, then analysis is printed as JSON (used for further automatization).
-
-\end{itemize}
-
-\noindent
-All arguments can be setup alternatively in YAML file. Further configuration in YAML include:
-
-\begin{itemize}
-
-\item \texttt{common.batch\_size} - chunk of data read in every iteration.
-\item \texttt{common.keys\_per\_feature} - applies to FeatureMaker, should be set to 1 (usually, we analyze CSV files with each line representing only one key).
-\item \texttt{fm.key\_length} - 512, 1024 or 2048
-\item \texttt{fm.binary\_only} - whether or not the features should be represented by binary vectors only (for analysis should be setup to 0)
-\item \texttt{fm.features} - features to analyze
-
-\end{itemize}
-
-\noindent
-Supported features include\footnote{Features are described in subsection \label{feature-maker}}:
-
-\begin{itemize}
-
-\item \texttt{['bit', \{'i': x\}]} (where \texttt{x} is bit index)
-\item \texttt{['mod', \{'n': x\}]} (where \texttt{x} is divisor)
-\item \texttt{'line'} (shortcut for taking every bit) 
-\item \texttt{'mod3'} (shortcut for \texttt{['mod', \{ 'n': 3 \}]})
-\item \texttt{'mod4'} (shortcut for mod 4)
-\item \texttt{['xor', \{'indices': (x, y)\}]} (where \texttt{(x, y)} are bit pairs)
-
-\end{itemize}
-
-\subsection*{GENERATE}
-
-\noindent
-Arguments:
-
-\begin{itemize}
-
-\item \texttt{--datapath PATH} - path to the generated dataset.
-\item \texttt{--single/--dataset} - boolean flag to generate either single CSV or CSV triplet (by default triplet is generated).
-\item \texttt{--shuffle/--no-shuffle} - boolean flag, if set, then the target dataset is shuffled (by default is true).
-\item \texttt{--sources-path PATH} - sources JSON file generated by SCAN task.
-\item \texttt{--relabel} - boolean flag, if set, then relabels the target sources to have consecutive integer numbers (starting with 1).  Can be useful when any groups are skipped, or some group is missing.
-
-\end{itemize}
-
-\noindent
-YAML:
-
-\begin{itemize}
-
-\item \texttt{common.batch\_size} - same as with \textit{ANALYZE}.
-\item \texttt{common.keys\_per\_feature} -  specifies how many keys should be put into one line of target CSV.
-\item \texttt{common.valid\_ratio} - the percentage of validation data (a number between 0 and 1). Applicable only to \texttt{--dataset} option.
-\item \texttt{common.test\_ratio} - the percentage of test data (a number between 0 and 1). Applicable only to \texttt{--dataset} option.
-\item \texttt{common.number\_of\_groups} - number of groups of the source dataset.
-\item \texttt{generate.keys\_per\_group} - how many keys are taken per each group (the generator automatically scales this number within its sources).
-\item \texttt{generate.skipped\_groups} - which groups should not be included in the final dataset (i. e. \texttt{skipped\_groups: ["3", "8"]}).
-\item \texttt{generate.skipped\_files} - which sources should not be included in the final dataset.
-\item \texttt{generate.train\_keys\_multiplicity} - dictionary, where the key specifies the group and the value specifies the multiplicity ratio for train keys. Applicable only to \texttt{--dataset} option.
-\item \texttt{generate.merge\_groups} - lists of merged groups (i.e. \texttt{[6,7,8,9]}  merges groups 6, 7, 8, 9 together).
-
-\end{itemize}
-
-\subsection*{TRAIN}
-
-\noindent
-Arguments:
-
-\begin{itemize}
-
-\item \texttt{--datapath PATH} - same as with \textit{GENERATE}.
-\item \texttt{--single/--dataset} - same as with \textit{GENERATE}.
-\item \texttt{--incremental/--no-incremental} - boolean flag, with the incremental approach, python generators are used to fetch the data to the model, else the whole data is loaded into the memory (by default incremental).
-\item \texttt{--results-to-file/--results-to-stdout} - print the train information to the result directory or stdout (by default directory is chosen).
-\item \texttt{--model} - name of the used classifier (correspond to the key in models.json). Can be specified in YAML as well.
-
-\end{itemize}
-
-Models are loaded from the models.json file. Key represents the name of the model passed to CLI. The base class is provided to load model dynamically. Further information is provided, which are necessary for a model interface for the specific library (for keras we specified name and topology). Example from this JSON file was shown in the description of the \textit{TRAIN} task in the subsection \ref{models-json}.
-
-Further configuration is set via YAML file:
-
-\begin{itemize}
-
-\item \texttt{common.batch\_size} - same as with \textit{ANALYZE}.
-\item \texttt{common.keys\_per\_feature} - same as with \textit{GENERATE}. Specifies how many keys are present in one line of the CSV.
-\item \texttt{common.valid\_ratio} - the percentage of validation data (a number between 0 and 1). Applicable only to \texttt{--single} option.
-\item \texttt{common.test\_ratio} - the percentage of test data (a number between 0 and 1). Applicable only to \texttt{--single} option.
-\item \texttt{common.number\_of\_groups} - same as with \textit{GENERATE}.
-\item \texttt{train.epochs} - number of train epochs (applies to keras models).
-\item \texttt{train.model} - name of the used model (CLI argument is prioritized).
-\item \texttt{fm.*} - for all the settings for feature maker  apply the same description as with ANALYZE, but \texttt{fm.binary\_only} should be in this case 1 instead of 0 (binary vectors for modulo features are better for classifiers).
-
-\end{itemize}
-
-\subsection*{CLASSIFY}
-
-\noindent
-Arguments:
-
-\begin{itemize}
-
-\item \texttt{--classifier PATH} - path to the model trained by \textit{TRAIN} task
-\item \texttt{--source-csv PATH} - source CSV to classify
-\item \texttt{--compare-labels/--assign-labels} - boolean flag. If labels are compared, then the modeIf assign labels option is chosen, then the model adds labels to the entries in CSV and store them into the new CSV file.l is evaluated to the given dataset (the same process as with evaluation in \textit{TRAIN} task). If assign labels option is chosen, then the model adds labels to the entries in CSV and store them into the new CSV file.
-\item \texttt{--target-csv PATH} - applicable when \texttt{--assign-labels} is set. Path to the target labeled CSV file.
-
-\end{itemize}
-
-\noindent
-YAML:
-
-\begin{itemize}
-
-\item \texttt{common.*} - the same as with \textit{TRAIN} (for \textit{CLASSIFY} only options \texttt{common.batch\_size}, \texttt{common.keys\_per\_feature} and \texttt{common.number\_of\_groups} are relevant).
-
-\end{itemize}
-
+We designed a simple CLI application using click library. The user can configure the application with the arguments or YAML configuration file (by default \textit{settings.yml}). Command line arguments have priority over YAML settings. For every task, the user can print help with description of the task, example of usage, arguments and yaml settings. The complete documentation with examples can be found in appendix \ref{appendix-running}.
 
 \section{Multi platform development}
 
@@ -510,7 +356,7 @@ COPY . .
 \end{minted}
 
 \noindent
-Example of usage can be found in appendix \ref{appendix-running}.
+Example of usage can be found in appendix \ref{appendix-docker}.
 
 \section{Metacentrum}
 
