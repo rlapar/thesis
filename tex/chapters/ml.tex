@@ -422,9 +422,7 @@ In Figure \ref{conf_matrix}, we can see the classification matrix for four class
 
 \subsection{Metrics}
 
-There are four standard metrics for model evaluation: \textbf{accuracy}, \textbf{precision}, \textbf{recall} and \textbf{f1}. Let us take simple binary confusion matrix:
-
-\vspace{3mm}
+There are four standard metrics \cite{nn-metrics} for model evaluation: \textbf{accuracy}, \textbf{precision}, \textbf{recall} and \textbf{f1}. Apart from the standard metrics accuracy, the other metrics represent the cost of having false positives and false negatives. Let us take simple binary confusion matrix:
 
 \begin{table}[h]
 \centering
@@ -434,12 +432,18 @@ There are four standard metrics for model evaluation: \textbf{accuracy}, \textbf
 & $A$ & $\neg A$ \\
 \hline 
 $A$ & TP & FP \\
-$\neg A$ & FN & TN\footnote{true positive / false positive / false negative / true negative} \\
+$\neg A$ & FN & TN\footnotemark\\
+
 \hline
 
 \end{tabular}
 
 \end{table}
+
+\footnotetext{true positive / false positive / false negative / true negative}
+
+\noindent
+We define the four metrics as followed:
 
 \begin{align*}
 \textit{accuracy } & = \frac{TP + TN}{TP + FP + FN + TN} & \\
@@ -447,6 +451,19 @@ $\neg A$ & FN & TN\footnote{true positive / false positive / false negative / tr
 \textit{recall } & = \frac{TP}{TP + FN} & \\
 \textit{F1 } & = \frac{2 \times \textit{ precision } \times \textit{ recall}}{\textit{precision } + \textit{ recall}} &
 \end{align*}
+
+\begin{itemize}
+
+\item \textbf{accuraccy} - is the standard metric for classifiers, we take the ratio of correctly classified data to the whole dataset. The problem with accuracy is, that it suffers from unbalanced datasets, where the bigger groups can artificially increase accuracy.
+
+\item \textbf{precision} - talks about how precise the model is out of positive predictions and how many are actual positives. It is useful to use when the cost of false positive is high.
+
+\item \textbf{recall} - works the other way around, where we calculate how many of positives are really true positives and not just false negatives. It is useful to use when the cost of false negative is high.
+
+\item \textbf{f1 score} - is a balance between precision and recall and serves as an alternative to the accuracy
+
+\end{itemize}
+
 
 
 
