@@ -168,9 +168,22 @@ Based on the previous general model results we can see, that some groups can be 
 \end{figure}
 
 \noindent
-\textbf{TODO describe metrics for groups}
+These results are comparable to the observations from the previous trial:
 
-\textbf{TODO classifiers put together}
+\begin{itemize}
+
+\item the network completely fails to detect group 4 (even worse than random guessing)
+\item it is more or less equal to random guessing with group 11
+\item groups 1, 2, 5, 6, 7, 10 and 13 have relatively low precision leading to the higher number of false positives
+\item the results for the biggest groups 7, 12 and 13 are more promising. It shows, that we can differentiate them better with accuracy and precision above 65 to 70 \%
+\item group 2 can be well distinguished
+\item groups 8 and 9 are detected reliably
+
+\end{itemize}
+
+\noindent
+Given the fact that every classifier can be trained individually, we obtained the best results when putting them all together in the voting process. The same input was fed to 13 different binary classifiers, that outputted the probability, that the key belongs to the respective group. The classifier with the highest probability was voted as a winner.
+\textbf{TODO numbers}
 
 \subsection*{Group spliting}
 
