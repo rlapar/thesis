@@ -177,21 +177,57 @@ These results are comparable to the observations from the previous trial:
 \item groups 1, 2, 5, 6, 7, 10 and 13 have relatively low precision leading to the higher number of false positives
 \item the results for the biggest groups 7, 12 and 13 are more promising. It shows, that we can differentiate them better with accuracy and precision above 65 to 70 \%
 \item group 2 can be well distinguished
-\item groups 8 and 9 are detected reliably
+\item group 8 is detected reliably (the reason is the first MSB being 0)
+\item group 9 is detected reliably (the reasons are the moduli 11, 13, 17 and 19). However, the binary classifier overfitted to the small dataset introducing some ratio of false positives.
 
 \end{itemize}
 
-\noindent
 Given the fact that every classifier can be trained individually, we obtained the best results when putting them all together in the voting process. The same input was fed to 13 different binary classifiers, that outputted the probability, that the key belongs to the respective group. The classifier with the highest probability was voted as a winner.
-\textbf{TODO numbers}
+
+We ran the voting classifier on the uniformly distributed dataset of 13 groups of bit length 1024. Table \ref{table-binary-voter} shows the obtained results. The notable observations of this run are:
+
+\begin{itemize}
+
+\item the overall accuracy is 4.94 \% higher than naive Bayes
+\item the classifier gets more successful in identifying the large group 13, with the accuracy of 22.95 \% on the first guess and 73.21 \% when considering first top 3 results. This is almost 18 \% better than the result of naive Bayes and 12 \% better than our previous model.
+\item it can detect group 8 with more accuracy (3.5 \% higher)
+\item it overfitted group 9 (because of its size). Nevertheless, we identified, that this is the only group, that has bias modulo 11, 13, 17 and 19. We suppose that this classifier would perform well even on a bigger sample of this group\footnote{Group 9 contains Infineon chips, which were liable to attack as reported in \cite{svenda_2}. The correct classification of such group could be useful for the potential attacker.}. 
+
+\end{itemize}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{| r | c | c | c | r | }
+\hline
+  Group & Top 1 match & Top 2 match & Top 3 match & \# of keys \\
+  \hline
+ 1 & 58.30 \% & 89.20 \% & 97.06 \% & 93482 \\
+ 2 & 85.57 \% & 98.02 \% & 99.62 \% & 136727 \\
+ 3 & 15.28 \% & 32.07 \% & 52.50 \% & 200000 \\
+ 4 & 47.96 \% & 59.15 \% & 64.03 \% & 50000 \\
+ 5 & 39.82 \% & 69.73 \% & 85.47 \% & 200000 \\
+ 6 & 49.81 \% & 74.32 \% & 86.73 \% & 150000 \\
+ 7 & 55.21 \% & 76.15 \% & 90.36 \% & 200000 \\
+ 8 & 93.54 \% & 94.81 \% & 95.74 \% & 200000 \\
+ 9 & 100 \% & 100 \% & 100 \% & 114955 \\
+ 10 & 33.22 \% & 57.60 \% & 79.44 \% & 129347 \\
+ 11 & 0.34 \% & 23.59 \% & 47.16 \% & 189110 \\
+ 12 & 25.04 \% & 28.95 \% & 42.07 \% & 199990 \\
+ 13 & 22.95 \% & 53.84 \% & 73.21 \% & 191658 \\
+ \hline
+TOTAL & 45.28 \% & 63.21 \% & 76.32 \% & 2055269 \\
+\hline
+
+\end{tabular}
+\caption{Accuracy table for a voting classifier of binary classifiers.}
+\label{table-binary-voter}
+\end{table}
+
+The voting classifier performs better in almost every aspect than the previous one apart from groups 6, 10 and 11, for which the user could use rather the first one. If we also included the CROCS's naive bayes classifier for classifying group 2 (in which it is superior to both of our classifiers), we would get even more accurate predictions.
 
 \subsection*{Group spliting}
 
 As the last step, we tried even more precise classification between sources. We aimed to split at least one of the 13 groups. In the first approach, we ran the models on the huge dataset with 64 individual sources. In the second one, we took sources only from a single group and tried to classify them within it. We repeated it for each group.
 
 However, when running several proven models on each group, the results showed as expected the uniform distribution in classification within the group, as the sources in one group shared the same distribution on the features. The network is not able to differentiate between them and is performing with the same results as random guessing. We suppose that the sources within each group share the same implementation steps that affect the distribution on bits in the public key and the distribution on the remainders modulo up to 30.
-
-\begin{figure}[h]
-
-\end{figure}
 
