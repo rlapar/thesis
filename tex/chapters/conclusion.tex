@@ -1,1 +1,17 @@
 \chapter{Conclusion}
+
+In this thesis, we studied the use of neural networks in the classification process of public keys in RSA implementations. The work served as an extension of already ongoing research of CROCS lab in this field. 
+
+We performed detailed distributed analysis of given dataset and found out different distributions on the six most significant bits which we presented in figure \ref{figure-table-bit-analysis}. Furthermore, our modular analysis (figure \ref{figure-mod-analysis}) supported the results presented by CROCS team.
+
+A big part of this thesis was the design of an application, capable of working with the given dataset. As there is an assumption, that this application will be further used in CROCS research to try out new classification techniques, we focused on extensibility and efficiency. We implemented an interface, that simplifies the training process as it isolates the data fetching to the model as a different logic. The models are accessible via the common interface, which makes the new model integrations easier.
+
+Using our framework, we methodologically compared the traditional methods and neural networks when classifying public keys. Our results showed the limitations in using traditional classifiers, especially with bigger datasets.
+
+The first neural network we trained and optimized using a grid search. The task was too complex for the local machine. Thus it had to be trained on CESNET cloud. Our observations showed that the usage of activation or optimizer has a little impact on the overall performance of the model. On the other hand, the uniform training dataset and topology were much more important. This optimized classifier performed better than Naive Bayes, especially on the large classes, where we had sufficient amount of data.
+
+For the second model, we tried a different approach. Training individual binary classifiers and merging them in the voting process turned out to be the best choice.
+
+\textbf{TODO finish up the second model}
+\textbf{TODO binary classifier further optimization}
+\textbf{TODO 64 groups fail}

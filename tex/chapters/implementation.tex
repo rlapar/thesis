@@ -76,9 +76,9 @@ As our tool provides only command line interface, we chose the Click package\cit
 
 During the implementation process, several distinct tasks were implemented in order to work with the original dataset, prepare the data for models to train and then classify. Figure \ref{figure-model} shows the flow of the application and its data. We named these tasks \textbf{SCAN, ANALYZE, GENERATE, TRAIN} and \textbf{CLASSIFY}.
 
-We obtained a dataset in the form of around 2000 CSV files. First of all, we wanted to automate extracting the keys from distinct files and set up class labels to it. Therefore, \textbf{SCAN} task was implemented. We used it mainly to transform given dataset, which was difficult to extract keys from into more compact one. The transformed dataset could be used more efficiently for analysis and generating new ones.
+We obtained a dataset in the form of around 2000 CSV files. First of all, we wanted to automate extracting the keys from distinct files and set up class labels to it. Therefore, \textbf{SCAN} task was implemented. We used it mainly to transform given dataset, which was badly structured without naming convention and difficult to extract keys from into more compact one. The transformed dataset could be used more efficiently for analysis and generating new datasets.
 
-The newly generated compact dataset was then subjected to full analysis of features. For this purpose \textbf{ANALYZE} task was implemented. We used it to generate the relative frequency of features, that we presented in the chapter \label{chapter-analysis}.
+The newly generated compact dataset was then subjected to full analysis of features. For this purpose \textbf{ANALYZE} task was implemented. We used it to count the relative frequency of features, that we presented in the chapter \label{chapter-analysis}.
 
 Another task \textbf{GENERATE} was used to prepare custom generated datasets for machine learning models. Its main purpose was to be able to generate datasets with different class labels, replicate keys in training dataset, skip group, skip files, merge several groups into one and others. We used this task throughout the whole training process to create datasets for models and tune them if the model was struggling in training.
 
@@ -240,7 +240,7 @@ The advantage of such an approach is that using the same original dataset, the u
 \end{enumerate}
 
 \noindent
-All user's settings are specified in section \ref{cli}.
+All user's settings are specified in appendix \ref{appendix-generate}.
 
 \subsection{TRAIN task}
 
@@ -272,11 +272,11 @@ As we were using two types of classifiers (from \textit{sklearn} and \textit{ker
 \end{itemize}
 
 \noindent
-The feature extraction from individual keys was done by \texttt{FeatureMaker} class with features specified by the user. More details were mentioned in the subsection \ref{feature-maker}
+The feature extraction from individual keys was done by \texttt{FeatureMaker} class with features specified by the user. More details were mentioned in the subsection \ref{feature-maker}.
 
 \subsection*{Models}
 
-When designing the models, the main focus was put on extensibility. We implemented a common \texttt{Model} as a plain abstract class using the python \textit{abc} module\footnote{\url{https://docs.python.org/3/library/abc.html}}. This allowed us to implement many models while keeping the same interface. Furthermore, as it is expected, that this application will be used later in the research, it is simple to add any another model just by implementing this interface and its methods:
+When designing the models, the main focus was put on extensibility. We implemented a common \texttt{Model} as a plain abstract class using the python \textit{abc}\footnote{\url{https://docs.python.org/3/library/abc.html}} module. This allowed us to implement many models while keeping the same interface. Furthermore, as it is expected, that this application will be used later in the research, it is simple to add any another model just by implementing this interface and its methods:
 
 \begin{itemize}
 
