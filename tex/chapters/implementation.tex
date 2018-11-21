@@ -57,13 +57,13 @@ Generator functions allow you to declare a function that behaves like an iterato
                 autogobble,
                 frame=lines]{python}
 def get_data():
-	n = 1
-	while True:
-		yield n
-		n += 1
+    n = 1
+    while True:
+        yield n
+        n += 1
 		
 for n in generate_numbers():
-	...
+    ...
 \end{minted}
 
 This simple example shows how to generate natural numbers. Instead of natural numbers we simply take a chunk of lines from the source CSV file resulting in saving the memory consumption. Therefore we can run huge datasets also in local machine as well as take smaller resources on Metacentrum, thus increasing our chance of running our job in the 
