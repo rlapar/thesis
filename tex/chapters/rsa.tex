@@ -32,7 +32,7 @@ The encryption function $e$ has to meet two necessary requirements:
 
 \begin{itemize}
 
-\item \textit{trap-door one-way function} - function is easy to compute in one direction, but it is very difficult to compute the inverse of it. Typical examples are prime multiplication vs. prime factorization or power modulo vs. discrete logarithm. Most of the public-key cryptographic protocols are based around these one-way functions.\footnote{\url{https://en.wikipedia.org/wiki/Trapdoor_function}}
+\item \textit{trap-door one-way function} - function is easy to compute in one direction, but it is very difficult to compute the inverse of it. Typical examples are prime multiplication vs. prime factorization or power modulo vs. discrete logarithm. Most of the public-key cryptographic protocols are based around these one-way functions.
 
 \item \textit{trap-door one-way permutation} - function is above all also bijective, which means, that $e$ is deterministic 
 
@@ -122,4 +122,4 @@ While implementing RSA, many individual sources implement finding candidate prim
 
 These decisions in the process of generation leave significant bias in some sources. When connecting given public-key to its source, one can look at these properties and with high probability differentiate between sources and correctly classify public-key.
 
-We looked at some basic properties for our dataset and found bias in several sources. The full list can be seen in Appendix \ref{appendix-analysis}. These features are used for machine learning classifiers. More details about the dataset can be seen in chapter \ref{chapter-dataset}.
+We looked at some basic properties for our dataset and found bias in several sources. The ull list can be seen in Appendix \ref{appendix-analysis}. These features are used for machine learning classifiers. More details about the dataset can be seen in chapter \ref{chapter-dataset}.
