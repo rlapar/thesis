@@ -150,7 +150,7 @@ As a result, we obtain a JSON file, which contains groups of sources with given 
 
 \subsection{ANALYZE task}
 
-The problem with working with huge CSV files is memory consumption, as we usually are not able to load all keys into RAM at once. Fortunately, pandas\cite{pandas} library offers reading and processing such files in chunks of lines. 
+The problem with working with huge CSV files is memory consumption, as we usually are not able to load all keys into RAM at once. Fortunately, pandas library offers reading and processing such files in chunks of lines. 
 
 When analyzing a huge file, we iterate it in chunks, extracting values for features from every key and then just incrementing the corresponding counter. In the end, we print the analysis to the user.
 
