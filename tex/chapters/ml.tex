@@ -3,7 +3,7 @@
 
 \section{Artificial neuron}
 
-Artificial neurons, also called perceptrons were developed in the late 1950s and early 1960s, firstly introduced by Rosenblatt in his paper \cite{perceptron}. His idea was to develop a model capable of simulating the activities present in the human brain cell, in order to create artificial intelligence. As it turned out, simulating the brain using such a simple model as the perceptron is impossible. However, later research discovered a considerable potential in the field of classification and regression, which lead to design of modern artificial neural networks as we know them today.
+Artificial neurons, also called perceptrons were developed in the late 1950s and early 1960s, firstly introduced by Rosenblatt in his paper \cite{perceptron}. His idea was to develop a model capable of simulating the activities present in the human brain cell, in order to create artificial intelligence. As it turned out, simulating the brain using such a simple model as the perceptron is impossible. However, later research discovered a considerable potential in the field of classification and regression, which lead to the design of modern artificial neural networks as we know them today.
 
 Perceptron\cite{nn_book} is a simple probabilistic model, which takes several weighted real inputs and produces one real output.
 
@@ -49,9 +49,9 @@ Some desirable properties\cite{wiki:activation} of an activation function includ
 \begin{itemize}
 
 \item \textit{non-linearity} - in order to map more complex functions (allows universal function approximations)
-\item \textit{continuous differentiability} - necessity for gradient-based optimization methods
+\item \textit{continuous differentiability} - the necessity for gradient-based optimization methods
 \item \textit{range} - for infinite range, training is generally more efficient
-\item \textit{monotonicity} - the error surface associated with a single-layer models is guaranteed to be convex
+\item \textit{monotonicity} - the error surface associated with a single-layer model is guaranteed to be convex
 \item \textit{approximates identity near the origin} - initial weights can be randomized with small differences around the origin
 
 \end{itemize}
@@ -112,7 +112,7 @@ Basic activation function, transforms potential into a binary signal. However, t
 \end{figure}
 
 \noindent
-Smoothened binary step activation function, maps a real value potential into $(0,1)$ range. It introduces non-linearity. One of the most popular functions in the ANN's, mainly in the early era of machine learning. It suffers from vanishing gradient problem\footnote{described in subsection \ref{vanishing_gradient}} and have slow convergence. Furthermore, it is not zero centered, which make optimization harder.
+Smoothened binary step activation function, maps a real value potential into $(0,1)$ range. One of the most popular functions in the ANN's, mainly in the early era of machine learning. It introduces non-linearity. It suffers from vanishing gradient problem\footnote{described in subsection \ref{vanishing_gradient}} and have slow convergence. Furthermore, it is not zero centered, which make optimization harder.
  
 \subsection*{TanH}
 
@@ -150,7 +150,7 @@ f(x) = \begin{cases}
 \end{figure}
 
 \noindent
-One of the most popular function in the recent years. As opposed to previous ones, it does not have an issue with vanishing gradient. It is simple and efficient. The limitation is that it should only be used within hidden layers of a model, often combined with softmax in the output layer. It turned out to be very useful in deep learning, where traditional activation functions struggle. For example in \cite{relu_faster}, the convolutional network was able to converge six times faster with ReLU, than with tanh.
+One of the most popular function in recent years. As opposed to previous ones, it does not have an issue with vanishing gradient. It is simple and efficient. The limitation is that it should only be used within hidden layers of a model, often combined with softmax in the output layer. It turned out to be very useful in deep learning, where traditional activation functions struggle. For example in \cite{relu_faster}, the convolutional network was able to converge six times faster with ReLU, than with tanh.
 
 \subsection*{Leaky ReLU}
 
@@ -242,7 +242,7 @@ Artificial neural network\cite{nn_book} or feed-forward neural network is a dire
 \end{itemize}
 
 \noindent
-In this section we are going to use the following terminology:
+In the next sections, we are going to use the following terminology:
 
 \begin{itemize}
   \item every neuron is represented as a distinct natural number (i.e neuron 1, 2, and so forth)
@@ -282,7 +282,7 @@ At its core, a loss function\cite{loss} is a simple method of evaluating how wel
 
 Given the set of training data $\tau = \lbrace (\overrightarrow{X_k}, d(\overrightarrow{X_k})) \vert k = 1, \cdots, p \rbrace$, where $\overrightarrow{X_k}$ is a feature, that is fed to the network and $d(\overrightarrow{X_k})$ is a label, that we would like to get as an output from the network.
 
-The loss function is checking the difference between the network's output $\overrightarrow{Y}$ the actual label $d(\overrightarrow{X})$. Hereinafter, we will refer to output layer as OL in this section.
+The loss function is checking the difference between the network's output $\overrightarrow{Y}$ the actual label $d(\overrightarrow{X})$. From now on, we will refer to the output layer as OL in this section.
 
 \subsection*{MSE}
 
@@ -297,7 +297,7 @@ It is widely used in linear regression analysis.
 
 Another very popular loss function, which we used is \textit{cross entropy loss}\cite{cross_entropy}. It is a straightforward modification of a basic likelihood function with logarithms over the probability $p$. It penalizes heavily for being very confident and very wrong. 
 
-In order to transform the output vector $\overrightarrow{Y}$ into the probability distribution $P(\overrightarrow{Y})$ we usually use softmax activation function in the output layer (as described in section \ref{subsection:softmax}). With the output transformed into probability vector, we can use the cross entropy:
+In order to transform the output vector $\overrightarrow{Y}$ into the probability distribution $P(\overrightarrow{Y})$ we usually use a softmax activation function in the output layer (as described in section \ref{subsection:softmax}). With the output transformed into a probability vector, we can use the cross entropy:
 
 $$ E(\overrightarrow{w}) =  \sum_{k=1}^{p} E_k(\overrightarrow{w}) = \sum_{k=1}^{p} \sum_{j \in \text{OL}} - d(\overrightarrow{X_k})_j \ln{P(y_j(\overrightarrow{w}, \overrightarrow{X_k}))}$$
 
@@ -351,19 +351,19 @@ It is the approach described above. It takes a batch of data points in each and 
 \end{itemize}
 
 \noindent
-Some of the problems are:
+The problems of a batch algorithm:
 
 \begin{itemize}
 
 \item memory consumption
 \item redundant data do not add any information to the gradient
-\item is more likely to end up in some local minimum than online algorithm
+\item is more likely to end up in some local minimum than the online algorithm
 
 \end{itemize}
 
 \subsection*{Online (stochastic) algorithm}
 
-Online algorithm is essentially a batch algorithm, where batch consists of only one data point\footnote{point can be taken deterministically or at random (thus stochastic)}. Instead of the whole batch, we update the weight for each data point:
+An online algorithm is essentially a batch algorithm, where batch consists of only one data point\footnote{point can be taken deterministically or at random (thus stochastic)}. Instead of the whole batch, we update the weight for each data point:
 
 $$ \Delta w_{ji}^{(t)} = - \epsilon(t) \frac{\partial E_k}{\partial w_{ji}}(\overrightarrow{w}^{(t)}) $$
 
@@ -379,7 +379,7 @@ Therefore it is not taking the path of gradient descent exactly, but rather "zig
 \end{itemize}
 
 \noindent
-The problems of online algorithm:
+The problems of an online algorithm:
 
 \begin{itemize}
 
@@ -423,7 +423,7 @@ In Figure \ref{conf_matrix}, we can see the classification matrix for four class
 
 \subsection{Metrics}
 
-There are four standard metrics \cite{nn-metrics} for model evaluation: \textbf{accuracy}, \textbf{precision}, \textbf{recall} and \textbf{f1}. Apart from the standard metrics accuracy, the other metrics represent the cost of having false positives and false negatives. Let us take simple binary confusion matrix:
+There are four standard metrics \cite{nn-metrics} for model evaluation: \textbf{accuracy}, \textbf{precision}, \textbf{recall}, and \textbf{f1}. Apart from the standard metrics accuracy, the other metrics represent the cost of having false positives and false negatives. Let us take a simple binary confusion matrix:
 
 \begin{table}[h]
 \centering
@@ -469,11 +469,11 @@ We define the four metrics as followed:
 \label{section-grid-search}
 
 In this thesis, we used the method called \textbf{grid search}\cite{grid-search}. When there are a couple of hyperparameters, the common practice
-is to perform grid search. For each hyperparameter, the user select a
+is to perform a grid search. For each hyperparameter, the user selects a
 small finite set of possible values to explore. The grid search algorithm
-then trains a models for every joint specification of hyperparameter
-values in the Cartesian product of the set of values for each individual
-hyperparameter. The experiment then yields the best model and hyperparameter choice. 
+then trains models for every joint specification of hyperparameter
+values in the Cartesian product of the set of values for individual
+hyperparameters. The experiment then yields the best model and hyperparameter choice. 
 
 
 
