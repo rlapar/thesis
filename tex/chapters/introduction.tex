@@ -1,4 +1,4 @@
-\chapter*{Introduction}
+\chapter{Introduction}
 \addcontentsline{toc}{chapter}{Introduction}
 
 Public-key cryptography has gained its importance in the late 70's. One of the most commonly used cryptosystems nowadays is RSA. The essential demand on this cryptosystem is security. RSA exists in many variants with different implementations. Each implementation chooses a slightly different approach to generate public and private keys to achieve the right balance between security, efficiency, and randomness. Some implementations are openly known, like OpenSSL, but some other like Microsoft CryptoAPI or Yubikey are not published. With each implementation being different, there is a slight bias introduced in public keys generation, which leads to distinct sample space for different sources. 
@@ -7,7 +7,7 @@ These biases can be completely harmless, or they can have serious security impac
 
 The internet contains a huge amount of randomly collected dumps of RSA public keys collected from unknown sources. If one could accurately link a particular key to its source, knowing the weakness of this source, he would be able to use specific factorization method to break the public key. The introduction to public cryptosystems and overview of RSA is presented in chapter \ref{chapter-rsa}.
 
-The aim of this thesis is to further extend the previous research of CROCS team \cite{svenda_1}\cite{svenda_3} lead by Petr Švenda. We presented their previous work in chapter \ref{chapter-prev-work}. Our main goal was to study the usage of different machine learning methods to classify public keys, while specifically focusing on neural networks and comparing them to classic methods like naive bayes. The question was how much better they perform, or if they even perform better than other machine learning models. Neural networks are explained in chapter \ref{chapter-ml} alongside with all of its terminology used the thesis.
+The aim of this thesis is to further extend the previous research of CROCS team \cite{svenda_1}\cite{svenda_3} lead by Petr Švenda. We presented their previous work in section \ref{chapter-prev-work}. Our main goal was to study the usage of different machine learning methods to classify public keys, while specifically focusing on neural networks and comparing them to classic methods like naive bayes. The question was how much better they perform, or if they even perform better than other machine learning models. Neural networks are explained in chapter \ref{chapter-ml} alongside with all of its terminology used the thesis.
 
 From the CROCS team, we obtained a dataset of more than 100 million public keys from 64 different sources. We performed a detailed analysis of this dataset over particular features mainly focusing to find non-uniform distribution over its sample space. In chapter \ref{chapter-dataset} we present the analysis results and the dataset description. During the analysis, we discovered a small bias in the most significant bits of a big number of sources from popular libraries like OpenSSL or Libgcrypt.
 
@@ -15,4 +15,18 @@ As a part of this thesis, we implemented a method to work with this dataset effi
 
 Methodologically, we trained thousands of neural network models over several generated datasets. We compared and discussed the optimal models. Our results presented in chapter \ref{chapter-results} show that the neural networks have slightly better overall accuracy when compared to the classical methods like Naive Bayes.
 
+\section{Previous work}
+\label{chapter-prev-work}
+
+This thesis serves as an addition to ongoing research on this topic by CROCS team. They have made significant progress in this area already. 
+
+In their first publication\cite{svenda_1}, they generated about 60 million key pairs from 22 open and closed-source libraries and 16 smartcards. A significant bias in some sources was discovered by them, which could be reflected in the bitmask of the 2nd to 7th most significant bit, second least significant bit and the result of modulus modulo 3. This restricted the sample space of available public keys. For some sources, a specific key was more likely to occur and on the other hand, it could totally dismiss keys from out of its sample space.
+
+Mat\'{u}š Nemec in his Master's thesis\cite{thesis_matus_nemec} presented a complete overview of the provided sources with their properties. He presented the comparison of different generation methods of primes and checked, whether they achieve the demanded level of security.
+
+In the subsequent work, Peter Sekan in his Bachelor's thesis\cite{thesis_sekan} made a clustering analysis based on this mask, which divided the sources into 13 groups. Using a Naive Bayes classifier, he was able to identify sources like PGP SDK 4 FIPS with high probability, while others not at all. He achieved an overall success rate of 33.44 \%. Later in the article\cite{svenda_1}, the rate was increased to 40.34~\%.
+
+The second publication by CROCS team\cite{svenda_3} shows the popularity of chosen cryptographic libraries in internet-wide TLS scans. They discovered, that more than 85\% of all keys originated from OpenSSL library (up to 96\% within GitHub users), followed by the libraries from Microsoft, Libgcrypt, BouncyCastle, and Crypto++. Also, they showed how these libraries got popular in the last seven years. As OpenSSL is by far the most popular network security library nowadays, any bias found in the generation process would affect the majority of keys on the internet.
+
+In the third publication\cite{svenda_2}, the reported discovery of an algorithmic flaw of keys generated by Infineon smartcards, which could be exploited using Coppersmith's attack. Once again, a good classifier for this group would be useful to filter vulnerable keys from an unknown dataset.
 
