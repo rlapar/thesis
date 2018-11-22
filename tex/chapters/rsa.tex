@@ -1,15 +1,15 @@
 \chapter{Public-Key Cryptosystems}
 \label{chapter-rsa}
 
-In this chapter, we will present basic overview of public-key cryptosystems, focusing mainly on the RSA, the most commonly and widely used public-key cryptosystem. 
+In this chapter, we will present a basic overview of public-key cryptosystems, focusing mainly on the RSA, the most commonly and widely used public-key cryptosystem.
 
 \subsection*{Private-Key Cryptosystems}
 
-Before 1977 every used cryptosystem was private-key (or symmetric), where both communicating parties Alice and Bob\footnote{in cryptographic terminology, two parties are commonly referred to as Alice and Bob} shared the same secret key. The secret key was then used for encryption and decryption respectively. However, the main issue was how to securely distribute shared secret key between Alice and Bob. Either completely secure channel was used with no eavesdropping possible, or some key exchange method like Diffie-Hellman key exchange\cite{diffie_hellman} was used. The problem of distribution of the private key served as the motivation behind the concept of public-key (assymetric) cryptosystem invented by Diffie and Hellman \cite{diffie_hellman}. Public-key cryptosystems are undoubtedly the building blocks of modern cryptography and internet security as of today. In practice, we use them basically for any kind of secure transmission of information via internet like money transfers, government communication, secure messaging on social networks and countless others.
+Before 1977 every used cryptosystem was private-key (or symmetric), where both communicating parties Alice and Bob\footnote{in cryptographic terminology, two parties are commonly referred to as Alice and Bob} shared the same secret key. The secret key was then used for encryption and decryption respectively. However, the main issue was how to securely distribute shared secret key between Alice and Bob. Either completely secure channel was used with no eavesdropping possible, or some key exchange method like Diffie-Hellman key exchange\cite{diffie_hellman} was used. The problem of distribution of the private key served as the motivation behind the concept of public-key (asymmetric) cryptosystem invented by Diffie and Hellman \cite{diffie_hellman}. Public-key cryptosystems are undoubtedly the building blocks of modern cryptography and internet security as of today. In practice, we use them basically for any kind of secure transmission of information via internet like money transfers, government communication, secure messaging on social networks and countless others.
 
 \subsection*{Public-Key Cryptosystems}
 
-In public-key cryptosystem each user has to generate a pair of private/public key $(d,e)$. Public key $e$ is revealed and used to encrypt messages $m$. Private key $d$ is kept secret and used to decrypt ciphertext $c$. Public-key cryptosystems have the following four properties:
+In a public-key cryptosystem, each user has to generate a pair of private/public key $(d,e)$. Public key $e$ is revealed and used to encrypt messages $m$. Private key $d$ is kept secret and used to decrypt ciphertext $c$. Public-key cryptosystems have the following four properties:
 
 \begin{itemize}
 
@@ -32,7 +32,7 @@ The encryption function $e$ has to meet two necessary requirements:
 
 \begin{itemize}
 
-\item \textit{trap-door one-way function} - function is easy to compute in one direction, but it is very difficult to compute inverse of it. Typical examples are prime multiplication vs prime factorization or power modulo vs discrete logarithm. Most of public-key cryptographic protocols are based around these one-way functions.\footnote{WIKI Trapdoor$\_$function}
+\item \textit{trap-door one-way function} - function is easy to compute in one direction, but it is very difficult to compute the inverse of it. Typical examples are prime multiplication vs. prime factorization or power modulo vs. discrete logarithm. Most of the public-key cryptographic protocols are based around these one-way functions.\footnote{\url{https://en.wikipedia.org/wiki/Trapdoor_function}}
 
 \item \textit{trap-door one-way permutation} - function is above all also bijective, which means, that $e$ is deterministic 
 
@@ -44,27 +44,27 @@ The process of secure data transmission:
 
 \begin{itemize}
 
-\item \textit{encryption} $c = e(m)$ - the sender encrypts the message using the recipient's public key, he obtains the ciphertext $c$ which is then transmitted via channel. An eavesdropper can only see this ciphertext which makes no sense to him provided that he cannot crack the system and decrypt the message
+\item \textit{encryption} $c = e(m)$ - Alice encrypts the message using Bob's public key, she obtains the ciphertext $c$ which is then transmitted via channel. An eavesdropper can only see this ciphertext which makes no sense to him provided that he cannot crack the system and decrypt the message
 
-\item \textit{decryption} $m = d(c)$ - the recipient uses his private key to obtain the original sender's message
+\item \textit{decryption} $m = d(c)$ - Bob uses his private key to obtain the original Alice's message
 
 \end{itemize}
 
 \subsection*{Signature}
 
-The problem of one-way authentication or the message signature is another common event appearing in the network communication. The recipient of the signed message wants to have proof that the message indeed originated from the sender. In this case, sender supplement the message with its signature. It must be easy for anyone to recoginze the signature as authentic, but impossible for anyone other than the legitimate signer to produce it. The process of digital signature is effectively an inverse operation to encryption:
+The problem of one-way authentication or the message signature is another common event appearing in the network communication. Bob wants to have a proof that the message indeed originated from Alice. In this case, Alice supplements the message with its signature. It must be easy for anyone to recognize the signature as authentic, but impossible for anyone other than Alice to produce it. The process of a digital signature is effectively an inverse operation to encryption:
 
 \begin{itemize}
 
-\item \textit{signature} $s = d(m)$ - the sender signs the message using his private key. The signature must be message-dependent, as well as signer-dependent
+\item \textit{signature} $s = d(m)$ - Alice signs the message using her private key. The signature must be message-dependent, as well as signer-dependent
 
-\item \textit{verification} $m = e(s)$ - the recipient uses the recipient's public key to check, whether the message was sent by him
+\item \textit{verification} $m = e(s)$ - Bob uses Alice’s public key to check, whether the message was sent from her
 
 \end{itemize}
 
 \section{RSA cryptosystem}
 
-On of the first public-key as well as the most commonly used cryptosystem today is RSA. It was publicly described by Rivest, Shamir and Adleman (thus RSA) in 1978\cite{rsa_paper}. RSA gained popularity because of its simplicity, because it uses relativelly simple power modulo operations. It can be implemented in various ways and over the years many different implementations of this protocol have arised. It is widely used in field of software libraries (OpenSSL, Microsoft CryptoAPI, Libcrypt, $\cdots$), cards (Yubikey, Infineon, $\cdots$) or HSM's\footnote{hardware security module}.
+One of the first public-key as well as the most commonly used cryptosystem today is RSA. It was publicly described by Rivest, Shamir and Adleman (thus RSA) in 1978\cite{rsa_paper}. RSA gained popularity because of its simplicity as it uses relatively simple power modulo operations. It can be implemented in various ways and over the years many different implementations of this protocol have arisen. It is widely used in the field of software libraries (OpenSSL, Microsoft CryptoAPI, Libcrypt, $\cdots$), cards (Yubikey, Infineon, $\cdots$) or HSM's\footnote{hardware security module}.
 
 
 \subsection*{Key pair generation}
@@ -92,7 +92,7 @@ Detailed key generation process is explained in \cite{thesis_matus_nemec}. The r
 
 \subsection*{RSA cryptographic primitives}
 
-Every message $m$ can be represented as a positive integer between 0 and $n-1$.\footnote{in case of longer messages we would just need to split the message into blocks of integers, where every block would have a value of at most $n-1$} Following cryptographic primitives are present in RSA scheme for message $m$:
+Every message $m$ can be represented as a positive integer between 0 and $n-1$.\footnote{in case of longer messages we would need to split the message into blocks of integers, where every block would have a value of at most $n-1$} The following cryptographic primitives are present in RSA scheme for message $m$:
 
 \begin{itemize}
 
@@ -104,7 +104,7 @@ Every message $m$ can be represented as a positive integer between 0 and $n-1$.\
 \end{itemize}
 
 \noindent
-These power modulo operations can be computed very effectively.
+These power modulo operations can be computed very efficiently.
 
 \subsection{Generation bias}
 
@@ -122,4 +122,4 @@ While implementing RSA, many individual sources implement finding candidate prim
 
 These decisions in the process of generation leave significant bias in some sources. When connecting given public-key to its source, one can look at these properties and with high probability differentiate between sources and correctly classify public-key.
 
-We looked at some basic properties for our dataset and found bias in several sources. Full list can be seen in appendix \ref{appendix-analysis}. These features are used for machine learning classifiers. More details about the dataset can be seen in chapter \ref{chapter-dataset}.
+We looked at some basic properties for our dataset and found bias in several sources. The full list can be seen in Appendix \ref{appendix-analysis}. These features are used for machine learning classifiers. More details about the dataset can be seen in chapter \ref{chapter-dataset}.
