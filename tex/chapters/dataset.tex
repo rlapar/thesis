@@ -35,7 +35,7 @@ Full results of modular analysis can be seen in Appendix \ref{appendix-modular-a
 
 \subsection{Bit analysis}
 
-Another analysis focused on full bit analysis. Similarly, as in the previous one, we computed the relative frequency (or probability of 0) on every bit position with each source. This kind of analysis took a more significant amount of time and needed to be computed distributively. It took a couple of hours compared to the estimated time of up to one week when computing on the local machine. The analysis showed a significant bias in the first 6 most significant bits, mostly:
+Another analysis focused on full key and its bits. Similarly, as in the previous one, we computed the relative frequency (or probability of 0) on every bit position with each source. This kind of analysis took a more significant amount of time and needed to be computed distributively. It took a couple of hours compared to the estimated time of up to one week when computing on the local machine. The analysis showed a significant bias in the first 6 most significant bits, mostly:
 
 \begin{itemize}
 
@@ -62,7 +62,7 @@ Based on the previous analysis we extracted the following features from the publ
 
 \item all moduli remainders up to 30 represented as binary vector\footnote{For example for $x \equiv 1 \pmod{5}$, the feature vector is $(1,0,0,0)$, $x \equiv 2 \pmod{5}$ - $(0,1,0,0)$, $\cdots$}
 
-\item The key itself
+\item the key itself
 
 \end{itemize}
 
@@ -70,7 +70,7 @@ Based on the previous analysis we extracted the following features from the publ
 The performance of the network was similar regardless of using the full key, or just the biased bits.
 
 \subsection{Source grouping}
-If we look closely on the full analysis in Appendix \ref{appendix-analysis}, we can see that based on the feature engineering we can natively group sources, that share the distribution. We obtain 13 groups\footnote{Same grouping was obtained by cluster analysis in \cite{svenda_1}}:
+If we look closely on the full analysis in Appendix \ref{appendix-analysis}, we can see that based on the feature engineering we can natively group sources, that share the same distribution. We obtain 13 groups\footnote{Same grouping was obtained by cluster analysis in \cite{svenda_1}}:
 
 \vspace{5mm}
 
