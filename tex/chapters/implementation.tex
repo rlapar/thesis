@@ -1,15 +1,13 @@
 \chapter{Implementation}
 \label{chapter-implementation}
 
-As a part of this thesis, we designed a simple tool able to work with our dataset and execute various tasks over it. The main idea was to unify the interface for models, so many different models can be run just via command line. This proved to be essential when running many models concurrently in Metacentrum or in the local machine. 
-
-The whole tool is written in Python 3.6 and it is accessible via one command-line interface.
+As a part of this thesis, we designed a simple tool able to work with our dataset and execute various tasks over it. The main idea was to unify the interface for models, so many different models can be run just via command line. This proved to be essential when running many models concurrently on Metacentrum or in the local machine. The whole tool is written in Python 3.6, and it is accessible via one common command-line interface.
 
 \section{Used technologies}
 
 \subsection{Pandas}
 
-To work with CSV files of a length of more than 30 million lines, one does need to use the appropriate framework for it. We chose the pandas\cite{pandas} library. Actively supported today by a community, it is a BSD-licensed library providing high-performance, low-level optimized and easy-to-use data structures for data analysis for \textit{Python} programming language. Pandas stores its data in so-called dataframes\cite{pandas-df}, which are working on the same principle as in the \textit{R} language. They can store two-dimensional size-mutable heterogeneous tabular data and allow arithmetic operations align on both row and column. Furthermore, pandas can work with with huge CSV files using python generators.
+To work with CSV files of a length of more than 30 million lines, one does need to use the appropriate framework for it. We chose the pandas\cite{pandas} library. Actively supported today by a community, it is a BSD-licensed library providing high-performance, low-level optimized and easy-to-use data structures for data analysis for \textit{Python} programming language. Pandas stores its data in so-called dataframes\cite{pandas-df}, which are working on the same principle as in the \textit{R} language. They can store two-dimensional size-mutable heterogeneous tabular data and allow arithmetic operations to align on both row and column. Furthermore, pandas can work with huge CSV files using python generators. We used it to read/write CSV files and transform dataframes to fit the neural networks. 
 
 \subsection{TensorFlow}
 
@@ -17,7 +15,7 @@ TensorFlow\cite{tensorflow} is an open source software library for high performa
 
 \subsection{Keras}
 
-Keras\cite{keras} is arguably one of the most popular python tensorflow frontends for a quick and simple definition of networks. In comparison to tensorflow, Keras is very layer-oriented and has an intuitive user friendly API. All models, that we trained were defined over Keras framework. The simplicity of Keras framework can be shown in an example of a concrete model, that we used. The whole model is defined in just 5 lines of code:
+Keras\cite{keras} is arguably one of the most popular python tensorflow frontends for a quick and simple definition of networks. In comparison to tensorflow, Keras is very layer-oriented and has an intuitive user-friendly API. All models, that we trained were defined over Keras framework. The simplicity of Keras framework can be shown in an example of a concrete model, that we used. The whole model is defined in just 5 lines of code:
 
 \begin{minted}[ framesep=2mm,
                 autogobble,
@@ -35,23 +33,23 @@ model.compile(loss=keras.losses.categorical_crossentropy,
 
 \subsection{Scikit-learn}
  
-Before trying any neural network models, we tried to use simple models first. We chose the sklearn\cite{scikit} package, the native package for basic machine learning and evaluation. We used classifiers such as KNN, Naive Bayes, decision trees or support vector classifiers\footnote{List of all possible classifiers can be found in \url{http://scikit-learn.org/stable/supervised\_learning.html\#supervised-learning}}. 
+For comparison to traditional models, we chose the sklearn\cite{scikit} package, the native package for basic machine learning and evaluation. We used classifiers such as KNN, Naive Bayes, decision trees or support vector classifiers\footnote{List of all possible classifiers can be found in \url{http://scikit-learn.org/stable/supervised\_learning.html\#supervised-learning}}.  
 
 \subsection{Docker}
 
 \label{docker}
 
-Initially, the tool was developed on the local Linux machine, because it was dependent on third-party Unix binaries, as well as it was later deployed to Metacentrum cloud, which is Unix native. However, we needed to develop and run it also on other architectures. One approach is to install virtual machines on the desired host, setup Unix environment and then run the tool. The better, more modern approach would be to use containers, namely Docker\cite{docker}.
+Initially, the tool was developed on the local Linux machine, because it was dependent on third-party Unix binaries, as well as it was later deployed to Metacentrum cloud, which is Unix native. However, we needed to develop and run it also on other architectures. One approach is to install virtual machines on the desired host, setup Unix environment and then run the tool. The better, more lightweight approach would be to use containers, namely Docker\cite{docker}.
 
-Docker encapsulates the application, running environment, dependencies and architecture into a self-contained unit that can run anywhere. It is a more lightweight virtual machine because containers in comparison to virtual machines share the host system's kernel with other containers\cite{docker-blog}. By defining dockerfile, we provided any user the option to run this tool on its own local host.
+Docker encapsulates the application, running environment, dependencies and architecture into a self-contained unit that can run anywhere. It is a more lightweight virtual machine because containers in comparison to virtual machines share the host system’s kernel with other containers[Kas16]. By defining dockerfile, we provided any user the option to run this tool on its own local machine.
 
 \subsection{Python generators}
 
 \label{python-generators}
 
-During the training process, we were working with huge files with over a couple of millions of lines. Even as raw strings, that could take up to 2 GB of memory. Furthermore, we transformed the keys into numpy arrays, which was infeasible memory-wise as it could take easily more than 20-25 GB of RAM. Rather than allocating such memory in Metacentrum, one can provide a better solution - python generators\cite{python-gen}. 
+During the training process, we were working with huge files with over a couple of millions of lines. Even as raw strings, that could take up to 2 GB of memory. Furthermore, we transformed the keys into numpy arrays, which was infeasible memory-wise as it could easily take more than 20-25 GB of RAM. Rather than allocating such memory in Metacentrum, one can provide a better solution - python generators\cite{python-gen}. 
 
-Generator functions allow you to declare a function that behaves like an iterator, i.e. it can be used in a for loop. The main advantage is that the data is fetched during the runtime as the iteration of the for loop is always called on demand.
+Generator functions allow you to declare a function that behaves like an iterator, i.e. it can be used in a loop. The main advantage is that the data is fetched during the runtime as the iteration of the for loop is always called on demand.
 
 \begin{minted}[ framesep=2mm,
                 autogobble,
@@ -66,7 +64,7 @@ for n in generate_numbers():
     ...
 \end{minted}
 
-This simple example shows how to generate natural numbers. Instead of natural numbers we simply take a chunk of lines from the source CSV file resulting in saving the memory consumption. Therefore we can run huge datasets also in local machine as well as take smaller resources on Metacentrum, thus increasing our chance of running our job in the 
+This simple example shows how to generate natural numbers. Instead of natural numbers we simply take a chunk of lines from the source CSV file resulting in saving the memory consumption. Therefore we can run huge datasets also in local machine as well as take smaller resources on Metacentrum, thus increasing our chance of running our job in the queue.
 
 \subsection{Click}
 
