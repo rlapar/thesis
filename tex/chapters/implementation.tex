@@ -74,28 +74,28 @@ As our tool provides only command line interface, we chose the Click package\cit
 
 During the implementation process, several distinct tasks were implemented in order to work with the original dataset, prepare the data for models to train and then classify. Figure \ref{figure-model} shows the flow of the application and its data. We named these tasks \textbf{SCAN, ANALYZE, GENERATE, TRAIN} and \textbf{CLASSIFY}.
 
-We obtained a dataset in the form of around 2000 CSV files. First of all, we wanted to automate extracting the keys from distinct files and set up class labels to it. Therefore, \textbf{SCAN} task was implemented. We used it mainly to transform given dataset, which was badly structured without naming convention and difficult to extract keys from into more compact one. The transformed dataset could be used more efficiently for analysis and generating new datasets.
+We obtained a dataset in the form of around 2000 CSV files. First of all, we wanted to automate extracting the keys from distinct files and assigning class labels to it. Therefore, the \textbf{SCAN} task was implemented. We used it mainly to transform given dataset, which was badly structured without naming convention and difficult to extract keys from into more compact one. The transformed dataset could be used more efficiently for analysis and generating new datasets.
 
-The newly generated compact dataset was then subjected to full analysis of features. For this purpose \textbf{ANALYZE} task was implemented. We used it to count the relative frequency of features, that we presented in the chapter \label{chapter-analysis}.
+The newly generated compact dataset was then subjected to full analysis of features. For this purpose, the \textbf{ANALYZE} task was implemented. We used it to count the relative frequency of features, that we presented in section \ref{chapter-analysis}.
 
-Another task \textbf{GENERATE} was used to prepare custom generated datasets for machine learning models. Its main purpose was to be able to generate datasets with different class labels, replicate keys in training dataset, skip group, skip files, merge several groups into one and others. We used this task throughout the whole training process to create datasets for models and tune them if the model was struggling in training.
+Another task \textbf{GENERATE} was used to prepare custom generated datasets for machine learning models. Its main purpose was to be able to generate datasets with different class labels, replicate keys in training dataset, skip groups, skip files, merge several groups into one and others. We used this task throughout the whole training process to create datasets for models and tune them if the model was struggling in training.
 
-The main task \textbf{TRAIN} was applied to the custom generated datasets. Its main purpose was to be able to feed data into the model, monitor performance and report the results of the training. Models are sharing the same interface. This allows to implement new model relatively simply and use the whole task for any model.
+The main task \textbf{TRAIN} was applied to the custom generated datasets. Its purpose was to feed data into the model, monitor performance and report the results of the training. Models are sharing the same interface. This allows to implement new model relatively simply and use the whole task for any model.
 
 Models that are performing well can be used, evaluated and tested via \textbf{CLASSIFY} task using the same shared core with \textbf{TRAIN}.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.65\textwidth]{tex/images/thesis_model}
-\caption{Diagram of the application flow shows 5 distinct tasks (SCAN, ANALYZE, GENERATE, TRAIN, CLASSIFY) that we used to work with our dataset and perform machine learning on them.}
+\caption{Diagram of the application flow shows 5 distinct tasks (SCAN, ANALYZE, GENERATE, TRAIN, CLASSIFY) that we used to work with our dataset and perform machine learning on it.}
 \label{figure-model}
 \end{figure}
 
 \subsection{SCAN task}
 
-The original dataset was in the form of a directory hierarchy, where there was no specific namespace for different key length and sources. We needed a task to be able to create groups of sources, that would be corresponding to the same label. The using this grouping generate a new dataset, which is wel; structured and easier to analyze.
+The original dataset was in the form of a directory hierarchy, where there was no specific namespace for different key length and sources. We needed a task to be able to create groups of sources, that would be corresponding to the same label. Then using this grouping generate a new dataset, which is well structured and easier to analyze.
 
-\textit{SCAN} task is using simple string matching with required (positive) keywords and forbidden (negative) keywords. Then it iteratively loops through all CSV files in given root directory and looks for CSV files that contain any positive keyword and not containing any negative keyword. Keywords are passed to the task via JSON structure. In Here is an example of a JSON filter we defined over the original dataset, which scan all sources from group 13 with bitlength of 1024: 
+The \textit{SCAN} task is using simple string matching with required (positive) keywords and forbidden (negative) keywords. Then it iteratively loops through all CSV files in given root directory and looks for file names that contain any positive keyword and not containing any negative keyword. Keywords are passed to the task via JSON structure. Here is an example of a JSON filter we defined over the original dataset, which scans all sources from group 13 with bitlength of 1024: 
 
 \begin{minted}[ framesep=2mm,
                 autogobble,
@@ -122,7 +122,7 @@ The original dataset was in the form of a directory hierarchy, where there was n
 \end{minted}
 
 \noindent
-As a result, we obtain a JSON file, which contains groups of sources with given label and a list of individual sources with the number of keys in them. This JSON file is used further by \textit{GENERATE} task. Below we show the example of a generated JSON file from the previous filter:
+As a result, we obtain a JSON file, which contains groups of sources with a given label and a list of individual sources with the number of keys in them. This JSON file is used further by the \textit{GENERATE} task. Below we show the example of a generated JSON file from the previous filter:
 
 \begin{minted}[ framesep=2mm,
                 autogobble,
@@ -148,7 +148,7 @@ As a result, we obtain a JSON file, which contains groups of sources with given 
 
 \subsection{ANALYZE task}
 
-The problem with working with huge CSV files is memory consumption, as we usually are not able to load all keys into RAM at once. Fortunately, pandas library offers reading and processing such files in chunks of lines. 
+The problem with working with huge CSV files is memory consumption, as we usually are not able to load all lines into RAM at once. Fortunately, pandas library offers reading and processing such files in chunks of lines. 
 
 When analyzing a huge file, we iterate it in chunks, extracting values for features from every key and then just incrementing the corresponding counter. In the end, we print the analysis to the user.
 
@@ -170,7 +170,7 @@ Having the dataset decoupled into several smaller CSV files, we could actually p
 
 When analyzing the dataset, we obtained features to use in machine learning. Having them hardcoded would not be the best approach, as new features may occur or some features may not be used for some specific model. 
 
-That is why we designed the Feature Maker. It is essentially a class, that is dedicated to the transformation of a raw key into the specific feature vector. Features may be added during runtime dynamically, usually via a configuration file. It gives us freedom of choosing a different set of features with every model (or during the analysis as well). Also, adding new feature does not change any other code, but the Feature Maker class itself. The features implemented so far:
+That is why we designed the Feature Maker. It is essentially a class, that is dedicated to the transformation of a raw key into the feature vector. Features may be added during runtime dynamically, usually via a configuration file. It gives us freedom of choosing a different set of features with every model (or during the analysis as well). Also, adding new feature does not change any other code, but the Feature Maker class itself to support our primary idea of extensibility and code decoupling. The features implemented so far:
 
 \begin{itemize}
 
@@ -182,7 +182,7 @@ That is why we designed the Feature Maker. It is essentially a class, that is de
 \end{itemize}
 
 \noindent
-Using this class is a question of couple lines of code. In the following simplified example, we define the feature maker, assigned three features to it (modulo 3, modulo 7 and 38-th LSB), then call the \texttt{get\_features\_from\_keys} which extract features for us. Adding or removing features can be performed between 2nd and 4th line of code:
+Feature Maker class uses couple lines of code. In the following simplified example, we define the feature maker, assigned three features to it (modulo 3, modulo 7 and 38th LSB), then call the \texttt{get\_features\_from\_keys} which extract features for us. Adding or removing features can be performed between the 2nd and 4th line of code:
 
 \begin{minted}[ framesep=2mm,
                 autogobble,
@@ -198,18 +198,18 @@ features = fm.get_features_from_keys(keys)
 
 \subsection{GENERATE task}
 
-One of the most important tasks we had to implement was \textit{GENERATE} task. Given our modified dataset, we needed to generate smaller samples on which we could train different models. The whole process is managed by a Generator object, which reads the data specified by sources in a JSON file provided from \textit{SCAN} task. It is responsible for preparing the datasets for \textit{TRAIN} task. The Generator provides functionality to:
+One of the most important tasks we had to implement was the \textit{GENERATE} task. Given our modified dataset, we needed to generate smaller samples on which we could train different models. The whole process is managed by a Generator object, which reads the data specified by sources in a JSON file returned from the \textit{SCAN} task. It is responsible for preparing the datasets for tasks \textit{TRAIN}, \textit{ANALYZE} and \textit{CLASSIFY}. The Generator provides functionality to:
 
 \begin{itemize}
 
-\item generate single large CSV file
-\item generate triplet of CSV files (train / test / valid) with ratio provided by the user
-\item shuffle target CSV file
-\item relabel individual groups and merge several groups together 
+\item generate single large CSV file (useful for \textit{ANALYZE}, \textit{CLASSIFY} and non-incremental models in \textit{TRAIN})
+\item generate triplet of CSV files (train / test / valid) with ratio provided by the user (useful for incremental models in \textit{TRAIN})
+\item shuffle target CSV file (may be disabled for \textit{ANALYZE} task)
+\item relabel individual groups and merge several groups together to decrease the number of labels used
 \item skip any source or the whole group of sources
 \item take an arbitrary number of keys per group
-\item take an arbitrary number of keys per line (meaning taking several keys as one line in target CSV file)
-\item multiply keys in training data (useful for sampling, when a group has a limited amount of keys)
+\item take an arbitrary number of keys per line (meaning taking several keys as one line in target CSV file), this reflect to the model having more keys from the same group in one training step
+\item multiply keys in training data (useful for sampling, when a group has a limited amount of keys), this proved to be essential to create uniform training datasets
 
 \end{itemize}
 
@@ -322,7 +322,7 @@ From \texttt{scikit} we implemented most of the models listed in the documentati
 \end{minted}
 
 \noindent
-The models are trained in epochs, and after the training ends, they are evaluated with metrics defined in subsection \ref{nn-metrics}.
+The models are trained in epochs, and after the training ends, they are evaluated with metrics defined in section \ref{nn-metrics}.
 
 \subsection{CLASSIFY task}
 
@@ -337,7 +337,7 @@ We designed a simple CLI application using click library. The user can configure
 
 As we are using the third party binary, that is necessary for shuffling the datasets in \textit{GENERATE} task, the application needs to run in Linux Debian.
 
-We were developing the application on Debian and Mac OS X. To be able to run it in Mac OS X we had to use the Docker container specified in the section \ref{docker}.
+We were developing the application on Debian and Mac OS X. To be able to run it in Mac OS X we had to use the Docker container specified in the subsection \ref{docker}.
 
 For this purpose we provided our code with simple dockerfile, that can run the application in its native environment on any platform:
 
