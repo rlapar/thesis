@@ -242,11 +242,11 @@ All user's settings are specified in appendix \ref{appendix-generate}.
 
 \subsection{TRAIN task}
 
-The main task defined was task \textit{TRAIN}. As we provided all the tasks to prepare our datasets, we needed to implement the process of training the classifiers. The main idea was to split the process into two main logical units. The responsibility of the first one is to load the datasets a pass them on to the models. The second unit is models themselves.
+The main task defined was task \textit{TRAIN}. As we provided all the tasks to prepare our datasets, we needed to implement the process of training the classifiers. The main idea was to split the process into two main logical units. The responsibility of the first one is to load the datasets a pass them on to the models. The second unit is the models themselves.
 
 \subsection*{Loader}
 
-The \texttt{Loader} interface is a part of the core of the application. It provides two main function to feed data to the models:
+The \texttt{Loader} interface is a part of the core of the application. It provides two main functions to feed data to the models:
 
 \begin{itemize}
 
@@ -263,9 +263,9 @@ As we were using two types of classifiers (from \textit{sklearn} and \textit{ker
 
 \begin{itemize}
 
-\item \texttt{LoaderSingle} - receive only one CSV file, and the split set ratios of the dataset. It computes the random permutation on lines, which are then distributed into their train / valid / test sets respectively. It directly corresponds to the single CSV files generated from \textit{GENERATE} task and it was implemented first.
+\item \texttt{LoaderSingle} - receive only one CSV file, and the split set ratios of the dataset. It computes the random permutation on lines, which are then distributed into their train / valid / test sets respectively. It directly corresponds to the single CSV files generated from the \textit{GENERATE} task, and it was implemented as the first simpler option.
 
-\item \texttt{LoaderDataset} - the later implementation, receives the CSV triplet (train / test / valid) and does not need to compute the random permutation (which is memory consuming by itself). It directly corresponds to the CSV triplet from \textit{GENERATE} task.
+\item \texttt{LoaderDataset} - the later implementation, receives the CSV triplet (train / test / valid) and does not need to compute the random permutation (which is memory consuming by itself). It directly corresponds to the CSV triplet from the \textit{GENERATE} task.
 
 \end{itemize}
 
@@ -274,7 +274,7 @@ The feature extraction from individual keys was done by \texttt{FeatureMaker} cl
 
 \subsection*{Models}
 
-When designing the models, the main focus was put on extensibility. We implemented a common \texttt{Model} as a plain abstract class using the python \textit{abc}\footnote{\url{https://docs.python.org/3/library/abc.html}} module. This allowed us to implement many models while keeping the same interface. Furthermore, as it is expected, that this application will be used later in the research, it is simple to add any another model just by implementing this interface and its methods:
+When designing the models, the main focus was put on extensibility. We implemented a common \texttt{Model} as a plain abstract class using the python \textit{abc}\footnote{\url{https://docs.python.org/3/library/abc.html}} module. This allowed us to implement many models while keeping the same interface. Furthermore, as it is expected, that this application will be used later in the research, it is simple to add any other model just by implementing this interface and its methods:
 
 \begin{itemize}
 
@@ -292,7 +292,7 @@ When designing the models, the main focus was put on extensibility. We implement
 
 \end{itemize} 
 
-We implemented an interface to work with models from \texttt{scikit} library and multilayer perceptrons from \texttt{keras} library. For both of them, we implemented interfaces, that were direct children of the common \texttt{Model} interface. They implemented all the necessary interface methods to adapt them to used libraries. All the used models then inherited from this interface. The hierarchy can be seen in figure \ref{model-inheritance}.
+We implemented traditional classifiers from \texttt{scikit} library and multilayer perceptrons from \texttt{keras} library. For both of them, we implemented interfaces, that were direct children of the common \texttt{Model} interface. They implemented all the necessary interface methods to adapt them to used libraries. All the used models then inherited from their interface. The hierarchy can be seen in figure \ref{model-inheritance}.
 
 \begin{figure}[H]
 
@@ -331,13 +331,13 @@ The last (and for the end user, the most important one) is the \textit{CLASSIFY}
 \section{Command line interface}
 \label{cli}
 
-We designed a simple CLI application using click library. The user can configure the application with the arguments or YAML configuration file (by default \textit{settings.yml}). Command line arguments have priority over YAML settings. For every task, the user can print help with description of the task, example of usage, arguments and yaml settings. The complete documentation with examples can be found in appendix \ref{appendix-running}.
+We designed a simple CLI application using click library. The user can configure the application with the arguments or YAML configuration file (by default \textit{settings.yml}). Command line arguments have priority over YAML settings. For every task, the user can print help with the description of the task, an example of usage, arguments and yaml settings. The complete documentation with examples can be found in appendix \ref{appendix-running}.
 
 \section{Multi platform development}
 
-As we are using the third party binary, that is necessary for shuffling the datasets in \textit{GENERATE} task, the application needs to run in Linux Debian.
+As we are using the third party binary, that is necessary for shuffling the datasets in the \textit{GENERATE} task, the application needs to run in Linux Debian.
 
-We were developing the application on Debian and Mac OS X. To be able to run it in Mac OS X we had to use the Docker container specified in the subsection \ref{docker}.
+We were developing the application on Debian and Mac OS X. To be able to run it in Mac OS X we had to use the Docker container as specified in the subsection \ref{docker}.
 
 For this purpose we provided our code with simple dockerfile, that can run the application in its native environment on any platform:
 
@@ -359,4 +359,4 @@ Example of usage can be found in appendix \ref{appendix-docker}.
 
 \section{Metacentrum}
 
-The final step of the implementation process was to run the code in the cloud. We used batch jobs\cite{metacentrum} that run in the CESNET cloud - Metacentrum. One can simply run these scripts with more powerful resources that his local machine. We used it, in particular, to try many models in parallel, usually running for a couple of days. Batch jobs were run via a shell script. Example can be found in appendix \ref{appendix-metacentrum}.
+The final step of the implementation process was to run the code in the cloud. We used batch jobs\cite{metacentrum} that run in the CESNET cloud - Metacentrum. One can simply run these scripts with more powerful resources that his local machine. We used it, in particular, to try many models in parallel, usually running for a couple of days. Batch jobs were run via a shell script. An example can be found in appendix \ref{appendix-metacentrum}.
