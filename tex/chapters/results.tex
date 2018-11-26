@@ -101,67 +101,67 @@ Based on the previous general model results we can see, that some groups can be 
 %first line
 \begin{subfigure}{.33\textwidth}
   \centering
-  \includegraphics[width=\textwidth]{tex/images/results/rese_g1}  
+  \includegraphics[width=\textwidth]{tex/images/results/rese_g1_512}  
 \end{subfigure}%
 \begin{subfigure}{.33\textwidth}
   \centering
-  \includegraphics[width=\textwidth]{tex/images/results/rese_g2}
+  \includegraphics[width=\textwidth]{tex/images/results/rese_g2_512}
 \end{subfigure}
 \begin{subfigure}{.33\textwidth}
   \centering
-  \includegraphics[width=\textwidth]{tex/images/results/rese_g3}
+  \includegraphics[width=\textwidth]{tex/images/results/rese_g3_512}
 \end{subfigure}
 
 \vspace{3mm}
 %second line
 \begin{subfigure}{.33\textwidth}
   \centering
-  \includegraphics[width=\textwidth]{tex/images/results/rese_g4}  
+  \includegraphics[width=\textwidth]{tex/images/results/rese_g4_512}  
 \end{subfigure}%
 \begin{subfigure}{.33\textwidth}
   \centering
-  \includegraphics[width=\textwidth]{tex/images/results/rese_g5}
+  \includegraphics[width=\textwidth]{tex/images/results/rese_g5_512}
 \end{subfigure}
 \begin{subfigure}{.33\textwidth}
   \centering
-  \includegraphics[width=\textwidth]{tex/images/results/rese_g6}
+  \includegraphics[width=\textwidth]{tex/images/results/rese_g6_512}
 \end{subfigure}
 
 \vspace{3mm}
 %third line
 \begin{subfigure}{.33\textwidth}
   \centering
-  \includegraphics[width=\textwidth]{tex/images/results/rese_g7}  
+  \includegraphics[width=\textwidth]{tex/images/results/rese_g7_512}  
 \end{subfigure}%
 \begin{subfigure}{.33\textwidth}
   \centering
-  \includegraphics[width=\textwidth]{tex/images/results/rese_g8}
+  \includegraphics[width=\textwidth]{tex/images/results/rese_g8_512}
 \end{subfigure}
 \begin{subfigure}{.33\textwidth}
   \centering
-  \includegraphics[width=\textwidth]{tex/images/results/rese_g9}
+  \includegraphics[width=\textwidth]{tex/images/results/rese_g9_512}
 \end{subfigure}
 
 \vspace{3mm}
 %fourth line
 \begin{subfigure}{.33\textwidth}
   \centering
-  \includegraphics[width=\textwidth]{tex/images/results/rese_g10}  
+  \includegraphics[width=\textwidth]{tex/images/results/rese_g10_512}  
 \end{subfigure}%
 \begin{subfigure}{.33\textwidth}
   \centering
-  \includegraphics[width=\textwidth]{tex/images/results/rese_g11}
+  \includegraphics[width=\textwidth]{tex/images/results/rese_g11_512}
 \end{subfigure}
 \begin{subfigure}{.33\textwidth}
   \centering
-  \includegraphics[width=\textwidth]{tex/images/results/rese_g12}
+  \includegraphics[width=\textwidth]{tex/images/results/rese_g12_512}
 \end{subfigure}
 
 \vspace{3mm}
 %last line
 \begin{subfigure}{.33\textwidth}
   \centering
-  \includegraphics[width=\textwidth]{tex/images/results/rese_g13}  
+  \includegraphics[width=\textwidth]{tex/images/results/rese_g13_512}  
 \end{subfigure}%
 
 \caption{Confusion matrices and metrics for 13 classifiers for each group trained individually.}
@@ -175,11 +175,10 @@ These results are comparable to the observations from the previous trial:
 
 % \item the network completely fails to detect group 4 (even worse than random guessing)
 \item it is more or less equal to random guessing when detecting group 11
-\item groups 1, 2, 5, 6, 7, 10 and 13 have relatively low precision leading to the higher number of false positives
+\item groups 1, 3, 4, 5, 6, 7, 10, 11 and 13 have lower precision leading to the higher number of false positives
 \item the results for the biggest groups 7, 12 and 13 are more promising. It shows, that we can differentiate them better with accuracy and precision above 65 to 70 \%
-\item group 2 can be well distinguished
-\item group 8 is detected reliably (the reason is the first MSB being 0)
-\item group 9 is detected reliably (the reasons are the moduli 11, 13, 17 and 19). However, the binary classifier overfitted to the small dataset introducing some ratio of false positives.
+\item we obtained good results for group 2, 8 and 9 given their strong distribution imprint over selected features
+\item group 9 is detected very reliably having less than 0.1 \% chance of incorrect classification
 
 \end{itemize}
 
@@ -189,42 +188,57 @@ We ran the voting classifier on the uniformly distributed dataset of 13 groups o
 
 \begin{itemize}
 
-\item the overall accuracy is 4.94 \% higher than naive Bayes
-\item the classifier gets more successful in identifying the large group 13, with the accuracy of 22.95 \% on the first guess and 73.21 \% when considering the first top 3 results. This is almost 18 \% better than the result of naive Bayes and 12 \% better than our previous model.
-\item it can detect group 8 with more accuracy (3.5 \% higher)
-\item it overfitted group 9 (because of its size). Nevertheless, we identified, that this is the only group, that has bias modulo 11, 13, 17 and 19. We suppose that this classifier would perform well even on a bigger sample of this group\footnote{Group 9 contains Infineon chips, which were liable to attack as reported in \cite{svenda_2}. The correct classification of such group could be useful for the potential attacker.}. 
+\item the overall accuracy is still higher than naive Bayes
+
+\item the classifier struggles with insufficient datasets for groups 1 and 6 where it is remarkably worse than naive Bayes
+
+\item it gets more successful in identifying large groups, especially groups 7, 12 and 13. Given the fact, that these groups produce the majority of keys on the internet makes this result more significant
+
+\item as expected from the confusion matrix, the classifier is reliable in recognizing the group 9 with almost 40 \% improvement over naive Bayes\footnote{Group 9 contains Infineon chips, which were liable to attack as reported in \cite{svenda_2}. The correct classification of such group could be useful for the potential attacker.}
 
 \end{itemize}
 
 \begin{table}[h]
 \centering
-\begin{tabular}{| r | c | c | c | r | }
+\begin{tabular}{| r | c | c | c |}
 \hline
-  Group & Top 1 match & Top 2 match & Top 3 match & \# of keys \\
-  \hline
- 1 & 58.30 \% & 89.20 \% & 97.06 \% & 93482 \\
- 2 & 85.57 \% & 98.02 \% & 99.62 \% & 136727 \\
- 3 & 15.28 \% & 32.07 \% & 52.50 \% & 200000 \\
- 4 & 47.96 \% & 59.15 \% & 64.03 \% & 50000 \\
- 5 & 39.82 \% & 69.73 \% & 85.47 \% & 200000 \\
- 6 & 49.81 \% & 74.32 \% & 86.73 \% & 150000 \\
- 7 & 55.21 \% & 76.15 \% & 90.36 \% & 200000 \\
- 8 & 93.54 \% & 94.81 \% & 95.74 \% & 200000 \\
- 9 & 100 \% & 100 \% & 100 \% & 114955 \\
- 10 & 33.22 \% & 57.60 \% & 79.44 \% & 129347 \\
- 11 & 0.34 \% & 23.59 \% & 47.16 \% & 189110 \\
- 12 & 25.04 \% & 28.95 \% & 42.07 \% & 199990 \\
- 13 & 22.95 \% & 53.84 \% & 73.21 \% & 191658 \\
- \hline
-TOTAL & 45.28 \% & 63.21 \% & 76.32 \% & 2055269 \\
+Group & Top 1 match                     & Top 2 match                     & Top 3 match                     \\
 \hline
+1     & 45.23 \% {\color[HTML]{9B9B9B} (39.56 \%)} & 60.10 \% {\color[HTML]{9B9B9B} (84.52 \%)} & 87.87 \% {\color[HTML]{9B9B9B} (95.22 \%)} \\
 
+2     & 70.79 \% {\color[HTML]{9B9B9B} (95.39 \%)} & 95.54 \% {\color[HTML]{9B9B9B} (98.41 \%)} & 99.29 \% {\color[HTML]{9B9B9B} (98.41 \%)} \\
+
+3     & 18.71 \% {\color[HTML]{9B9B9B} (17.75 \%)} & 41.58 \% {\color[HTML]{9B9B9B} (35.58 \%)} & 55.79 \% {\color[HTML]{9B9B9B} (42.85 \%)} \\
+
+4     & 34.08 \% {\color[HTML]{9B9B9B} (22.22 \%)} & 58.88 \% {\color[HTML]{9B9B9B} (54.57 \%)} & 74.88 \% {\color[HTML]{9B9B9B} (61.77 \%)} \\
+
+5     & 8.59 \% {\color[HTML]{9B9B9B}( 7.58 \%)}  & 30.64 \% {\color[HTML]{9B9B9B} (32.67 \%)} & 58.31 \% {\color[HTML]{9B9B9B} (63.99 \%)} \\
+
+6     & 23.44 \% {\color[HTML]{9B9B9B} (54.68 \%)} & 43.44 \% {\color[HTML]{9B9B9B} (80.31 \%)} & 55.55 \% {\color[HTML]{9B9B9B} (90.40 \%)} \\
+
+7     & 78.14 \% {\color[HTML]{9B9B9B} (63.38 \%)} & 93.75 \% {\color[HTML]{9B9B9B} (84.14 \%)} & 96.62 \% {\color[HTML]{9B9B9B} (90.01 \%)} \\
+
+8     & 93.53 \% {\color[HTML]{9B9B9B} (90.14 \%)} & 93.69 \% {\color[HTML]{9B9B9B} (92.22 \%)} & 94.54 \% {\color[HTML]{9B9B9B} (94.42 \%)} \\
+
+9     & 99.77 \% {\color[HTML]{9B9B9B} (60.36 \%)} & 99.97 \% {\color[HTML]{9B9B9B} (82.96 \%)} & 99.99 \% {\color[HTML]{9B9B9B} (94.48 \%)} \\
+
+10    & 45.61 \% {\color[HTML]{9B9B9B} (45.36 \%)} & 83.81 \% {\color[HTML]{9B9B9B} (54.34 \%)} & 94.68 \% {\color[HTML]{9B9B9B} (82.45 \%)} \\
+
+11    & 0.94 \% {\color[HTML]{9B9B9B}( 0.63 \%)}  & 19.87 \% {\color[HTML]{9B9B9B} (15.05 \%)} & 50.01 \% {\color[HTML]{9B9B9B} (41.46 \%)} \\
+
+12    & 24.21 \% {\color[HTML]{9B9B9B} (15.65 \%)} & 30.75 \% {\color[HTML]{9B9B9B} (30.29 \%)} & 41.90 \% {\color[HTML]{9B9B9B} (39.32 \%)} \\
+
+13    & 21.81 \% {\color[HTML]{9B9B9B} (11.77 \%)} & 49.36 \% {\color[HTML]{9B9B9B} (29.94 \%)} & 64.19 \% {\color[HTML]{9B9B9B} (55.35 \%)} \\
+
+\hline
+TOTAL & 41.12 \% {\color[HTML]{9B9B9B} (40.34 \%)} & 59.82 \% {\color[HTML]{9B9B9B} (59.62 \%)} & 73.36 \% {\color[HTML]{9B9B9B} (73.09 \%)} \\
+\hline                       
 \end{tabular}
 \caption{Accuracy table for a voting classifier of binary classifiers.}
 \label{table-binary-voter}
 \end{table}
 
-The voting classifier performs better in almost every aspect than the previous one apart from groups 6, 10 and 11, for which the user could use rather the first one. If we also included the CROCS's naive bayes classifier for classifying group 2 (in which it is superior to both of our classifiers), we would get even more accurate predictions.
+The voting classifier performs better than the previous one when classifying big groups. Looking at the precisions of the individual groups, one can combine the results of all of the three existing classifiers to obtain more accurate predictions.
 
 \subsection*{Group spliting}
 
