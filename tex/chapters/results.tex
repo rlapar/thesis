@@ -50,7 +50,7 @@ We used this approach mainly to find the optimal choice of the topology (meaning
 
 We were gradually testing topologies from zero up to two hidden layers, with the number of neurons being the powers of 2 starting from 8 up to 4096. The activation functions used were sigmoid, hyperbolic tangent, ReLU and leaky ReLU. This gives us around 160 different configurations to run, which is an ideal use case for cloud computing. Running for a couple of days, we were able to compare all these different configurations on the same datasets.
 
-As for the activation, the usage sigmoid resulted in lower overall accuracy (36.95 \% - 41.89 \%). Hyperbolic tangent and ReLU performed better (36.3 \% - 42.29 \% for tanh and 37.26 \% - 42.46 \% for ReLU), presumably because they are centered in 0. With different optimizers, the differences were negligible. In the end, we chose Adam optimizer. In conclusion, the choice of activation nor the optimizer did not rapidly impact the overall accuracy. 
+As for the activation, the usage of sigmoid resulted in lower overall accuracy (36.95 \% - 41.89 \%). Hyperbolic tangent and ReLU performed better (36.3 \% - 42.29 \% for tanh and 37.26 \% - 42.46 \% for ReLU), presumably because they are centered in 0. With different optimizers, the differences were negligible. In the end, we chose Adam optimizer. In conclusion, the choice of activation nor the optimizer did not rapidly impact the overall accuracy. 
 
 The choice of topology affected the accuracy more significantly. The sparse models with the lower number of neurons in the hidden layers (less than 32) performed worse (less than or around 40 \%). When adding the layer with at least one dense layer of 256+ neurons, the models usually reached the accuracy of up to 42 \%, no matter the activation or the optimizer.
 
@@ -58,7 +58,7 @@ The choice of topology affected the accuracy more significantly. The sparse mode
 
 We generated our training / valid and test data in the ratio of 60:20:20. All of these sets were disjoint. Training and validation sets were used during the training phase and the independent test set for the final evaluation and overall accuracy. However, even if the overall accuracy reached 40 \%, it happened, that the classifier was poorly trained, especially when the probability distribution of labels over the training set was not uniform. The huge class 13 overshadowed all the other classes. Based on the confusion matrix, we replicated the inferior entries in the training data to obtain uniform distribution. Experimenting with different uniform datasets, we set the optimal number of training epochs to 4. In the later epochs, the models were already overfitting the training data.
 
-Given this adjustments, we were able to train models to perform with an overall accuracy of more than 43 \%. In the figure \ref{comparison-results} we can see the comparison of the CROCS results and our model. Accuracy table consists of rows representing the individual groups, the bigger columns saying whether the group correctly classified within the top 1 (2, 3) results from the classifier and the smaller columns saying how many keys were used by the neural network. We can see that on some groups (like groups 6, 9, 11, 12, 13) it performed better than the previous classifier. On the other hand, it struggled with group 4.
+Given this adjustments, we were able to train models to perform with an overall accuracy of more than 43 \%. In figure \ref{comparison-results} we can see the comparison of the CROCS results and our model. Accuracy table consists of rows representing the individual groups, the bigger columns saying whether the group correctly classified within the top 1 (2, 3) results from the classifier and the smaller columns saying how many keys were used by the neural network. We can see that on some groups (like groups 6, 9, 11, 12, 13) it performed better than the previous classifier. On the other hand, it struggled with group 4.
 
 The model had one hidden layer of 256 ReLU neurons, the output layer with softmax activation and used categorical cross-entropy for a loss function. The training dataset had more than 1 million keys, with validation and test data of around 350 thousand keys. The model took around 2 hours to train on Metacentrum.
 
@@ -80,7 +80,7 @@ When comparing the Naive Bayes model and the optimized neural network we can see
 
 \item our classifier was able to increase the overall accuracy by almost 3 \% when compared to the methods used by CROCS lab and almost 10 \% when compared to the best results achieved in \cite{thesis_sekan}.
 
-\item a neural network is substantially better in classifying Group 9 (Yubikey 1 \& Infineon JTOP 80K). Given the recent problems with Infineon keys \cite{svenda_2}, discovering their keys with high probability could have been used for potential attack.
+\item a neural network is substantially better in classifying Group 9 (Yubikey 4 \& Infineon JTOP 80K). Given the recent problems with Infineon keys \cite{svenda_2}, discovering their keys with high probability could have been used for potential attack.
 
 \item it performs slightly better on groups 8, 10, 11, 12, 13. 
 
@@ -88,7 +88,7 @@ When comparing the Naive Bayes model and the optimized neural network we can see
 
 \item when using a batch of 5+ keys, it can better differentiate group 13 beating Naive Bayes by 17.64 \% with accuracy 73.2 \%. The group 13 contains the highest number of sources, so the bigger success rate applies to a bigger set of sources.
 
-\item the network has really struggled with the group 4. The main reason may have been insufficient data for this group (around 50K for 1024b and 200K for 512b). Therefore it was difficult to generate a balanced dataset containing this group.
+\item the network has struggled with the group 4. The main reason may have been insufficient data for this group (around 50K for 1024b and 200K for 512b). Therefore it was difficult to generate a balanced dataset containing this group.
 
 \end{itemize}
 
