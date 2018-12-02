@@ -1,20 +1,67 @@
 \chapter{Archive structure}
 
+The archive structure is shown in listing \ref{figure-structure}.
+
+\begin{listing}[ht]
+\begin{minted}[ framesep=2mm,
+                autogobble,
+                frame=lines]{shell}
+rsa-ml
+├── cli.py
+├── datasets
+│   ├── example
+│   └── full
+├── Dockerfile
+├── examples
+├── filters
+│   └── filter.json
+├── models
+│   ├── binary_classifiers
+│   └── classifier_example
+├── models.json
+├── README.md
+├── requirements.in
+├── requirements.txt
+├── results
+├── rsaml
+│   ├── core
+│   ├── models
+│   ├── settings
+│   ├── tasks
+│   ├── tools
+│   └── utils
+├── settings.yml
+└── sources
+    
+\end{minted}
+\caption{Archive structure}
+\label{figure-structure}
+\end{listing}
+
 \begin{itemize}
 
-\item \textbf{TODO} dataset cloud url
-\item \textbf{TODO} tree
+\item \texttt{cli.py} - the CLI application, run via `python3 cli.py`
+\item \texttt{datasets} - directory contains generated and example datasets
+\item \texttt{Dockerfile} - when running via docker
+\item \texttt{examples} - settings files for thesis examples
+\item \texttt{filters} - contains json filters
+\item \texttt{models} - contains trained models (binary classifiers and 13 groups classifier)
+\item \texttt{models.json} - model configuration for training
+\item \texttt{README.md} - contains url to full dataset and guide to run examples
+\item \texttt{requirements.in} and \texttt{requirements.txt} - python requirements generated via \texttt{pip-compile}\footnote{\url{https://pypi.org/project/pip-tools/}}
+\item \texttt{results} - directory to save results
+\item \texttt{rsaml} - python package contains:
+\begin{itemize}
+\item[•] \texttt{rsaml.core} - contains all internal logic and classes described in chapter \ref{chapter-implementation}, namely \texttt{analyzer.py, errors.py, feature\_maker.py, generator.py, loader.py, metrics.py}
+\item[•] \texttt{rsaml.models} - contains model interface, \texttt{keras} and \texttt{scikit} model interfaces and implementations plus utils to dynamically load and map models
+\item[•] \texttt{rsaml.settings} - CLI and YAML settings initialize
+\item[•] \texttt{rsaml.tasks} - tasks implementations (\texttt{analyze.py, classify.py, generate.py, scan.py, train.py})
+\item[•] \texttt{rsaml.tools} - external tools
+\item[•] \texttt{rsaml.utils} - general utils
+\end{itemize}
+\item \texttt{settings.yml} - default YAML file
+\item \texttt{sources} - JSON files used by \textit{generate} task (one for each bit length)
 
 \end{itemize}
-
-% python3 cli.py scan --scandir /media/radovan/Maxtor/Data/latest/sources/512 --filter filters/filter.json --output-json sources/512.json
-
-% python3 cli.py generate --sources-path sources/512.json --dataset --datapath datasets/example --shuffle --relabel --settings examples/setttings_generate.yml
-
-% python3 cli.py analyze --analyzed-csv datasets/example/test.csv --settings examples/settings_analyze.yml 
-
-% python3 cli.py train --dataset --incremental --datapath datasets/example --settings examples/settings_train.yml
-
-% python3 cli.py classify --classifier models/classifier_example --source-csv datasets/example/test.csv
 
 
