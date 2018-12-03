@@ -6,7 +6,7 @@ Some of the software libraries had the option of so-called FIPS module, which is
 
 Considering both of these options, we split our dataset into 64 distinct sources based on their version and whether or not they had the FIPS module activated when generating primes. Every source was represented by a couple of CSV files, with fields $n, e, d, p, q$ and $t$ (time of generation). Three key lengths were present (512b, 1024b and 2048b), with most of the data originated from 512b or 1024b.
 
-All in all, a total of more than 146 million keys were collected with roughly 75.5 million of 512b and 65.4 million of 1024b keys. These two datasets were used for machine learning and preparing classification models. A complete overview of the dataset can be seen in appendix \ref{appendix-dataset}.
+All in all, a total of more than 146 million keys were collected with roughly 75.5 million of 512b and 65.4 million of 1024b keys. These two datasets were used for machine learning and preparing classification models. A complete overview of the dataset can be seen in \autoref{appendix-dataset}.
 
 In the article by CROCS lab\cite{svenda_1}, different sources were merged into 13 disjoint groups using clustering on the mask of 9 selected bits. Using the Naive Bayes classifier, they were able to classify a random sample of keys with the accuracy of 40.34 \%. Therefore, in this thesis, we tried to pick up on these results and further extend the accuracy by using other classifiers while focusing specifically on neural networks.
 
@@ -31,7 +31,7 @@ As in the full CROCS report\cite{svenda_full}, we did a similar analysis on the 
 \end{itemize}
 
 \noindent
-Full results of modular analysis can be seen in appendix \ref{appendix-modular-analysis}.
+Full results of modular analysis can be seen in \autoref{appendix-modular-analysis}.
 
 \subsection{Bit analysis}
 
@@ -50,7 +50,7 @@ Another analysis focused on full key and its bits. Similarly, as in the previous
 \end{itemize}
 
 \noindent
-Full results of bit analysis can be seen in appendix \ref{appendix-bit-analysis}.
+Full results of bit analysis can be seen in \autoref{appendix-bit-analysis}.
 
 \subsection{Feature engineering}
 
@@ -70,7 +70,7 @@ Based on the previous analysis we extracted the following features from the publ
 The performance of the network was similar regardless of using the full key, or just the biased bits.
 
 \subsection{Source grouping}
-If we look closely on the full analysis in appendix \ref{appendix-analysis}, we can see that based on the feature engineering we can natively group sources, that share the same distribution. We obtain 13 groups\footnote{Same grouping was obtained by cluster analysis in \cite{svenda_1}}:
+If we look closely on the full analysis in \autoref{appendix-analysis}, we can see that based on the feature engineering we can natively group sources, that share the same distribution. We obtain 13 groups\footnote{Same grouping was obtained by cluster analysis in \cite{svenda_1}}:
 
 \vspace{5mm}
 

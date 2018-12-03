@@ -72,11 +72,11 @@ As our tool provides only command line interface, we chose the Click package\cit
 
 \section{Tasks}
 
-During the implementation process, several distinct tasks were implemented in order to work with the original dataset, prepare the data for models to train and then classify. Figure \ref{figure-model} shows the flow of the application and its data. We named these tasks \textbf{SCAN, ANALYZE, GENERATE, TRAIN} and \textbf{CLASSIFY}.
+During the implementation process, several distinct tasks were implemented in order to work with the original dataset, prepare the data for models to train and then classify. \autoref{figure-model} shows the flow of the application and its data. We named these tasks \textbf{SCAN, ANALYZE, GENERATE, TRAIN} and \textbf{CLASSIFY}.
 
 We obtained a dataset in the form of around 2000 CSV files. First of all, we wanted to automate extracting the keys from distinct files and assigning class labels to it. Therefore, the \textbf{SCAN} task was implemented. We used it mainly to transform given dataset, which was badly structured without naming convention and difficult to extract keys from into more compact one. The transformed dataset could be used more efficiently for analysis and generating new datasets.
 
-The newly generated compact dataset was then subjected to full analysis of features. For this purpose, the \textbf{ANALYZE} task was implemented. We used it to count the relative frequency of features, that we presented in section \ref{chapter-analysis}.
+The newly generated compact dataset was then subjected to full analysis of features. For this purpose, the \textbf{ANALYZE} task was implemented. We used it to count the relative frequency of features, that we presented in \autoref{chapter-analysis}.
 
 Another task \textbf{GENERATE} was used to prepare custom generated datasets for machine learning models. Its main purpose was to be able to generate datasets with different class labels, replicate keys in training dataset, skip groups, skip files, merge several groups into one and others. We used this task throughout the whole training process to create datasets for models and tune them if the model was struggling in training.
 
@@ -238,7 +238,7 @@ The advantage of such an approach is that using the same original dataset, the u
 \end{enumerate}
 
 \noindent
-All user's settings are specified in appendix \ref{appendix-generate}.
+All user's settings are specified in \autoref{appendix-generate}.
 
 \subsection{TRAIN task}
 
@@ -252,7 +252,7 @@ The \texttt{Loader} interface is a part of the core of the application. It provi
 
 \item \texttt{get\_data()} - loads the whole file into memory and returns the numpy arrays, that can be fetched into the model (was necessary when working with models from scikit learn, that could not work with python generators). This is not suitable for larger files as they often don't fit into memory at once.
 
-\item \texttt{get\_data\_generator()} - as mentioned in subsection \ref{python-generators}, when working with large files, it is more desirable to read them in chunks. Keras models do support training using python generators if we do provide one.
+\item \texttt{get\_data\_generator()} - as mentioned in \autoref{python-generators}, when working with large files, it is more desirable to read them in chunks. Keras models do support training using python generators if we do provide one.
 
 Reading the CSV in chunks using pandas, we extracted the features in every generator iteration and then yielded the data for the neural networks.
 
@@ -270,7 +270,7 @@ As we were using two types of classifiers (from \textit{sklearn} and \textit{ker
 \end{itemize}
 
 \noindent
-The feature extraction from individual keys was done by \texttt{FeatureMaker} class with features specified by the user. More details were mentioned in the subsection \ref{feature-maker}.
+The feature extraction from individual keys was done by \texttt{FeatureMaker} class with features specified by the user. More details were mentioned in \autoref{feature-maker}.
 
 \subsection*{Models}
 
@@ -292,7 +292,7 @@ When designing the models, the main focus was put on extensibility. We implement
 
 \end{itemize} 
 
-We implemented traditional classifiers from \texttt{scikit} library and multilayer perceptrons from \texttt{keras} library. For both of them, we implemented interfaces, that were direct children of the common \texttt{Model} interface. They implemented all the necessary interface methods to adapt them to used libraries. All the used models then inherited from their interface. The hierarchy can be seen in figure \ref{model-inheritance}.
+We implemented traditional classifiers from \texttt{scikit} library and multilayer perceptrons from \texttt{keras} library. For both of them, we implemented interfaces, that were direct children of the common \texttt{Model} interface. They implemented all the necessary interface methods to adapt them to used libraries. All the used models then inherited from their interface. The hierarchy can be seen in \autoref{model-inheritance}.
 
 \begin{figure}[H]
 
@@ -322,7 +322,7 @@ From \texttt{scikit} we implemented most of the models listed in the documentati
 \end{minted}
 
 \noindent
-The models are trained in epochs, and after the training ends, they are evaluated with metrics defined in section \ref{nn-metrics}.
+The models are trained in epochs, and after the training ends, they are evaluated with metrics defined in \autoref{nn-metrics}.
 
 \subsection{CLASSIFY task}
 
@@ -331,13 +331,13 @@ The last (and for the end user, the most important one) is the \textit{CLASSIFY}
 \section{Command line interface}
 \label{cli}
 
-We designed a simple CLI application using click library. The user can configure the application with the arguments or YAML configuration file (by default \textit{settings.yml}). Command line arguments have priority over YAML settings. For every task, the user can print help with the description of the task, an example of usage, arguments and yaml settings. The complete documentation with examples can be found in appendix \ref{appendix-running}.
+We designed a simple CLI application using click library. The user can configure the application with the arguments or YAML configuration file (by default \textit{settings.yml}). Command line arguments have priority over YAML settings. For every task, the user can print help with the description of the task, an example of usage, arguments and yaml settings. The complete documentation with examples can be found in \autoref{appendix-running}.
 
 \section{Multi platform development}
 
 As we are using the third party binary, that is necessary for shuffling the datasets in the \textit{GENERATE} task, the application needs to run in Linux Debian.
 
-We were developing the application on Debian and Mac OS X. To be able to run it in Mac OS X we had to use the Docker container as specified in the subsection \ref{docker}.
+We were developing the application on Debian and Mac OS X. To be able to run it in Mac OS X we had to use the Docker container as specified in \autoref{docker}.
 
 For this purpose we provided our code with simple dockerfile, that can run the application in its native environment on any platform:
 
@@ -355,8 +355,8 @@ COPY . .
 \end{minted}
 
 \noindent
-Example of usage can be found in appendix \ref{appendix-docker}.
+Example of usage can be found in \autoref{appendix-docker}.
 
 \section{Metacentrum}
 
-The final step of the implementation process was to run the code in the cloud. We used batch jobs\cite{metacentrum} that run in the CESNET cloud - Metacentrum\footnote{Distributed computing infrastructure. See \url{https://metavo.metacentrum.cz/en/about/index.html}}. One can simply run these scripts with more powerful resources that his local machine. We used it, in particular, to try many models in parallel, usually running for a couple of days. Batch jobs were run via a shell script. An example can be found in appendix \ref{appendix-metacentrum}.
+The final step of the implementation process was to run the code in the cloud. We used batch jobs\cite{metacentrum} that run in the CESNET cloud - Metacentrum\footnote{Distributed computing infrastructure. See \url{https://metavo.metacentrum.cz/en/about/index.html}}. One can simply run these scripts with more powerful resources that his local machine. We used it, in particular, to try many models in parallel, usually running for a couple of days. Batch jobs were run via a shell script. An example can be found in \autoref{appendix-metacentrum}.

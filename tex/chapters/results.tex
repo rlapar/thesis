@@ -40,11 +40,11 @@ GradientBoostingClassifier & 33.57 \% \\
 
 \section{Multi layer perceptrons}
 
-Before any models were trained, we performed an analysis of the dataset, applied feature engineering and extracted the features described in the subsection \ref{feature-engineering}. We took the whole key (as a binary vector of respective key length 512 / 1024 / 2048) and all its moduli up to 30. Modulus was also represented as a binary vector. For example, the feature modulo 7 could result in 6 different vectors, each having a different index set to 1 and representing one of 6 possible remainders. In the end, we obtained one large binary vector which we fed to the models.
+Before any models were trained, we performed an analysis of the dataset, applied feature engineering and extracted the features described in \autoref{feature-engineering}. We took the whole key (as a binary vector of respective key length 512 / 1024 / 2048) and all its moduli up to 30. Modulus was also represented as a binary vector. For example, the feature modulo 7 could result in 6 different vectors, each having a different index set to 1 and representing one of 6 possible remainders. In the end, we obtained one large binary vector which we fed to the models.
 
 \subsection*{Grid search}
 
-Apart from the features extracted from the analysis, all the other tried features seem to have a uniform distribution within its domain. On the first look, the model to be used is not apparent, so we decided to use the \textbf{grid search}\footnote{described in section \ref{section-grid-search}} for finding the most suitable topology and configuration. 
+Apart from the features extracted from the analysis, all the other tried features seem to have a uniform distribution within its domain. On the first look, the model to be used is not apparent, so we decided to use the \textbf{grid search}\footnote{see \autoref{section-grid-search}} for finding the most suitable topology and configuration. 
 
 We used this approach mainly to find the optimal choice of the topology (meaning the number of hidden layers and the number of neurons within each layer), the selected activations in each layer and optimizers.
 
@@ -58,7 +58,7 @@ The choice of topology affected the accuracy more significantly. The sparse mode
 
 We generated our training / valid and test data in the ratio of 60:20:20. All of these sets were disjoint. Training and validation sets were used during the training phase and the independent test set for the final evaluation and overall accuracy. However, even if the overall accuracy reached 40 \%, it happened, that the classifier was poorly trained, especially when the probability distribution of labels over the training set was not uniform. The huge class 13 overshadowed all the other classes. Based on the confusion matrix, we replicated the inferior entries in the training data to obtain uniform distribution. Experimenting with different uniform datasets, we set the optimal number of training epochs to 4. In the later epochs, the models were already overfitting the training data.
 
-Given this adjustments, we were able to train models to perform with an overall accuracy of more than 43 \%. In figure \ref{comparison-results} we can see the comparison of the CROCS results and our model. Accuracy table consists of rows representing the individual groups, the bigger columns saying whether the group correctly classified within the top 1 (2, 3) results from the classifier and the smaller columns saying how many keys were used by the neural network. We can see that on some groups (like groups 6, 9, 11, 12, 13) it performed better than the previous classifier. On the other hand, it struggled with group 4.
+Given this adjustments, we were able to train models to perform with an overall accuracy of more than 43 \%. In \autoref{comparison-results} we can see the comparison of the CROCS results and our model. Accuracy table consists of rows representing the individual groups, the bigger columns saying whether the group correctly classified within the top 1 (2, 3) results from the classifier and the smaller columns saying how many keys were used by the neural network. We can see that on some groups (like groups 6, 9, 11, 12, 13) it performed better than the previous classifier. On the other hand, it struggled with group 4.
 
 The model had one hidden layer of 256 ReLU neurons, the output layer with softmax activation and used categorical cross-entropy for a loss function. The training dataset had more than 1 million keys, with validation and test data of around 350 thousand keys. The model took around 12 hours to train on Metacentrum.
 
@@ -184,7 +184,7 @@ These results are comparable to the observations from the previous trial:
 
 Given the fact that every classifier can be trained individually, we obtained the best results when putting them all together in the voting process. The same input was fed to 13 different binary classifiers, that outputted the probability, that the key belongs to the respective group. The classifier with the highest probability was voted as a winner.
 
-We ran the voting classifier on the uniformly distributed dataset of 13 groups of bit length 1024. Table \ref{table-binary-voter} shows the obtained results. The notable observations of this run are:
+We ran the voting classifier on the uniformly distributed dataset of 13 groups of bit length 1024. \autoref{table-binary-voter} shows the obtained results. The notable observations of this run are:
 
 \begin{itemize}
 

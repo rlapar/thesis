@@ -112,7 +112,7 @@ Basic activation function, transforms potential into a binary signal. However, t
 \end{figure}
 
 \noindent
-Smoothened binary step activation function, maps a real value potential into $(0,1)$ range. One of the most popular functions in the ANN's, mainly in the early era of machine learning. It introduces non-linearity. It suffers from vanishing gradient problem\footnote{described in subsection \ref{vanishing_gradient}} and have slow convergence. Furthermore, it is not zero centered, which make optimization harder.
+Smoothened binary step activation function, maps a real value potential into $(0,1)$ range. One of the most popular functions in the ANN's, mainly in the early era of machine learning. It introduces non-linearity. It suffers from vanishing gradient problem\footnote{described in \autoref{vanishing_gradient}} and have slow convergence. Furthermore, it is not zero centered, which make optimization harder.
  
 \subsection*{TanH}
 
@@ -297,7 +297,7 @@ It is widely used in linear regression analysis.
 
 Another very popular loss function, which we used is \textit{cross entropy loss}\cite{cross_entropy}. It is a straightforward modification of a basic likelihood function with logarithms over the probability $p$. It penalizes heavily for being very confident and very wrong. 
 
-In order to transform the output vector $\overrightarrow{Y}$ into the probability distribution $P(\overrightarrow{Y})$ we usually use a softmax activation function in the output layer (as described in section \ref{subsection:softmax}). With the output transformed into a probability vector, we can use the cross entropy:
+In order to transform the output vector $\overrightarrow{Y}$ into the probability distribution $P(\overrightarrow{Y})$ we usually use a softmax activation function in the output layer (as described in \autoref{subsection:softmax}). With the output transformed into a probability vector, we can use the cross entropy:
 
 $$ E(\overrightarrow{w}) =  \sum_{k=1}^{p} E_k(\overrightarrow{w}) = \sum_{k=1}^{p} \sum_{j \in \text{OL}} - d(\overrightarrow{X_k})_j \ln{P(y_j(\overrightarrow{w}, \overrightarrow{X_k}))}$$
 
@@ -419,7 +419,7 @@ In the field of machine learning and specifically the problem of statistical cla
 \end{figure}
 
 \noindent
-In Figure \ref{conf_matrix}, we can see the classification matrix for four classes. The correctly classified cases lie on the main diagonal. Several observations about our model can be seen. First of all, our model almost always misclassifies class \textit{C} as class \textit{D}. Furthermore, the model has difficulties distinguishing between classes \textit{A} and \textit{B} (it would be a good idea to merge these classes).
+In \autoref{conf_matrix}, we can see the classification matrix for four classes. The correctly classified cases lie on the main diagonal. Several observations about our model can be seen. First of all, our model almost always misclassifies class \textit{C} as class \textit{D}. Furthermore, the model has difficulties distinguishing between classes \textit{A} and \textit{B} (it would be a good idea to merge these classes).
 
 \subsection{Metrics}
 

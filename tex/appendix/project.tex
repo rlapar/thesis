@@ -1,6 +1,6 @@
 \chapter{Archive structure}
 
-The archive structure is shown in listing \ref{figure-structure}.
+The archive structure is shown in \autoref{figure-structure}.
 
 \begin{listing}[ht]
 \begin{minted}[ framesep=2mm,
@@ -52,7 +52,7 @@ rsa-ml
 \item \texttt{results} - directory to save results
 \item \texttt{rsaml} - python package contains:
 \begin{itemize}
-\item[•] \texttt{rsaml.core} - contains all internal logic and classes described in chapter \ref{chapter-implementation}, namely \texttt{analyzer.py, errors.py, feature\_maker.py, generator.py, loader.py, metrics.py}
+\item[•] \texttt{rsaml.core} - contains all internal logic and classes described in \autoref{chapter-implementation}, namely \texttt{analyzer.py, errors.py, feature\_maker.py, generator.py, loader.py, metrics.py}
 \item[•] \texttt{rsaml.models} - contains model interface, \texttt{keras} and \texttt{scikit} model interfaces and implementations plus utils to dynamically load and map models
 \item[•] \texttt{rsaml.settings} - CLI and YAML settings initialize
 \item[•] \texttt{rsaml.tasks} - tasks implementations (\texttt{analyze.py, classify.py, generate.py, scan.py, train.py})
