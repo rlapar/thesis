@@ -7,15 +7,15 @@ As a part of this thesis, we designed a simple tool able to work with our datase
 
 \subsection{Pandas}
 
-To work with CSV files of a length of more than 30 million lines, one does need to use the appropriate framework for it. We chose the pandas\cite{pandas} library. Actively supported today by a community, it is a BSD-licensed library providing high-performance, low-level optimized and easy-to-use data structures for data analysis for \textit{Python} programming language. Pandas stores its data in so-called dataframes\cite{pandas-df}, which are working on the same principle as in the \textit{R} language. They can store two-dimensional size-mutable heterogeneous tabular data and allow arithmetic operations to align on both row and column. Furthermore, pandas can work with huge CSV files using python generators. We used it to read/write CSV files and transform dataframes to fit the neural networks. 
+To work with CSV files of a length of more than 30 million lines, one does need to use the appropriate framework for it. We chose the pandas \cite{pandas} library. Actively supported today by a community, it is a BSD-licensed library providing high-performance, low-level optimized and easy-to-use data structures for data analysis for \textit{Python} programming language. Pandas stores its data in so-called dataframes \cite{pandas-df}, which are working on the same principle as in the \textit{R} language. They can store two-dimensional size-mutable heterogeneous tabular data and allow arithmetic operations to align on both row and column. Furthermore, pandas can work with huge CSV files using python generators. We used it to read/write CSV files and transform dataframes to fit the neural networks. 
 
 \subsection{TensorFlow}
 
-TensorFlow\cite{tensorflow} is an open source software library for high performance numerical computation. Tensorflow was developed by the Google Brain team for internal Google use. It was released under the Apache 2.0 open source license on November 9, 2015 Its flexible architecture allows easy deployment of computation across a variety of platforms (CPUs, GPUs, TPUs), and from desktops to clusters of servers to mobile and edge devices. Originally developed by researchers and engineers from the Google Brain team within Google’s AI organization, it comes with strong support for machine learning and deep learning and the flexible numerical computation core is used across many other scientific domains. Its core is written in C++ and CUDA, thus it is highly optimized for parallel computations on GPU.
+TensorFlow \cite{tensorflow} is an open source software library for high performance numerical computation. Tensorflow was developed by the Google Brain team for internal Google use. It was released under the Apache 2.0 open source license on November 9, 2015 Its flexible architecture allows easy deployment of computation across a variety of platforms (CPUs, GPUs, TPUs), and from desktops to clusters of servers to mobile and edge devices. Originally developed by researchers and engineers from the Google Brain team within Google’s AI organization, it comes with strong support for machine learning and deep learning and the flexible numerical computation core is used across many other scientific domains. Its core is written in C++ and CUDA, thus it is highly optimized for parallel computations on GPU.
 
 \subsection{Keras}
 
-Keras\cite{keras} is arguably one of the most popular python tensorflow frontends for a quick and simple definition of networks. In comparison to tensorflow, Keras is very layer-oriented and has an intuitive user-friendly API. All models, that we trained were defined over Keras framework. The simplicity of Keras framework can be shown in an example of a concrete model, that we used. The whole model is defined in just 5 lines of code:
+Keras \cite{keras} is arguably one of the most popular python tensorflow frontends for a quick and simple definition of networks. In comparison to tensorflow, Keras is very layer-oriented and has an intuitive user-friendly API. All models, that we trained were defined over Keras framework. The simplicity of Keras framework can be shown in an example of a concrete model, that we used. The whole model is defined in just 5 lines of code:
 
 \begin{minted}[ framesep=2mm,
                 autogobble,
@@ -33,13 +33,13 @@ model.compile(loss=keras.losses.categorical_crossentropy,
 
 \subsection{Scikit-learn}
  
-For comparison to traditional models, we chose the sklearn\cite{scikit} package, the native package for basic machine learning and evaluation. We used classifiers such as KNN, Naive Bayes, decision trees or support vector classifiers\footnote{List of all possible classifiers can be found in \url{http://scikit-learn.org/stable/supervised\_learning.html\#supervised-learning}}.  
+For comparison to traditional models, we chose the sklearn \cite{scikit} package, the native package for basic machine learning and evaluation. We used classifiers such as KNN, Naive Bayes, decision trees or support vector classifiers\footnote{List of all possible classifiers can be found in \url{http://scikit-learn.org/stable/supervised\_learning.html\#supervised-learning}}.  
 
 \subsection{Docker}
 
 \label{docker}
 
-Initially, the tool was developed on the local Linux machine, because it was dependent on third-party Unix binaries, as well as it was later deployed to Metacentrum cloud, which is Unix native. However, we needed to develop and run it also on other architectures. One approach is to install virtual machines on the desired host, setup Unix environment and then run the tool. The better, more lightweight approach would be to use containers, namely Docker\cite{docker}.
+Initially, the tool was developed on the local Linux machine, because it was dependent on third-party Unix binaries, as well as it was later deployed to Metacentrum cloud, which is Unix native. However, we needed to develop and run it also on other architectures. One approach is to install virtual machines on the desired host, setup Unix environment and then run the tool. The better, more lightweight approach would be to use containers, namely Docker \cite{docker}.
 
 Docker encapsulates the application, running environment, dependencies and architecture into a self-contained unit that can run anywhere. It is a more lightweight virtual machine because containers in comparison to virtual machines share the host system’s kernel with other containers[Kas16]. By defining dockerfile, we provided any user the option to run this tool on its own local machine.
 
@@ -47,7 +47,7 @@ Docker encapsulates the application, running environment, dependencies and archi
 
 \label{python-generators}
 
-During the training process, we were working with huge files with over a couple of millions of lines. Even as raw strings, that could take up to 2 GB of memory. Furthermore, we transformed the keys into numpy arrays, which was infeasible memory-wise as it could easily take more than 20-25 GB of RAM. Rather than allocating such memory in Metacentrum, one can provide a better solution - python generators\cite{python-gen}. 
+During the training process, we were working with huge files with over a couple of millions of lines. Even as raw strings, that could take up to 2 GB of memory. Furthermore, we transformed the keys into numpy arrays, which was infeasible memory-wise as it could easily take more than 20-25 GB of RAM. Rather than allocating such memory in Metacentrum, one can provide a better solution - python generators \cite{python-gen}. 
 
 Generator functions allow you to declare a function that behaves like an iterator, i.e. it can be used in a loop. The main advantage is that the data is fetched during the runtime as the iteration of the for loop is always called on demand.
 
@@ -68,7 +68,7 @@ This simple example shows how to generate natural numbers. Instead of natural nu
 
 \subsection{Click}
 
-As our tool provides only command line interface, we chose the Click package\cite{click}, a command line interface creation kit. It provides decorator options for defining arguments and options with validation and automatic help generation. As a framework, it suited the necessary needs for the application and sped up the development process.
+As our tool provides only command line interface, we chose the Click package \cite{click}, a command line interface creation kit. It provides decorator options for defining arguments and options with validation and automatic help generation. As a framework, it suited the necessary needs for the application and sped up the development process.
 
 \section{Tasks}
 
@@ -359,4 +359,4 @@ Example of usage can be found in \autoref{appendix-docker}.
 
 \section{Metacentrum}
 
-The final step of the implementation process was to run the code in the cloud. We used batch jobs\cite{metacentrum} that run in the CESNET cloud - Metacentrum\footnote{Distributed computing infrastructure. See \url{https://metavo.metacentrum.cz/en/about/index.html}}. One can simply run these scripts with more powerful resources that his local machine. We used it, in particular, to try many models in parallel, usually running for a couple of days. Batch jobs were run via a shell script. An example can be found in \autoref{appendix-metacentrum}.
+The final step of the implementation process was to run the code in the cloud. We used batch jobs \cite{metacentrum} that run in the CESNET cloud - Metacentrum\footnote{Distributed computing infrastructure. See \url{https://metavo.metacentrum.cz/en/about/index.html}}. One can simply run these scripts with more powerful resources that his local machine. We used it, in particular, to try many models in parallel, usually running for a couple of days. Batch jobs were run via a shell script. An example can be found in \autoref{appendix-metacentrum}.

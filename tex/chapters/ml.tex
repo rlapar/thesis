@@ -5,7 +5,7 @@
 
 Artificial neurons, also called perceptrons were developed in the late 1950s and early 1960s, firstly introduced by Rosenblatt in his paper \cite{perceptron}. His idea was to develop a model capable of simulating the activities present in the human brain cell, in order to create artificial intelligence. As it turned out, simulating the brain using such a simple model as the perceptron is impossible. However, later research discovered a considerable potential in the field of classification and regression, which lead to the design of modern artificial neural networks as we know them today.
 
-Perceptron\cite{nn_book} is a simple probabilistic model, which takes several weighted real inputs and produces one real output.
+Perceptron \cite{nn_book} is a simple probabilistic model, which takes several weighted real inputs and produces one real output.
 
 \vspace{3mm}
 
@@ -44,7 +44,7 @@ An activation function $\sigma: \mathbb{R} \rightarrow \mathbb{R}$ is applied to
 \end{figure}
 
 \noindent
-Some desirable properties\cite{wiki:activation} of an activation function include:
+Some desirable properties \cite{wiki:activation} of an activation function include:
 
 \begin{itemize}
 
@@ -57,7 +57,7 @@ Some desirable properties\cite{wiki:activation} of an activation function includ
 \end{itemize}
 
 \noindent
-Here are some examples of activation functions\cite{activation_list}:
+Here are some examples of activation functions \cite{activation_list}:
 
 \subsection*{Identity}
 
@@ -223,7 +223,7 @@ This is useful when modeling a particular probability distribution. It is used a
 
 \section{Artificial neural network}
 
-Artificial neural network\cite{nn_book} or feed-forward neural network is a directed acyclic graph of artificial neurons organized into several layers, where the following holds:
+Artificial neural network \cite{nn_book} or feed-forward neural network is a directed acyclic graph of artificial neurons organized into several layers, where the following holds:
 
 \begin{itemize}
 
@@ -278,7 +278,7 @@ The output of neuron $j$ is $y_j = \sigma_j (\xi_j)$. The exception is the input
 
 \subsection{Loss function}
 
-At its core, a loss function\cite{loss} is a simple method of evaluating how well the model adapts to the dataset. The higher the loss value is, the more inaccurate the model is. The main goal of the training process is to find the global minima of the loss function. Furthermore, the loss function is differentiable.
+At its core, a loss function \cite{loss} is a simple method of evaluating how well the model adapts to the dataset. The higher the loss value is, the more inaccurate the model is. The main goal of the training process is to find the global minima of the loss function. Furthermore, the loss function is differentiable.
 
 Given the set of training data $\tau = \lbrace (\overrightarrow{X_k}, d(\overrightarrow{X_k})) \vert k = 1, \cdots, p \rbrace$, where $\overrightarrow{X_k}$ is a feature, that is fed to the network and $d(\overrightarrow{X_k})$ is a label, that we would like to get as an output from the network.
 
@@ -295,7 +295,7 @@ It is widely used in linear regression analysis.
 
 \subsection*{Cross entropy}
 
-Another very popular loss function, which we used is \textit{cross entropy loss}\cite{cross_entropy}. It is a straightforward modification of a basic likelihood function with logarithms over the probability $p$. It penalizes heavily for being very confident and very wrong. 
+Another very popular loss function, which we used is \textit{cross entropy loss} \cite{cross_entropy}. It is a straightforward modification of a basic likelihood function with logarithms over the probability $p$. It penalizes heavily for being very confident and very wrong. 
 
 In order to transform the output vector $\overrightarrow{Y}$ into the probability distribution $P(\overrightarrow{Y})$ we usually use a softmax activation function in the output layer (as described in \autoref{subsection:softmax}). With the output transformed into a probability vector, we can use the cross entropy:
 
@@ -303,7 +303,7 @@ $$ E(\overrightarrow{w}) =  \sum_{k=1}^{p} E_k(\overrightarrow{w}) = \sum_{k=1}^
 
 \subsection{Gradient descent and backpropagation}
 
-Stochastic gradient descent\cite{deep_learning_SGD} and its variants are probably the most used optimization algorithms for machine learning in general. To update weights according to the given loss function, we need to compute the gradient at any given point on the function in the hyperplane. The gradient vector points towards the closest local minimum. It is the direction in which we want to update our weights.
+Stochastic gradient descent \cite{deep_learning_SGD} and its variants are probably the most used optimization algorithms for machine learning in general. To update weights according to the given loss function, we need to compute the gradient at any given point on the function in the hyperplane. The gradient vector points towards the closest local minimum. It is the direction in which we want to update our weights.
 
 The learning algorithm is computing the sequence of weight vectors $\overrightarrow{w}^{(0)}, \overrightarrow{w}^{(1)}, \overrightarrow{w}^{(2)}, \cdots$, where:
 
@@ -400,7 +400,7 @@ Very simple, but very crucial mechanism used in machine learning is to define th
 
 \label{vanishing_gradient}
 
-The \textit{vanishing gradient problem}\cite{vanishing_gradient} is a difficulty found in training ANN's. The problem is, that in some cases the gradient will be vanishingly small with the impact on weight update. It gets more apparent with many-layered feedforward networks as well as with recurrent networks. Activation functions such as \textit{hyperbolic tangent} and \textit{sigmoid} suffer from vanishing gradient, while others like ReLU or Leaky ReLU do not.
+The \textit{vanishing gradient problem} \cite{vanishing_gradient} is a difficulty found in training ANN's. The problem is, that in some cases the gradient will be vanishingly small with the impact on weight update. It gets more apparent with many-layered feedforward networks as well as with recurrent networks. Activation functions such as \textit{hyperbolic tangent} and \textit{sigmoid} suffer from vanishing gradient, while others like ReLU or Leaky ReLU do not.
 
 \section{Model evaluation}
 \label{nn-metrics}
@@ -409,7 +409,7 @@ After the training process, a huge emphasis is put into the model evaluation. Wi
 
 \subsection{Confusion matrix}
 
-In the field of machine learning and specifically the problem of statistical classification, a \textit{confusion matrix}\cite{conf_matrix} is a two-dimensional matrix $n \times n$, where $n$ is the number of classes. Each row of the matrix represents the instances in a predicted class while each column represents the instances in an actual class. It is the most verbose output of the evaluation. We can see the wrongly classified classes, but also the classes which the model misclassified into. 
+In the field of machine learning and specifically the problem of statistical classification, a \textit{confusion matrix} \cite{conf_matrix} is a two-dimensional matrix $n \times n$, where $n$ is the number of classes. Each row of the matrix represents the instances in a predicted class while each column represents the instances in an actual class. It is the most verbose output of the evaluation. We can see the wrongly classified classes, but also the classes which the model misclassified into. 
 
 \begin{figure}[h]
 \centering
@@ -468,7 +468,7 @@ We define the four metrics as followed:
 \section{Grid search}
 \label{section-grid-search}
 
-In this thesis, we used the method called \textbf{grid search}\cite{grid-search}. When there are a couple of hyperparameters, the common practice
+In this thesis, we used the method called \textbf{grid search} \cite{grid-search}. When there are a couple of hyperparameters, the common practice
 is to perform a grid search. For each hyperparameter, the user selects a
 small finite set of possible values to explore. The grid search algorithm
 then trains models for every joint specification of hyperparameter
