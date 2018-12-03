@@ -11,7 +11,7 @@ To work with CSV files of a length of more than 30 million lines, one does need 
 
 \subsection{TensorFlow}
 
-TensorFlow \cite{tensorflow} is an open source software library for high performance numerical computation. Tensorflow was developed by the Google Brain team for internal Google use. It was released under the Apache 2.0 open source license on November 9, 2015 Its flexible architecture allows easy deployment of computation across a variety of platforms (CPUs, GPUs, TPUs), and from desktops to clusters of servers to mobile and edge devices. Originally developed by researchers and engineers from the Google Brain team within Google’s AI organization, it comes with strong support for machine learning and deep learning and the flexible numerical computation core is used across many other scientific domains. Its core is written in C++ and CUDA, thus it is highly optimized for parallel computations on GPU.
+TensorFlow \cite{tensorflow} is an open source software library for high-performance numerical computation. Tensorflow was developed by the Google Brain team for internal Google use. It was released under the Apache 2.0 open source license on November 9, 2015. Its flexible architecture allows easy deployment of computation across a variety of platforms (CPUs, GPUs, TPUs), and from desktops to clusters of servers to mobile and edge devices. Originally developed by researchers and engineers from the Google Brain team within Google’s AI organization, it comes with strong support for machine learning and deep learning, and the flexible numerical computation core is used across many other scientific domains. Its core is written in C++ and CUDA, thus it is highly optimized for parallel computations on GPU.
 
 \subsection{Keras}
 
@@ -76,7 +76,7 @@ During the implementation process, several distinct tasks were implemented in or
 
 We obtained a dataset in the form of around 2000 CSV files. First of all, we wanted to automate extracting the keys from distinct files and assigning class labels to it. Therefore, the \textbf{SCAN} task was implemented. We used it mainly to transform given dataset, which was badly structured without naming convention and difficult to extract keys from into more compact one. The transformed dataset could be used more efficiently for analysis and generating new datasets.
 
-The newly generated compact dataset was then subjected to full analysis of features. For this purpose, the \textbf{ANALYZE} task was implemented. We used it to count the relative frequency of features, that we presented in \autoref{chapter-analysis}.
+The newly generated compact dataset was then subjected to full analysis of features. For this purpose, the \textbf{ANALYZE} task was implemented. We used it to count the relative frequency of features that we presented in \autoref{chapter-analysis}.
 
 Another task \textbf{GENERATE} was used to prepare custom generated datasets for machine learning models. Its main purpose was to be able to generate datasets with different class labels, replicate keys in training dataset, skip groups, skip files, merge several groups into one and others. We used this task throughout the whole training process to create datasets for models and tune them if the model was struggling in training.
 
@@ -208,7 +208,7 @@ One of the most important tasks we had to implement was the \textit{GENERATE} ta
 \item relabel individual groups and merge several groups together to decrease the number of labels used
 \item skip any source or the whole group of sources
 \item take an arbitrary number of keys per group
-\item take an arbitrary number of keys per line (meaning taking several keys as one line in target CSV file), this reflect to the model having more keys from the same group in one training step
+\item take an arbitrary number of keys per line (meaning taking several keys as one line in the target CSV file), this reflects to the model having more keys from the same group in one training step
 \item multiply keys in training data (useful for sampling, when a group has a limited amount of keys), this proved to be essential to create uniform training datasets
 
 \end{itemize}
@@ -326,7 +326,7 @@ The models are trained in epochs, and after the training ends, they are evaluate
 
 \subsection{CLASSIFY task}
 
-The last (and for the end user, the most important one) is the \textit{CLASSIFY} task. The user compares trained models to target CSV file and can either evaluate the model based on the labels given in the CSV file (similarly as in \textit{TRAIN} task) or can generate new labels for his dataset (useful for tagging unknown data).
+The last (and for the end user, the most important one) is the \textit{CLASSIFY} task. The user compares trained models to the target CSV file and can either evaluate the model based on the labels given in the CSV file (similarly as in \textit{TRAIN} task) or can generate new labels for his dataset (useful for tagging unknown data).
 
 \section{Command line interface}
 \label{cli}

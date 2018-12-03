@@ -82,7 +82,7 @@ python3 cli.py analyze --help-task
 \end{minted}
 
 \noindent
-The example below show the usage of the analyze task. First of all, setup YAML:
+The example below shows the usage of the analyze task. First of all, setup YAML:
 
 \begin{minted}[ framesep=2mm,
                 autogobble,
@@ -152,7 +152,7 @@ This will run the analyze task and on the \texttt{<PATH/TO/CSV>} file, that have
 \end{minted}
 
 \noindent
-Feature counter shows the counts for features per each group (\texttt{group.feature.value}). Here we can see, that group 2 has bias towards the remainder 1 when divided by 5. The group counter shows the counts for groups per each feature (\texttt{feature.value.group}). Here we can see, that even though the group 2 has bias towards 1 and group 1 is uniformly distributed modulo 5, there is higher chance of getting group 1 than 2. The result could mean, that the neural network would be biased towards the group 1, if this would be the training data.
+Feature counter shows the counts for features per each group (\texttt{group.feature.value}). Here we can see, that group 2 has a bias towards the remainder 1 when divided by 5. The group counter shows the counts for groups per each feature (\texttt{feature.value.group}). Here we can see, that even though the group 2 has a bias towards 1 and group 1 is uniformly distributed modulo 5, there is a higher chance of getting group 1 than 2. The result could mean, that the neural network would be biased towards the group 1, if this would be the training data.
 
 
 \section{GENERATE}
@@ -202,7 +202,7 @@ python3 cli.py generate --help-task
 \end{minted}
 
 \noindent
-The example below was used to generate a uniform dataset for 13 groups from our  modified dataset. YAML configuration:
+The example below was used to generate a uniform dataset for 13 groups from our modified dataset. YAML configuration:
 
 \begin{minted}[ framesep=2mm,
                 autogobble,
@@ -391,7 +391,7 @@ python3 cli.py classify --help-task
 \end{minted}
 
 \noindent
-The YAML configuration is similar to train task (fileds \textit{common} and \texttt{fm}). To run the classifier on custom dataset and evaluate its performance:
+The YAML configuration is similar to train task (fileds \textit{common} and \texttt{fm}). To run the classifier on a custom dataset and evaluate its performance:
 
 \begin{minted}[ framesep=2mm,
                 autogobble,
@@ -418,7 +418,7 @@ python3 cli.py classify --classifier <PATH_TO_CLASSIFIER> \
 \section{Running in docker environment}
 \label{appendix-docker}
 
-When not on a Debian machine, one can run the application in the docker environment. The user has to bind the used volumes for dataset, results and generated data. User then builds the container and runs it interactivelly by the following commands:
+When not on a Debian machine, one can run the application in the docker environment. The user has to bind the used volumes for dataset, results and generated data. The user then builds the container and runs it interactively by the following commands:
 
 \begin{minted}[ framesep=2mm,
                 autogobble,
@@ -436,7 +436,7 @@ docker run -v <path_to_dataset>:/opt/dataset \
 \section{Running on metacentrum}
 \label{appendix-metacentrum}
 
-To run the application on Metacenturm we run the shell script, that:
+To run the application on Metacenturm, we run the shell script, that:
 
 \begin{itemize}
 

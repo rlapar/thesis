@@ -2,7 +2,7 @@
 \label{chapter-dataset}
 
 For this thesis, we were provided with the dataset consisting of more than 30 sources collected from different software libraries, hardware authentication devices (or cards) and HSM's\footnote{Hardware security modules}. 
-Some of the software libraries had the option of so-called FIPS module, which is a security standard, that put some requirements on generated primes and their distribution, namely available in \textit{PGP SDK 4}, \textit{Libgcrypt} and \textit{OpenSSL}. Furthermore, every source had one or more development versions. 
+Some of the software libraries had the option of so-called FIPS module, which is a security standard, that put some requirements on generated primes and their distribution, namely available in \textit{PGP SDK 4}, \textit{Libgcrypt}, and \textit{OpenSSL}. Furthermore, every source had one or more development versions. 
 
 Considering both of these options, we split our dataset into 64 distinct sources based on their version and whether or not they had the FIPS module activated when generating primes. Every source was represented by a couple of CSV files, with fields $n, e, d, p, q$ and $t$ (time of generation). Three key lengths were present (512b, 1024b and 2048b), with most of the data originated from 512b or 1024b.
 
@@ -26,12 +26,12 @@ As in the full CROCS report \cite{svenda_full}, we did a similar analysis on the
 
 \item \textit{mod 4} - sources 1, 2, 3 (G\&D SmartCafe) 4 (GNU Crypto 2.0.1) 6, 7, 8, 9 (NXP J2A*, NXPJ3A*, NXP JCOP 41 V2.2.1), 10 (Oberthur Cosmo Dual 72K) and 19, 20, 21 were always giving a remainder of 1. Sources that were giving a remainder of 1 modulo 3 and 4 are using Blum integers.
 
-\item \textit{module 11} - sources 16, 17, 18 (Infineon, Yubikey and Yubikey Nano) were giving only remainders of 1 or 10. Sources 11, 12, 13, 14, 19, 20 had slight bias towards the remainder of 1.
+\item \textit{module 11} - sources 16, 17, 18 (Infineon, Yubikey and Yubikey Nano) were giving only remainders of 1 or 10. Sources 11, 12, 13, 14, 19, 20 had a slight bias towards the remainder of 1.
 
 \end{itemize}
 
 \noindent
-Full results of modular analysis can be seen in \autoref{appendix-modular-analysis}.
+Full results of the modular analysis can be seen in \autoref{appendix-modular-analysis}.
 
 \subsection{Bit analysis}
 
@@ -41,9 +41,9 @@ Another analysis focused on full key and its bits. Similarly, as in the previous
 
 \item \textbf{1st MSB} was always 1 (for bit length padding) with one exception of source 15 (PGP SDK FIPS 4), which contained a majority of its keys with shorter bit length.
 
-\item \textbf{2nd - 4th MSB} could distinguish a lot of groups (i.e. 16-18 or 1-3), because of wider probability distribution.
+\item \textbf{2nd - 4th MSB} could distinguish a lot of groups (i.e. 16-18 or 1-3), because of the wider probability distribution.
 
-\item \textbf{5th - 6th MSB} still had slight bias in probability distribution for some groups (4, 19-21, 31-40)
+\item \textbf{5th - 6th MSB} still had a slight bias in probability distribution for some groups (4, 19-21, 31-40)
 
 \item \textbf{2nd LSB} could distinguish mostly groups that were using Blum primes (1-4, 6-10, 19-21)
 

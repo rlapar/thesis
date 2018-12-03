@@ -384,7 +384,7 @@ The problems of an online algorithm:
 \begin{itemize}
 
 \item not suitable for parallelism
-\item can behave weirdly, because it is not taking the direct path to minimum
+\item can behave weirdly because it is not taking the direct path to minimum
 
 \end{itemize}
 
@@ -400,7 +400,7 @@ Very simple, but very crucial mechanism used in machine learning is to define th
 
 \label{vanishing_gradient}
 
-The \textit{vanishing gradient problem} \cite{vanishing_gradient} is a difficulty found in training ANN's. The problem is, that in some cases the gradient will be vanishingly small with the impact on weight update. It gets more apparent with many-layered feedforward networks as well as with recurrent networks. Activation functions such as \textit{hyperbolic tangent} and \textit{sigmoid} suffer from vanishing gradient, while others like ReLU or Leaky ReLU do not.
+The \textit{vanishing gradient problem} \cite{vanishing_gradient} is a difficulty found in training ANN's. The problem is that in some cases the gradient will be vanishingly small with the impact on weight update. It gets more apparent with many-layered feedforward networks as well as with recurrent networks. Activation functions such as \textit{hyperbolic tangent} and \textit{sigmoid} suffer from vanishing gradient, while others like ReLU or Leaky ReLU do not.
 
 \section{Model evaluation}
 \label{nn-metrics}
@@ -455,11 +455,11 @@ We define the four metrics as followed:
 
 \begin{itemize}
 
-\item \textbf{accuraccy} - is the standard metric for classifiers, we take the ratio of correctly classified data to the whole dataset. The problem with accuracy is, that it suffers from unbalanced datasets, where the bigger groups can artificially increase accuracy.
+\item \textbf{accuraccy} - is the standard metric for classifiers, we take the ratio of correctly classified data to the whole dataset. The problem with accuracy is that it suffers from unbalanced datasets, where the bigger groups can artificially increase accuracy.
 
 \item \textbf{precision} - talks about how precise the model is out of positive predictions and how many are actual positives. It is useful to use when the cost of false positive is high.
 
-\item \textbf{recall} - works the other way around, where we calculate how many of positives are really true positives and not just false negatives. It is useful to use when the cost of false negative is high.
+\item \textbf{recall} - works the other way around, where we calculate how many positives are indeed true positives and not just false negatives. It is useful to use when the cost of false negative is high.
 
 \item \textbf{f1 score} - is a balance between precision and recall and serves as an alternative to the accuracy
 
