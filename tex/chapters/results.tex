@@ -1,9 +1,15 @@
 \chapter{Results}
 \label{chapter-results}
 
-Various models were tried using our application. The results were then compared to the existing ones from the CROCS research. We started with simple models from \texttt{scikit} library and smaller datasets (of around 65000 samples). We were able to reach accuracy ranging from 7.5 - 33.5 \% on average (comparable to \cite{thesis_sekan}):
+Before any models were trained, we performed an analysis of the dataset, applied feature engineering and extracted the features described in \autoref{feature-engineering}. We took the whole key (as a binary vector of respective key length 512 / 1024 / 2048) and all its moduli up to 30. Modulus was also represented as a binary vector. For example, the feature modulo 7 could result in 6 different vectors, each having a different index set to 1 and representing one of 6 possible remainders. In the end, we obtained one large binary vector\footnote{For example for 512b keys we had input vector with 836 binary inputs} which we fed to the models. 
 
-\begin{figure}[H]
+The model maps the vector onto the probability distribution over 13 groups defined in \autoref{chapter-grouping} and chooses the group with the highest probability (argmax top layer). However, the model also checks both the first and the second candidate (which we refer to as \textit{Top 2 match}) and the first candidates (which we refer to as \textit{Top 3 match}).
+
+\section{Traditional models}
+
+Various models were tried using our application. The results were then compared to the existing ones from the CROCS research. We started with simple models from \texttt{scikit} library and smaller datasets (of around 65000 samples). We were able to reach accuracy ranging from 7.5 - 33.5 \% on average (comparable to \cite{thesis_sekan}). The overview of models and their average accuracies is shown in \autoref{figure-scikit}.
+
+\begin{figure}
 
 \centering
 
@@ -36,12 +42,12 @@ GradientBoostingClassifier & 33.57 \% \\
 \hline
 \end{tabular}
 
+\caption{Scikit models average accuracies}
+\label{figure-scikit}
+
 \end{figure}
 
 \section{Multi layer perceptrons}
-
-Before any models were trained, we performed an analysis of the dataset, applied feature engineering and extracted the features described in \autoref{feature-engineering}. We took the whole key (as a binary vector of respective key length 512 / 1024 / 2048) and all its moduli up to 30. Modulus was also represented as a binary vector. For example, the feature modulo 7 could result in 6 different vectors, each having a different index set to 1 and representing one of 6 possible remainders. In the end, we obtained one large binary vector which we fed to the models.
-
 \subsection*{Grid search}
 
 Apart from the features extracted from the analysis, all the other tried features seem to have a uniform distribution within its domain. On the first look, the model to be used is not apparent, so we decided to use the \textbf{grid search}\footnote{see \autoref{section-grid-search}} for finding the most suitable topology and configuration. 
