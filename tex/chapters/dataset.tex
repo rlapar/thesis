@@ -4,7 +4,7 @@
 For this thesis, we were provided with the dataset consisting of more than 30 sources collected from different software libraries, hardware authentication devices (or cards) and HSM's\footnote{Hardware security modules}. 
 Some of the software libraries had the option of so-called FIPS module, which is a security standard, that put some requirements on generated primes and their distribution, namely available in \textit{PGP SDK 4}, \textit{Libgcrypt}, and \textit{OpenSSL}. Furthermore, every source had one or more development versions. 
 
-Considering both of these options, we split our dataset into 64 distinct sources based on their version and whether or not they had the FIPS module activated when generating primes. Every source was represented by a couple of CSV files, with fields $n, e, d, p, q$ and $t$ (time of generation). Three key lengths were present (512b, 1024b and 2048b), with most of the data originated from 512b or 1024b.
+Considering both of these options, we split our dataset into 64 distinct sources based on their version and whether or not they had the FIPS module activated when generating primes. Every source was represented by several CSV files, with fields $n, e, d, p, q$ and $t$ (time of generation). Three key lengths were present (512b, 1024b and 2048b), with most of the data originated from 512b or 1024b.
 
 All in all, a total of more than 146 million keys were collected with roughly 75.5 million of 512b and 65.4 million of 1024b keys. These two datasets were used for machine learning and preparing classification models. A complete overview of the dataset can be seen in \autoref{appendix-dataset}.
 
@@ -35,7 +35,7 @@ Full results of the modular analysis can be seen in \autoref{appendix-modular-an
 
 \subsection{Bit analysis}
 
-Another analysis focused on full key and its bits. Similarly, as in the previous one, we computed the relative frequency (or probability of 0) on every bit position with each source. This kind of analysis took a more significant amount of time and needed to be computed distributively. It took a couple of hours compared to the estimated time of up to one week when computing on the local machine. The analysis showed a significant bias in the first 6 most significant bits, mostly:
+Another analysis focused on full key and its bits. Similarly, as in the previous one, we computed the relative frequency (or probability of 0) on every bit position with each source. This kind of analysis took a more significant amount of time and needed to be computed distributively. It took several hours compared to the estimated time of up to one week when computing on the local machine. The analysis showed a significant bias in the first 6 most significant bits, mostly:
 
 \begin{itemize}
 

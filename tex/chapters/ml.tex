@@ -76,6 +76,7 @@ Here are some examples of activation functions \cite{activation_list}:
 \noindent
 Effectively remain the potential unchanged. 
 
+      
 \subsection*{Binary step}
 
 \begin{figure}[H]
@@ -335,13 +336,11 @@ The learning algorithm is computing the sequence of weight vectors $\overrightar
 \end{itemize}
 
 \noindent
-While the feed-forward phase was evaluated from the input layer towards the output layer, the weight update is done in the different direction. Starting from the output layer, we are using the partial derivatives from the layer above to evaluate the current layer. This process is also known as \textit{backpropagation}.
-
-There are two general types of weight update algorithms:
+While the feed-forward phase was evaluated from the input layer towards the output layer, the weight update is done in the different direction. Starting from the output layer, we are using the partial derivatives from the layer above to evaluate the current layer. This process is also known as \textit{backpropagation}. There are two general types of weight update algorithms:
 
 \subsection*{Batch algorithm}
 
-It is the approach described above. It takes a batch of data points in each and computes only one weight update for all of these points together. The advantages include:
+It is the approach described above. It takes a batch of data points in each step and computes only one weight update for all of these points together. We call this sample a minibatch \cite{nn-minibatch} of examples. The minibatch size is typically chosen to be a relatively small number of examples depending on the training set size\footnote{In our application, the minibatch size was ranging from 32 up to 2048}. The advantages include:
 
 \begin{itemize}
 
@@ -468,7 +467,7 @@ We define the four metrics as followed:
 \section{Grid search}
 \label{section-grid-search}
 
-In this thesis, we used the method called \textbf{grid search} \cite{grid-search}. When there are a couple of hyperparameters, the common practice
+In this thesis, we used the method called \textbf{grid search} \cite{grid-search}. When there are several hyperparameters, the common practice
 is to perform a grid search. For each hyperparameter, the user selects a
 small finite set of possible values to explore. The grid search algorithm
 then trains models for every joint specification of hyperparameter
