@@ -59,46 +59,7 @@ Some desirable properties \cite{wiki:activation} of an activation function inclu
 \noindent
 Here are some examples of activation functions \cite{activation_list}:
 
-\subsection*{Identity}
-
-\begin{figure}[H]
-\raggedright
-\begin{subfigure}{.25\textwidth}
-  \centering
-  \[ f(x) = x \]
-\end{subfigure}%
-\begin{subfigure}{.25\textwidth}
-  \centering
-  \includegraphics[width=\textwidth]{tex/images/activation/identity}
-\end{subfigure}
-\end{figure}
-
-\noindent
-Effectively remain the potential unchanged. 
-
-      
-\subsection*{Binary step}
-
-\begin{figure}[H]
-\raggedright
-\begin{subfigure}{.35\textwidth}
-  \centering
-   \[
-f(x) = \begin{cases}
-       0 & x < 0 \\
-       1 & x \geq 0 \\
-     \end{cases} \]
-\end{subfigure}%
-\begin{subfigure}{.25\textwidth}
-  \centering
-  \includegraphics[width=\textwidth]{tex/images/activation/binstep}
-\end{subfigure}
-\end{figure}
-
-\noindent
-Basic activation function, transforms potential into a binary signal. However, this function is not differentiable.
-      
-\subsection*{Sigmoid}
+\subsection*{Sigmoid and tanh}
 
 \begin{figure}[H]
 \raggedright
@@ -111,11 +72,6 @@ Basic activation function, transforms potential into a binary signal. However, t
   \includegraphics[width=\textwidth]{tex/images/activation/sigmoid}
 \end{subfigure}
 \end{figure}
-
-\noindent
-Smoothened binary step activation function, maps a real value potential into $(0,1)$ range. One of the most popular functions in the ANN's, mainly in the early era of machine learning. It introduces non-linearity. It suffers from vanishing gradient problem\footnote{described in \autoref{vanishing_gradient}} and have slow convergence. Furthermore, it is not zero centered, which make optimization harder.
- 
-\subsection*{TanH}
 
 \begin{figure}[H]
 \raggedright
@@ -130,6 +86,8 @@ Smoothened binary step activation function, maps a real value potential into $(0
 \end{figure}
 
 \noindent
+Sigmoid is a smoothened binary step activation function, which maps a real value potential into $(0,1)$ range. One of the most popular functions in the ANN's, mainly in the early era of machine learning. It introduces non-linearity. It suffers from vanishing gradient problem\footnote{described in \autoref{vanishing_gradient}} and have slow convergence. Furthermore, it is not zero centered, which make optimization harder.
+ 
 Unlike sigmoid, hyperbolic tangent is zero centered. It usually performs better than sigmoid. However, it stills suffers from vanishing gradient problem.
 
 \subsection*{Rectified linear unit (ReLU)}
@@ -153,27 +111,6 @@ f(x) = \begin{cases}
 \noindent
 One of the most popular function in recent years. As opposed to previous ones, it does not have an issue with vanishing gradient. It is simple and efficient. The limitation is that it should only be used within hidden layers of a model, often combined with softmax in the output layer. It turned out to be very useful in deep learning, where traditional activation functions struggle. For example in \cite{relu_faster}, the convolutional network was able to converge six times faster with ReLU, than with tanh.
 
-\subsection*{Leaky ReLU}
-
-\begin{figure}[H]
-\raggedright
-\begin{subfigure}{.38\textwidth}
-  \centering
-  \[
-f(x) = \begin{cases}
-       0.01x & x < 0 \\
-       1 & x \geq 0 \\
-     \end{cases} \]  
-\end{subfigure}%
-\begin{subfigure}{.25\textwidth}
-  \centering
-  \includegraphics[width=\textwidth]{tex/images/activation/lrelu}
-\end{subfigure}
-\end{figure}
-
-\noindent
-One issue present in ReLU is that it allows the gradient to die off, which is not necessarily a bad thing, though it may result in dead neurons that will never activate on specific data points. To counter this, leaky ReLU's were introduced. To keep the updates alive, they add a small slope into their negative parts (usually with the factor of around 0.01).
-   
 \subsection*{Randomized ReLU}
 
 \begin{figure}[H]
@@ -193,8 +130,8 @@ f(r, x) = \begin{cases}
 \end{figure}
 
 \noindent
-Another variant of ReLU randomizes the factor in leaky ReLU's.
-
+One issue present in ReLU is that it allows the gradient to die off, which is not necessarily a bad thing, though it may result in dead neurons that will never activate on specific data points. To counter this, leaky ReLU's were introduced. To keep the updates alive, they add a small slope into their negative parts (usually with the factor of around 0.01). To generalize, randomized ReLU's take this factor as a random number in an interval $[0,1)$.
+   
 \subsection*{Softmax}
 \label{subsection:softmax}
 
