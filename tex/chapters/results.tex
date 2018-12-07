@@ -64,7 +64,7 @@ The choice of topology affected the accuracy more significantly. The sparse mode
 
 We generated our training / valid and test data in the ratio of 60:20:20. All of these sets were disjoint. Training and validation sets were used during the training phase and the independent test set for the final evaluation and overall accuracy. However, even if the overall accuracy reached 40 \%, it happened, that the classifier was poorly trained, especially when the probability distribution of labels over the training set was not uniform. The huge class 13 overshadowed all the other classes. Based on the confusion matrix, we replicated the inferior entries in the training data to obtain uniform distribution. Experimenting with different uniform datasets, we set the optimal number of training epochs to 4. In the later epochs, the models were already overfitting the training data.
 
-Given this adjustments, we were able to train models to perform with an overall accuracy of more than 43 \%. In \autoref{comparison-results} we can see the comparison of the CROCS results and our model. Accuracy table consists of rows representing the individual groups, the bigger columns saying whether the group correctly classified within the top 1 (2, 3) results from the classifier and the smaller columns saying how many keys were used by the neural network. We can see that on some groups (like groups 6, 9, 11, 12, 13) it performed better than the previous classifier. On the other hand, it struggled with group 4.
+Given these adjustments, we were able to train models to perform with an overall accuracy of more than 43 \%. In \autoref{comparison-results} we can see the comparison of the CROCS results and our model. Accuracy table consists of rows representing the individual groups, the bigger columns saying whether the group correctly classified within the top 1 (2, 3) results from the classifier and the smaller columns saying how many keys were used by the neural network. We can see that on some groups (like groups 6, 9, 11, 12, 13) it performed better than the previous classifier. On the other hand, it struggled with group 4.
 
 The model had one hidden layer of 256 ReLU neurons, the output layer with softmax activation and used categorical cross-entropy for a loss function. The training dataset had more than 1 million keys, with validation and test data of around 350 thousand keys. The model took around 12 hours to train on Metacentrum.
 
@@ -100,7 +100,7 @@ When comparing the Naive Bayes model and the optimized neural network we can see
 
 \subsection*{Binary classifiers}
 
-Based on the previous general model results we can see, that some groups can be detected with high probability even using one single key. We tried to train binary classifiers to differentiate these classes better:
+Based on the previous general model results we can see, that some groups can be detected with high probability even using one single key. We tried to train binary classifiers to differentiate these classes better. The evaluations for each binary classifier are shown in \autoref{figure-binary-confusion-matrix}.
 
 \begin{figure}[H]
 
@@ -170,7 +170,8 @@ Based on the previous general model results we can see, that some groups can be 
   \includegraphics[width=\textwidth]{tex/images/results/rese_g13_512}  
 \end{subfigure}%
 
-\caption{Confusion matrices and metrics for 13 binary classifiers for each group trained individually.}
+\caption{Confusion matrices and metrics for 13 binary classifiers trained individually for each group.}
+\label{figure-binary-confusion-matrix}
 
 \end{figure}
 
@@ -188,9 +189,9 @@ These results are comparable to the observations from the previous trial:
 
 \end{itemize}
 
-Given the fact that every classifier can be trained individually, we obtained the best results when putting them all together in the voting process. The same input was fed to 13 different binary classifiers, that outputted the probability, that the key belongs to the respective group. The classifier with the highest probability was voted as a winner.
+Given the fact that every classifier can be trained individually, we obtained the best results when putting them all together and adding an argmax layer on top. We refer to this classifier as binary argmax classifier. The same input was fed to 13 different binary classifiers, that outputted the probability, that the key belongs to the respective group. The argmax layer chose the highest probability (or first two probabilities in case of \textit{Top 2 match}, first three probabilities in case of \textit{Top 3 match}).
 
-We ran the voting classifier on the uniformly distributed dataset of 13 groups of bit length 1024. \autoref{table-binary-voter} shows the obtained results. The notable observations of this run are:
+We ran binary argmax classifier on the uniformly distributed dataset of 13 groups of bit length 512. \autoref{table-binary-voter} shows the obtained results. The notable observations of this run are:
 
 \begin{itemize}
 
@@ -242,11 +243,11 @@ Group & Top 1 match                     & Top 2 match                     & Top 
 TOTAL & 41.12 \% {\color[HTML]{9B9B9B} (40.34 \%)} & 59.82 \% {\color[HTML]{9B9B9B} (59.62 \%)} & 73.36 \% {\color[HTML]{9B9B9B} (73.09 \%)} \\
 \hline                       
 \end{tabular}
-\caption{Accuracy table for a voting classifier of binary classifiers.}
+\caption{Accuracy table for binary argmax classifier.}
 \label{table-binary-voter}
 \end{table}
 
-The voting classifier performs better than the previous one when classifying big groups. Looking at the precisions of the individual groups, one can combine the results of all of the three existing classifiers to obtain more accurate predictions.
+The argmax binary classifier performs better than the previous one when classifying big groups. Looking at the precisions of the individual groups, one can combine the results of all of the three existing classifiers to obtain more accurate predictions.
 
 \subsection*{Group spliting}
 
