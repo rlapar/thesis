@@ -86,7 +86,7 @@ Here are some examples of activation functions \cite{activation_list}:
 \end{figure}
 
 \noindent
-Sigmoid is a smoothened binary step activation function, which maps a real value potential into $(0,1)$ range. One of the most popular functions in the ANN's, mainly in the early era of machine learning. It introduces non-linearity. It suffers from vanishing gradient problem\footnote{described in \autoref{vanishing_gradient}} and have slow convergence. Furthermore, it is not zero centered, which make optimization harder.
+Sigmoid is a smoothened binary step activation function, which maps a real value potential into $(0,1)$ range. One of the most popular functions in the ANN's, mainly in the early era of machine learning. It introduces non-linearity. It suffers from vanishing gradient problem\footnote{see \autoref{vanishing_gradient}} and have slow convergence. Furthermore, it is not zero centered, which make optimization harder.
  
 Unlike sigmoid, hyperbolic tangent is zero centered. It usually performs better than sigmoid. However, it stills suffers from vanishing gradient problem.
 
@@ -273,7 +273,7 @@ The learning algorithm is computing the sequence of weight vectors $\overrightar
 \end{itemize}
 
 \noindent
-While the feed-forward phase was evaluated from the input layer towards the output layer, the weight update is done in the different direction. Starting from the output layer, we are using the partial derivatives from the layer above to evaluate the current layer. This process is also known as \textit{backpropagation}. There are two general types of weight update algorithms:
+While the feed-forward phase was evaluated from the input layer towards the output layer, the weight update is done in the different direction. Starting from the output layer, we are using the partial derivatives from the layer above to evaluate the current layer. This process is also known as \textbf{backpropagation}. There are two general types of weight update algorithms:
 
 \subsection*{Batch algorithm}
 
@@ -330,7 +330,7 @@ There are widely known issues when working with neural networks, which have to b
 
 \subsection{Dataset split}
 
-Very simple, but very crucial mechanism used in machine learning is to define three separate sets (\textit{train}, \textit{valid} and \textit{test}). These sets have to be disjoint. It is necessary to use \textit{valid} set during the training process and different \textit{test} set for model evaluation, once the model is trained. The reason behind is that always the model will have a slight bias towards the \textit{valid} test compared to the independent \textit{test} set.
+Very simple, but very crucial mechanism used in machine learning is to define three separate sets (\textit{train}, \textit{valid} and \textit{test}). These sets have to be disjoint. \textit{Train} set and \textit{valid} set are used during the training process. Train samples are fed to the networks, while the valid samples are used to evaluate the model during the run. It is necessary to use different \textit{test} set for model evaluation, once the model is trained. The reason behind is that always the model will have a slight bias towards the \textit{valid} set compared to the independent \textit{test} set.
 
 \subsection{Vanishing gradient problem}
 
@@ -349,34 +349,30 @@ In the field of machine learning and specifically the problem of statistical cla
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.37\textwidth]{tex/images/conf_matrix}
+\includegraphics[width=0.3\textwidth]{tex/images/conf_matrix}
 \caption{Example of a classification matrix.}
 \label{conf_matrix}
 \end{figure}
 
 \noindent
-In \autoref{conf_matrix}, we can see the classification matrix for four classes. The correctly classified cases lie on the main diagonal. Several observations about our model can be seen. First of all, our model almost always misclassifies class \textit{C} as class \textit{D}. Furthermore, the model has difficulties distinguishing between classes \textit{A} and \textit{B} (it would be a good idea to merge these classes).
+In \autoref{conf_matrix}, we can see the classification matrix for four classes. The correctly classified samples lie on the main diagonal. Several observations about our model can be seen. First of all, our model almost always misclassifies class \textit{C} as class \textit{D}. Furthermore, the model has difficulties distinguishing between classes \textit{A} and \textit{B} (it would be a good idea to merge these classes).
 
 \subsection{Metrics}
 
 There are four standard metrics \cite{nn-metrics} for model evaluation: \textbf{accuracy}, \textbf{precision}, \textbf{recall}, and \textbf{f1}. Apart from the standard metrics accuracy, the other metrics represent the cost of having false positives and false negatives. Let us take a simple binary confusion matrix:
 
-\begin{table}[h]
+\begin{table}[H]
 \centering
+\scalebox{0.8}{%
 \begin{tabular}{|r|c c|}
-
 \hline 
 & $A$ & $\neg A$ \\
 \hline 
 $A$ & TP & FP \\
 $\neg A$ & FN & TN\footnotemark\\
-
 \hline
-
-\end{tabular}
-
+\end{tabular}}
 \end{table}
-
 \footnotetext{true positive / false positive / false negative / true negative}
 
 \noindent
@@ -409,7 +405,7 @@ is to perform a grid search. For each hyperparameter, the user selects a
 small finite set of possible values to explore. The grid search algorithm
 then trains models for every joint specification of hyperparameter
 values in the Cartesian product of the set of values for individual
-hyperparameters. The experiment then yields the best model and hyperparameter choice. 
+hyperparameters. The experiment then yields the optimal hyperparameter combination. 
 
 
 
