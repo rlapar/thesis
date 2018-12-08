@@ -5,6 +5,8 @@ Before any models were trained, we performed an analysis of the dataset, applied
 
 The model maps the vector onto the probability distribution over 13 groups defined in \autoref{chapter-grouping} and chooses the group with the highest probability (argmax top layer). However, the model also checks both the first and the second candidate (which we refer to as \textit{Top 2 match}) and the first candidates (which we refer to as \textit{Top 3 match}).
 
+When evaluating the final neural networks models, we performed at least triple cross-validation of the model to avoid inaccuracies caused by incorrectly generated datasets. With each training, we generate a new distinct dataset, so the samples would not repeat if possible. This is of course not possible for small groups, but it works well with huge groups like group 12 or 13. In the thesis, we present the average results of the triple cross-validation.
+
 \section{Traditional models}
 
 Various models were tried using our application. The results were then compared to the existing ones from the CROCS research. We started with simple models from \texttt{scikit} library and smaller datasets (of around 65000 samples). We were able to reach accuracy ranging from 7.5 - 33.5 \% on average (comparable to \cite{thesis_sekan}). The overview of models and their average accuracies is shown in \autoref{figure-scikit}.
@@ -56,9 +58,11 @@ We used this approach mainly to find the optimal choice of the topology (meaning
 
 We were gradually testing topologies from zero up to two hidden layers, with the number of neurons being the powers of 2 starting from 8 up to 4096. The activation functions used were sigmoid, hyperbolic tangent, ReLU, and leaky ReLU. This gives us around 160 different configurations to run, which is an ideal use case for cloud computing. Running for several days, we were able to compare all these different configurations on the same datasets.
 
-As for the activation, the usage of sigmoid resulted in lower overall accuracy (36.95 \% - 41.89 \%). Hyperbolic tangent and ReLU performed better (36.3 \% - 42.29 \% for tanh and 37.26 \% - 42.46 \% for ReLU), presumably because they are centered in 0. With different optimizers, the differences were negligible. In the end, we chose Adam optimizer. In conclusion, the choice of activation nor the optimizer did not rapidly impact the overall accuracy. 
+As for the activation, the sigmoid and hyperbolic tangent performed similarly. Sigmoid reached an average accuracy $\overline{x}$ of 40.23 \% with a standard deviation $s$ of 0.17 \%. Hyperbolic tangent performed slightly better with $\overline{x} = 40.97 \%$ with a $s= 0.30 \%$. Leaky ReLU and ReLU achieved the best results with $\overline{x}= 41.70 \%$  and a $s= 0.17 \%$. With different optimizers, the differences were negligible. 
 
-The choice of topology affected the accuracy more significantly. The sparse models with the lower number of neurons in the hidden layers (less than 32) performed worse (less than or around 40 \%). When adding the layer with at least one dense layer of 256+ neurons, the models usually reached the accuracy of up to 42 \%, no matter the activation or the optimizer.
+With the choice of topology, the sparse models with the lower number of neurons in hidden layers (less than 32) performed worse. They reached an average of 40.20 \% with a standard deviation of 0.17 \%. Denser models performed better with an average of 41.26 \% and standard deviation of 0.19 \%.
+
+The results for individual observations were averaged on around 40 different runs in grid search. In conclusion, we chose the model with one hidden layer of 256 neurons with ReLU activations and Adam optimizer.
 
 \subsection*{Training fine-tuning}
 
@@ -189,9 +193,9 @@ These results are comparable to the observations from the previous trial:
 
 \end{itemize}
 
-Given the fact that every classifier can be trained individually, we obtained the best results when putting them all together and adding an argmax layer on top. We refer to this classifier as binary argmax classifier. The same input was fed to 13 different binary classifiers, that outputted the probability, that the key belongs to the respective group. The argmax layer chose the highest probability (or first two probabilities in case of \textit{Top 2 match}, first three probabilities in case of \textit{Top 3 match}).
+Given the fact that every classifier can be trained individually, we obtained the best results when putting them all together and adding an argmax layer on top. We refer to this classifier as \textit{binary argmax classifier}. The same input was fed to 13 different binary classifiers, that outputted the probability, that the key belongs to the respective group. The argmax layer chose the highest probability (or first two probabilities in case of \textit{Top 2 match}, first three probabilities in case of \textit{Top 3 match}).
 
-We ran binary argmax classifier on the uniformly distributed dataset of 13 groups of bit length 512. \autoref{table-binary-voter} shows the obtained results. The notable observations of this run are:
+We ran \textit{binary argmax classifier} on the uniformly distributed dataset of 13 groups of bit length 512. \autoref{table-binary-voter} shows the obtained results. The notable observations of this run are:
 
 \begin{itemize}
 
@@ -247,7 +251,7 @@ TOTAL & 41.12 \% {\color[HTML]{9B9B9B} (40.34 \%)} & 59.82 \% {\color[HTML]{9B9B
 \label{table-binary-voter}
 \end{table}
 
-The argmax binary classifier performs better than the previous one when classifying big groups. Looking at the precisions of the individual groups, one can combine the results of all of the three existing classifiers to obtain more accurate predictions.
+The \textit{argmax binary classifier} performs better than the previous one when classifying big groups. Looking at the precisions of the individual groups, one can combine the results of all of the three existing classifiers to obtain more accurate predictions.
 
 \subsection*{Group spliting}
 
