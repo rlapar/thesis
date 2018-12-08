@@ -469,9 +469,9 @@ module add tensorflow-1.5.0-cpu-python3
 module add python34-modules-gcc
 
 # install click
-export PYTHONUSERBASE=$DATADIR/.local
-export PATH=$PYTHONUSERBASE/bin:$PATH
-export PYTHONPATH=$PYTHONUSERBASE/lib/python3.4/site-packages:$PYTHONPATH
+export PUSER=$DATADIR/.local
+export PATH=$PUSER/bin:$PATH
+export PYTHONPATH=$PUSER/lib/python3.4/site-packages:$PYTHONPATH
 pip install click --user --process-dependency-links
 
 # export for click
