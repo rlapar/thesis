@@ -42,7 +42,7 @@ For comparison to traditional models, we chose the sklearn \cite{scikit} package
 
 Initially, the tool was developed on the local Linux machine, because it was dependent on third-party Unix binaries, as well as it was later deployed to Metacentrum cloud, which is Unix native. However, we needed to develop and run it also on other architectures. One approach is to install virtual machines on the desired host, setup Unix environment and then run the tool. The better, more lightweight approach would be to use containers, namely Docker \cite{docker}.
 
-Docker encapsulates the application, running environment, dependencies and architecture into a self-contained unit that can run anywhere. It is a more lightweight virtual machine because containers in comparison to virtual machines share the host system’s kernel with other containers[Kas16]. By defining dockerfile, we provided any user the option to run this tool on its own local machine.
+Docker encapsulates the application, running environment, dependencies and architecture into a self-contained unit that can run anywhere. It is a more lightweight virtual machine because containers in comparison to virtual machines share the host system’s kernel with other containers \cite{docker-blog}. By defining dockerfile, we provided any user the option to run this tool on its own local machine.
 
 \subsection{Python generators}
 
@@ -147,6 +147,9 @@ As a result, we obtain a JSON file, which contains groups of sources with a give
 
 \end{minted}
 
+\noindent
+The use of \textit{SCAN} shown in \autoref{appendix-scan}.
+
 \subsection{ANALYZE task}
 
 The problem with working with huge CSV files is memory consumption, as we usually are not able to load all lines into RAM at once. Fortunately, pandas library offers reading and processing such files in chunks of lines. 
@@ -183,7 +186,7 @@ That is why we designed the Feature Maker. It is essentially a class, that is de
 \end{itemize}
 
 \noindent
-Feature Maker class uses couple lines of code. In the following simplified example, we define the feature maker, assigned three features to it (modulo 3, modulo 7 and 38th LSB), then call the \texttt{get\_features\_from\_keys} which extract features for us. Adding or removing features can be performed between the 2nd and 4th line of code:
+Feature Maker class uses couple lines of code. In the following simplified example, we define the feature maker, assign three features to it (modulo 3, modulo 7 and 38th LSB), then call the \texttt{get\_features\_from\_keys} which extract features for us. Adding or removing features can be performed between the 2nd and 4th line of code:
 
 \begin{minted}[ framesep=2mm,
                 autogobble,
@@ -196,6 +199,9 @@ fm.add('bit', {'i': 37})
 features = fm.get_features_from_keys(keys)
 
 \end{minted}
+
+\noindent
+The user's settings and examples for \textit{ANALYZE} task are shown in \autoref{appendix-analyze}.
 
 \subsection{GENERATE task}
 
@@ -214,6 +220,7 @@ One of the most important tasks we had to implement was the \textit{GENERATE} ta
 
 \end{itemize}
 
+\noindent
 The advantage of such an approach is that using the same original dataset, the user can generate a number of different datasets with his custom labels just by changing the configuration. Given the user's settings, the Generator works in several steps:
 
 \begin{enumerate}
@@ -243,7 +250,7 @@ All user's settings are specified in \autoref{appendix-generate}.
 
 \subsection{TRAIN task}
 
-The main task defined was task \textit{TRAIN}. As we provided all the tasks to prepare our datasets, we needed to implement the process of training the classifiers. The main idea was to split the process into two main logical units. The responsibility of the first one is to load the datasets a pass them on to the models. The second unit is the models themselves.
+The main task defined was task \textit{TRAIN}. As we provided all the tasks to prepare our datasets, we needed to implement the process of training the classifiers. The main idea was to split the process into two main logical units. The responsibility of the first one is to load the data a pass them on to the models. The second unit is the models themselves.
 
 \subsection*{Loader}
 
@@ -275,7 +282,7 @@ The feature extraction from individual keys was done by \texttt{FeatureMaker} cl
 
 \subsection*{Models}
 
-When designing the models, the main focus was put on extensibility. We implemented a common \texttt{Model} as a plain abstract class using the python \textit{abc}\footnote{\url{https://docs.python.org/3/library/abc.html}} module. This allowed us to implement many models while keeping the same interface. Furthermore, as it is expected, that this application will be used later in the research, it is simple to add any other model just by implementing this interface and its methods:
+When designing the models, the main focus was put on extensibility. We implemented a common \texttt{Model} as a plain abstract class using the python \textit{abc}\footnote{see \url{https://docs.python.org/3/library/abc.html}} module. This allowed us to implement many models while keeping the same interface. Furthermore, as it is expected, that this application will be used later in the research, it is simple to add any other model just by implementing this interface and its methods:
 
 \begin{itemize}
 
@@ -323,16 +330,16 @@ From \texttt{scikit} we implemented most of the models listed in the documentati
 \end{minted}
 
 \noindent
-The models are trained in epochs, and after the training ends, they are evaluated with metrics defined in \autoref{nn-metrics}.
+The models are trained in epochs, and after the training ends, they are evaluated with metrics defined in \autoref{nn-metrics}. For documentation and examples for \textit{TRAIN} tasks see \autoref{appendix-train}.
 
 \subsection{CLASSIFY task}
 
-The last (and for the end user, the most important one) is the \textit{CLASSIFY} task. The user compares trained models to the target CSV file and can either evaluate the model based on the labels given in the CSV file (similarly as in \textit{TRAIN} task) or can generate new labels for his dataset (useful for tagging unknown data).
+The last (and for the end user, the most important one) is the \textit{CLASSIFY} task. The user compares trained models to the target CSV file and can either evaluate the model based on the labels given in the CSV file (similarly as in \textit{TRAIN} task) or can generate new labels for his dataset (useful for tagging unknown data). For documentation with examples see \autoref{appendix-classify}.
 
 \section{Command line interface}
 \label{cli}
 
-We designed a simple CLI application using click library. The user can configure the application with the arguments or YAML configuration file (by default \textit{settings.yml}). Command line arguments have priority over YAML settings. For every task, the user can print help with the description of the task, an example of usage, arguments and yaml settings. The complete documentation with examples can be found in \autoref{appendix-running}.
+We designed a simple CLI application using click library. The user can configure the application via the arguments or YAML configuration file (by default \textit{settings.yml}). Command line arguments have priority over YAML settings. For every task, the user can print help with the description of the task, an example of usage, arguments and yaml settings. The complete documentation with examples can be found in \autoref{appendix-running}.
 
 \section{Multi platform development}
 
@@ -360,4 +367,4 @@ Example of usage can be found in \autoref{appendix-docker}.
 
 \section{Metacentrum}
 
-The final step of the implementation process was to run the code in the cloud. We used batch jobs \cite{metacentrum} that run in the CESNET cloud - Metacentrum\footnote{Distributed computing infrastructure. See \url{https://metavo.metacentrum.cz/en/about/index.html}}. One can simply run these scripts with more powerful resources that his local machine. We used it, in particular, to try many models in parallel, usually running for several days. Batch jobs were run via a shell script. An example can be found in \autoref{appendix-metacentrum}.
+The final step of the implementation process was to run the code in the cloud. We used batch jobs \cite{metacentrum} that run in the CESNET cloud - Metacentrum\footnote{Distributed computing infrastructure. See \url{https://metavo.metacentrum.cz/en/about/index.html}}. One can simply run these scripts with more powerful resources than his local machine. We used it, in particular, to try many models in parallel, usually running for several days. Batch jobs were run via a shell script. An example can be found in \autoref{appendix-metacentrum}.

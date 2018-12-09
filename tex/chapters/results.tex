@@ -3,13 +3,13 @@
 
 Before any models were trained, we performed an analysis of the dataset, applied feature engineering and extracted the features described in \autoref{feature-engineering}. We took the whole key (as a binary vector of respective key length 512 / 1024 / 2048) and all its moduli up to 30. Modulus was also represented as a binary vector. For example, the feature modulo 7 could result in 6 different vectors, each having a different index set to 1 and representing one of 6 possible remainders. In the end, we obtained one large binary vector\footnote{For example for 512b keys we had input vector with 836 binary inputs} which we fed to the models. 
 
-The model maps the vector onto the probability distribution over 13 groups defined in \autoref{chapter-grouping} and chooses the group with the highest probability (argmax top layer). However, the model also checks both the first and the second candidate (which we refer to as \textit{Top 2 match}) and the first candidates (which we refer to as \textit{Top 3 match}).
+The model maps the vector onto the probability distribution over 13 groups defined in \autoref{chapter-grouping} and chooses the group with the highest probability (argmax top layer). However, the model also checks both the first and the second candidate (which we refer to as \textit{Top 2 match}) and the first 3 candidates (which we refer to as \textit{Top 3 match}).
 
 When evaluating the final neural networks models, we performed at least triple cross-validation of the model to avoid inaccuracies caused by incorrectly generated datasets. With each training, we generate a new distinct dataset, so the samples would not repeat if possible. This is of course not possible for small groups, but it works well with huge groups like group 12 or 13. In the thesis, we present the average results of the triple cross-validation.
 
 \section{Traditional models}
 
-Various models were tried using our application. The results were then compared to the existing ones from the CROCS research. We started with simple models from \texttt{scikit} library and smaller datasets (of around 65000 samples). We were able to reach accuracy ranging from 7.5 - 33.5 \% on average (comparable to \cite{thesis_sekan}). The overview of models and their average accuracies is shown in \autoref{figure-scikit}.
+Various traditional models were tried using our application. The results were then compared to the existing ones from the CROCS research. We started with simple models from \texttt{scikit} library and smaller datasets (of around 65000 samples). We were able to reach accuracy ranging from 7.5 - 33.5 \% on average (comparable to results obtained in \cite{thesis_sekan}). The overview of models and their average accuracies is shown in \autoref{figure-scikit}.
 
 \begin{figure}
 
@@ -52,7 +52,7 @@ GradientBoostingClassifier & 33.57 \% \\
 \section{Multi layer perceptrons}
 \subsection*{Grid search}
 
-Apart from the features extracted from the analysis, all the other tried features seem to have a uniform distribution within its domain. On the first look, the model to be used is not apparent, so we decided to use the \textbf{grid search}\footnote{see \autoref{section-grid-search}} for finding the most suitable topology and configuration. 
+Apart from the features selected from the analysis, all the other analyzed features seem to have a uniform distribution within its domain. On the first look, the model to be used is not apparent, so we decided to use the \textbf{grid search}\footnote{see \autoref{section-grid-search}} for finding the most suitable topology and configuration. 
 
 We used this approach mainly to find the optimal choice of the topology (meaning the number of hidden layers and the number of neurons within each layer), the selected activations in each layer and optimizers.
 
@@ -60,17 +60,9 @@ We were gradually testing topologies from zero up to two hidden layers, with the
 
 As for the activation, the sigmoid and hyperbolic tangent performed similarly. Sigmoid reached an average accuracy $\overline{x}$ of 40.23 \% with a standard deviation $s$ of 0.17 \%. Hyperbolic tangent performed slightly better with $\overline{x} = 40.97 \%$ with a $s= 0.30 \%$. Leaky ReLU and ReLU achieved the best results with $\overline{x}= 41.70 \%$  and a $s= 0.17 \%$. With different optimizers, the differences were negligible. 
 
-With the choice of topology, the sparse models with the lower number of neurons in hidden layers (less than 32) performed worse. They reached an average of 40.20 \% with a standard deviation of 0.17 \%. Denser models performed better with an average of 41.26 \% and standard deviation of 0.19 \%.
+With the choice of topology, the sparse models with the lower number of neurons in hidden layers (less than 32) performed worse. They reached an average of 40.20 \% with a standard deviation of 0.17 \%. Denser models performed better with an average of 41.26 \% and standard deviation of 0.19~\%.
 
 The results for individual observations were averaged on around 40 different runs in grid search. In conclusion, we chose the model with one hidden layer of 256 neurons with ReLU activations and Adam optimizer.
-
-\subsection*{Training fine-tuning}
-
-We generated our training / valid and test data in the ratio of 60:20:20. All of these sets were disjoint. Training and validation sets were used during the training phase and the independent test set for the final evaluation and overall accuracy. However, even if the overall accuracy reached 40 \%, it happened, that the classifier was poorly trained, especially when the probability distribution of labels over the training set was not uniform. The huge class 13 overshadowed all the other classes. Based on the confusion matrix, we replicated the inferior entries in the training data to obtain uniform distribution. Experimenting with different uniform datasets, we set the optimal number of training epochs to 4. In the later epochs, the models were already overfitting the training data.
-
-Given these adjustments, we were able to train models to perform with an overall accuracy of more than 43 \%. In \autoref{comparison-results} we can see the comparison of the CROCS results and our model. Accuracy table consists of rows representing the individual groups, the bigger columns saying whether the group correctly classified within the top 1 (2, 3) results from the classifier and the smaller columns saying how many keys were used by the neural network. We can see that on some groups (like groups 6, 9, 11, 12, 13) it performed better than the previous classifier. On the other hand, it struggled with group 4.
-
-The model had one hidden layer of 256 ReLU neurons, the output layer with softmax activation and used categorical cross-entropy for a loss function. The training dataset had more than 1 million keys, with validation and test data of around 350 thousand keys. The model took around 12 hours to train on Metacentrum.
 
 \begin{sidewaysfigure}[htbp]
 
@@ -81,16 +73,23 @@ The model had one hidden layer of 256 ReLU neurons, the output layer with softma
 
 \end{sidewaysfigure}
 
-\noindent
+\subsection*{Training fine-tuning}
+
+We generated our training / valid and test data in the ratio of 60:20:20. All of these sets were disjoint. Training and validation sets were used during the training phase and the independent test set for the final evaluation and overall accuracy. However, even if the overall accuracy reached 40 \%, it happened, that the classifier was poorly trained, especially when the probability distribution of labels over the training set was not uniform. The huge class 13 overshadowed all the other classes. Based on the confusion matrix, we replicated the inferior entries in the training data to obtain uniform distribution. Experimenting with different uniform datasets, we set the optimal number of training epochs to 4. In the later epochs, the models were already overfitting the training data.
+
+Given these adjustments, we were able to train models to perform with an overall accuracy of more than 43 \%. In \autoref{comparison-results} we can see the comparison of the CROCS results and our model. Accuracy table consists of rows representing the individual groups, the bigger columns saying whether the group correctly classified within the top 1 (2, 3) results from the classifier and the smaller columns saying how many keys were used by the neural network. We can see that on some groups (like groups 6, 9, 11, 12, 13) it performed better than the previous classifier. On the other hand, it struggled with group~4.
+
+The model had one hidden layer of 256 ReLU neurons, the output layer with softmax activation and used categorical cross-entropy for a loss function. The training dataset had more than 1 million keys, with validation and test data of around 350 thousand keys. The model took around 12 hours to train on Metacentrum.
+
 When comparing the Naive Bayes model and the optimized neural network we can see, that:
 
 \begin{itemize}
 
 \item neural network model was able to adapt to the more complex dataset when compared to the scikit models. That is why the best-evaluated scikit model lags behind simple keras classifiers in accuracy.
 
-\item our classifier was able to increase the overall accuracy by almost 3 \% when compared to the methods used by CROCS lab and almost 10 \% when compared to the best results achieved in \cite{thesis_sekan}.
+\item our classifier was able to increase the overall accuracy by almost 3 \% when compared to the methods used by CROCS lab \cite{svenda_1} and almost 10 \% when compared to the best results achieved in \cite{thesis_sekan}.
 
-\item a neural network is substantially better in classifying Group 9 (Yubikey 4 \& Infineon JTOP 80K). Given the recent problems with Infineon keys \cite{svenda_2}, discovering their keys with high probability could have been used for potential attack.
+\item a neural network is substantially better in classifying Group 9 (Yubikey 4 \& Infineon JTOP 80K). Given the recent problems with Infineon keys \cite{svenda_2}, discovering these keys with high probability could have been used for potential attack.
 
 \item it performs slightly better on groups 8, 10, 11, 12, 13. 
 
@@ -104,7 +103,20 @@ When comparing the Naive Bayes model and the optimized neural network we can see
 
 \subsection*{Binary classifiers}
 
-Based on the previous general model results we can see, that some groups can be detected with high probability even using one single key. We tried to train binary classifiers to differentiate these classes better. The evaluations for each binary classifier are shown in \autoref{figure-binary-confusion-matrix}.
+Based on the previous general model results we can see, that some groups can be detected with high probability even using one single key. We tried to train binary classifiers to differentiate these classes better. The evaluations for each binary classifier are shown in \autoref{figure-binary-confusion-matrix}. These results are comparable to the observations from the previous trial:
+
+\begin{itemize}
+
+% \item the network completely fails to detect group 4 (even worse than random guessing)
+\item it is more or less equal to random guessing when detecting group 11
+\item groups 1, 3, 4, 5, 6, 7, 10, 11 and 13 have lower precision leading to the higher number of false positives
+\item the results for the biggest groups 7, 12 and 13 are more promising. It shows that we can differentiate them better with accuracy and precision above 65 to 70 \%
+\item we obtained good results for group 2, 8 and 9 given their strong distribution imprint over selected features
+\item group 9 is detected very reliably having less than 0.1 \% chance of incorrect classification
+
+\end{itemize}
+
+Given the fact that every classifier can be trained individually, we obtained the best results when putting them all together and adding an argmax layer on top. We refer to this classifier as \textit{binary argmax classifier}. The same input was fed to 13 different binary classifiers, that outputted the probability, that the key belongs to the respective group. The argmax layer chose the highest probability (or first two probabilities in case of \textit{Top 2 match}, first three probabilities in case of \textit{Top 3 match}).
 
 \begin{figure}[H]
 
@@ -179,22 +191,6 @@ Based on the previous general model results we can see, that some groups can be 
 
 \end{figure}
 
-\noindent
-These results are comparable to the observations from the previous trial:
-
-\begin{itemize}
-
-% \item the network completely fails to detect group 4 (even worse than random guessing)
-\item it is more or less equal to random guessing when detecting group 11
-\item groups 1, 3, 4, 5, 6, 7, 10, 11 and 13 have lower precision leading to the higher number of false positives
-\item the results for the biggest groups 7, 12 and 13 are more promising. It shows that we can differentiate them better with accuracy and precision above 65 to 70 \%
-\item we obtained good results for group 2, 8 and 9 given their strong distribution imprint over selected features
-\item group 9 is detected very reliably having less than 0.1 \% chance of incorrect classification
-
-\end{itemize}
-
-Given the fact that every classifier can be trained individually, we obtained the best results when putting them all together and adding an argmax layer on top. We refer to this classifier as \textit{binary argmax classifier}. The same input was fed to 13 different binary classifiers, that outputted the probability, that the key belongs to the respective group. The argmax layer chose the highest probability (or first two probabilities in case of \textit{Top 2 match}, first three probabilities in case of \textit{Top 3 match}).
-
 We ran \textit{binary argmax classifier} on the uniformly distributed dataset of 13 groups of bit length 512. \autoref{table-binary-voter} shows the obtained results. The notable observations of this run are:
 
 \begin{itemize}
@@ -247,7 +243,7 @@ Group & Top 1 match                     & Top 2 match                     & Top 
 TOTAL & 41.12 \% {\color[HTML]{9B9B9B} (40.34 \%)} & 59.82 \% {\color[HTML]{9B9B9B} (59.62 \%)} & 73.36 \% {\color[HTML]{9B9B9B} (73.09 \%)} \\
 \hline                       
 \end{tabular}
-\caption{Accuracy table for binary argmax classifier.}
+\caption{Accuracy table for the binary argmax classifier. The black numbers indicate our precision, the gray numbers indicate the Naive Bayes precision.}
 \label{table-binary-voter}
 \end{table}
 
