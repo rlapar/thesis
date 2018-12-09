@@ -6,7 +6,7 @@ This appendix serves as simple documentation to the command line interface.
 
 \section{General settings}
 
-The application is run via command \texttt{python3 cli.py [OPTIONS] TASK}\footnote{\textit{TASK} can be one of \textit{analyze, classify, generate, scan, train}}. The general options include:
+The application is run via command \texttt{python3 cli.py [OPTIONS] TASK}\footnote{\texttt{TASK} can be one of \texttt{analyze, classify, generate, scan, train}}. The general options include:
 
 \begin{itemize}
 
@@ -154,7 +154,7 @@ This will run the analyze task and on the \texttt{<PATH/TO/CSV>} file, that have
 \end{minted}
 
 \noindent
-Feature counter shows the counts for features per each group (\texttt{group.feature.value}). Here we can see, that group 2 has a bias towards the remainder 1 when divided by 5. The group counter shows the counts for groups per each feature (\texttt{feature.value.group}). Here we can see, that even though the group 2 has a bias towards 1 and group 1 is uniformly distributed modulo 5, there is a higher chance of getting group 1 than 2. The result could mean, that the neural network would be biased towards the group 1, if this would be the training data.
+Feature counter shows the absolute counts for features per each group (\texttt{group.feature.value}). Here we can see, that group 2 has a bias towards the remainder 1 when divided by 5. The group counter shows the counts for groups per each feature (\texttt{feature.value.group}). Here we can see, that even though the group 2 has a bias towards 1 and group 1 is uniformly distributed modulo 5, there is a higher chance of getting group 1 than 2. The result could mean, that the neural network would be biased towards the group 1, if this would be the training data.
 
 
 \section{GENERATE}
@@ -356,6 +356,7 @@ Model topology configuration:
 
 \end{minted}
 
+\noindent
 The results are saved in \texttt{results} directory with incrementing \texttt{run\_id}. Each run stores \texttt{classifier}, \texttt{config.txt} (configuration from YAML), \texttt{run\_info.txt} (information about dataset, features, model and time of run) and \texttt{results.txt} (evaluation - confusion matrix and accuracy table).
 
 \section{CLASSIFY}
