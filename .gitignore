@@ -13,10 +13,12 @@
 *.fdb_latexmk
 *.fls
 *.ilg
+*.nav
+*.snm
 *.ind
 _minted-thesis
 thesis.pdf
-
+presentation/presentation.pdf
 
 !graphs/*.xml
 .vscode
