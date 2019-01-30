@@ -8,13 +8,17 @@
 \usetheme[
   workplace=fi,
 ]{MU}
+
+\newcommand\Fontsmall{\fontsize{8}{7.2}\selectfont}
+
+
 \begin{document}
 
-\title[Short Presentation Title]{Full Presentation Title}
-\subtitle[Short Presentation Subtitle]{Full Presentation Subtitle}
-\author[J.\,Doe]{Jane Doe \\ personal-id@mail.muni.cz}
+\title[Deep learning in cryptography]{Deep learning in cryptography}
+\subtitle{Master's thesis}
+\author[R.\,Lap\'{a}r]{Radovan Lap\'{a}r \\ lapar@mail.muni.cz}
 \institute[FI MU]{Faculty of Informatics, Masaryk University}
-\date{\today}
+\date{February 8, 2019}
 \subject{Presentation Subject}
 \keywords{the, presentation, keywords}
 
@@ -22,73 +26,111 @@
 \maketitle
 \end{frame}
 
-\section[Short Section 1 Name]{Full Section 1 Name}
-\subsection[Short Subsection 1 Name]{Full Subsection 1 Name}
+\section{Assignment}
 
-\begin{frame}{Frame Title}{Frame Subtitle}
-plain text, \structure{page structure}, \alert{emphasis}
+\begin{frame}{Assignment}
 \begin{itemize}
-  \item a single-line bullet list item
-  \item a bullet list item that is quite long (in order to force a line break),
-    which also contains \alert{emphasized text}
-  \begin{itemize}
-    \item a second-level list item
-    \begin{itemize}
-      \item a third-level list item
-    \end{itemize}
-    \item \alert{an emphasized second-level list item}
-  \end{itemize}
+  \item RSA public key classification using neural networks
+  \vspace{3mm}
+  \item Analysis of the provided dataset and feature extraction
+  \vspace{3mm}
+  \item Implementation of concrete models
+  \vspace{3mm}
+  \item Model evaluations
+  \vspace{3mm}
+  \item Comparing to the traditional mehods already used in the field
 \end{itemize}
-\begin{enumerate}
-  \item a numbered list item
-  \begin{enumerate}
-    \item a second-level list item containing a math expression
-      \[ E = mc^2 \]
-  \end{enumerate}
-\end{enumerate}
 \end{frame}
 
-\subsection[Short Subsection 2 Name]{Full Subsection 2 Name}
+\begin{frame}{Previous work}
 
-\begin{frame}{Text Blocks}
-text above a block\footnote{a footnote with an \url{https://address.edu}}
-\begin{block}{Block}
-  text in a block
-\end{block}
-\begin{exampleblock}{Example Block}
-  text in a block
-\end{exampleblock}
-\begin{alertblock}{Emphasized Block}
-  text in a block
+\Fontsmall
+
+Thesis serves as an addition to ongoing research on this topic by CROCS\footnote{Centre for Research on Cryptography and Security} team:
+
+
+
+\begin{alertblock}{The Million-Key Question (2016)}
+  \begin{itemize}
+    \item the first CROCS publication
+    \item generation of ~60 mil. keys pairs from 38 sources
+    \item defined bitmask of biased bits
+    \item classification accuracy of 40.34 \% using NB
+  \end{itemize}
+\end{alertblock}
+
+
+\begin{alertblock}{The properties of RSA key generation (2016)}
+  \begin{itemize}
+    \item Master's thesis of RNDr. Matúš Nemec
+    \item complete overview of key sources and properties
+    \item comparison of generation methods and primes check
+  \end{itemize}
 \end{alertblock}
 \end{frame}
 
-\begin{frame}{Figures}
-\begin{figure}
-  \includegraphics[width=.5\textwidth,height=.5\textheight,keepaspectratio]{cow-black.mps}
-  \caption{A Holstein Friesian cow}
-\end{figure}
+\begin{frame}{Previous work}
+
+  \Fontsmall
+
+\begin{alertblock}{The tool for origin library classification (2017)}
+  \begin{itemize}
+    \item Bachelor's thesis of Bc. Peter Sekan
+    \item clustering analysis of sources based on bitmask
+    \item division into 13 groups
+    \item NB classifier with accuracy of 33.44 \%
+  \end{itemize}
+\end{alertblock}
+
+\begin{alertblock}{Measuring Popularity of Cryptographic Libraries (2017)}
+  \begin{itemize}
+    \item the second CROCS publication
+    \item popularity of cryptographic libraries in internet-wide TLS scans
+    \item shows that the majority of keys in public dumps belongs to OpenSSL ($\geq$ 85 \%)
+  \end{itemize}
+\end{alertblock}
+
+\begin{alertblock}{The Return of Coppersmith’s Attack (2017)}
+  \begin{itemize}
+    \item the third CROCS publication
+    \item discovery of algorithmic flaw in Infineon chips
+  \end{itemize}
+\end{alertblock}
+
 \end{frame}
 
-\subsection[Short Subsection 3 Name]{Full Subsection 3 Name}
-
-\begin{frame}{Tables}
-\begin{table}
-  \begin{tabular}{llc}
-    First Name & Surname & Year of Birth \\ \midrule
-    Albert & Einstein & 1879 \\
-    Marie & Curie & 1867 \\
-    Thomas & Edison & 1847 \\
-  \end{tabular}
-  \caption{The great minds of the 19th century}
-\end{table}
+\begin{frame}{Notes}
+  \begin{itemize}
+    \item define classification problem
+  \end{itemize}
 \end{frame}
 
-\begin{frame}[plain]
-\vfill
-\centerline{Thank you for your attention!}
-\vfill\vfill
-\end{frame}
+% \begin{frame}{Figures}
+% \begin{figure}
+%   \includegraphics[width=.5\textwidth,height=.5\textheight,keepaspectratio]{cow-black.mps}
+%   \caption{A Holstein Friesian cow}
+% \end{figure}
+% \end{frame}
+
+% \subsection[Short Subsection 3 Name]{Full Subsection 3 Name}
+
+% \begin{frame}{Tables}
+% \begin{table}
+%   \begin{tabular}{llc}
+%     First Name & Surname & Year of Birth \\ \midrule
+%     Albert & Einstein & 1879 \\
+%     Marie & Curie & 1867 \\
+%     Thomas & Edison & 1847 \\
+%   \end{tabular}
+%   \caption{The great minds of the 19th century}
+% \end{table}
+% \end{frame}
+
+% \begin{frame}[plain]
+% \vfill
+% \centerline{Thank you for your attention!}
+% \vfill\vfill
+% \end{frame}
 
 \begingroup
 \setbeamercolor{background canvas}{bg=mubeamer@base}
