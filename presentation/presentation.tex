@@ -181,10 +181,92 @@
 
     \begin{frame}{Bit analysis}
 
+     \textbf{TODODODODO}
+
     \end{frame}
 
     \begin{frame}{Modular analysis}
+      \begin{figure}[H]
+        \centering
+        \begin{minipage}{.5\textwidth}
+          \centering
+          \includegraphics[width=0.96\linewidth]{../tex/images/mod_analysis}
+        \end{minipage}%
+        \begin{minipage}{.5\textwidth}
+          \centering
+          \includegraphics[width=0.96\linewidth]{../tex/images/analysis/mod3}
+          \includegraphics[width=0.96\linewidth]{../tex/images/analysis/mod7}
+        \end{minipage}
+      \end{figure}     
+      
+    \end{frame}
 
+    \section{Implementation}
+    \begin{frame}{Implementation}
+      \begin{itemize}
+        \Fontsmall
+        \item solving binary vector to group classification problem
+        \item defined flow of the application, 5 tasks defined ({\color{fibeamer@yellow}{\textbf{SCAN}}}, {\color{fibeamer@yellow}{\textbf{ANALYZE}}}, {\color{fibeamer@yellow}{\textbf{GENERATE}}}, {\color{fibeamer@yellow}{\textbf{TRAIN}}}, {\color{fibeamer@yellow}{\textbf{CLASSIFY}}})
+        \item focus on parallel run and extensibility
+      \end{itemize}
+      \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.5\linewidth]{../tex/images/thesis_model_img}
+      \end{figure}     
+    \end{frame}
+
+    \subsection{tasks}
+    \begin{frame}{SCAN}
+      \begin{itemize}
+        \item original dataset had around 2000 CSV files with no specific namespace
+        \item \textbf{SCAN} task designed to transform the dataset into the more compact one
+        \item it assigns a specific CSV file into its group based on positive/negative keyword matching
+      \end{itemize}
+    \end{frame}
+
+    \begin{frame}{ANALYZE}
+      \begin{figure}[H]
+        \centering
+        \begin{minipage}{.5\textwidth}
+          \begin{itemize}
+            \item task to perform analysis on dataset
+            \item user defined features
+            \item huge data is yielded in chunks
+            \item auxiliary \texttt{FeatureMaker} class
+          \end{itemize}          
+        \end{minipage}%
+        \begin{minipage}{.5\textwidth}
+          \centering
+          \includegraphics[width=0.98\linewidth]{../tex/images/analyze_task_img}
+        \end{minipage}
+      \end{figure}  
+    \end{frame}
+
+    \begin{frame}{GENERATE}
+      \begin{itemize}
+        \item many datasets with different properties generated
+        \item used to prepare and adapt data for training
+        \item functionality to:
+        \begin{enumerate}
+          \item generate arbitrary CSV files
+          \item shuffle target file
+          \item relabel and merge groups
+          \item skip any source of group
+          \item arbitrary number of keys per group
+          \item arbitrary number of keys per line
+          \item multiply training data
+        \end{enumerate}
+      \end{itemize}
+    \end{frame}
+
+    \begin{frame}{TRAIN}
+      \begin{itemize}
+        \item TODO
+      \end{itemize}
+    \end{frame}
+
+    \section{Results}
+    \begin{frame}{}
     \end{frame}
       
     \begin{frame}{Notes}
