@@ -1,0 +1,103 @@
+\documentclass[
+]{beamer}
+
+\usepackage[czech]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{booktabs}
+\usetheme[
+  workplace=fi,
+]{MU}
+\begin{document}
+
+\title[Název prezentace]{Dlouhý název prezentace}
+\subtitle[Alternativní název prezentace]{Dlouhý alternativní název prezentace}
+\author[J.\,Příjmení]{Jméno Příjmení \\ učo@mail.muni.cz}
+\institute[FI MU]{Fakulta informatiky Masarykovy univerzity}
+\date{\today}
+\subject{Předmět prezentace}
+\keywords{klíčová, slova, prezentace}
+
+\begin{frame}[plain]
+\maketitle
+\end{frame}
+
+\section[Název sekce 1]{Dlouhý název sekce 1}
+\subsection[Název podsekce 1]{Dlouhý název podsekce 1}
+
+\begin{frame}{Nadpis}{Podnadpis}
+běžný text, \structure{struktura stránky}, \alert{zvýrazněný text}
+\begin{itemize}
+  \item položka odrážkového seznamu na jeden řádek
+  \item položka odrážkového seznamu dlouhá, moc dlouhá (to aby se zalomila),
+    která navíc obsahuje \alert{zvýrazněný text}
+  \begin{itemize}
+    \item odrážka druhé úrovně
+    \begin{itemize}
+      \item odrážka třetí úrovně
+    \end{itemize}
+    \item \alert{zvýrazněná odrážka druhé úrovně}
+  \end{itemize}
+\end{itemize}
+\begin{enumerate}
+  \item a číslovaná odrážka
+  \begin{enumerate}
+    \item odrážka druhé úrovně se vzorečkem
+      \[ E = mc^2 \]
+  \end{enumerate}
+\end{enumerate}
+\end{frame}
+
+\subsection[Název podsekce 2]{Dlouhý název podsekce 2}
+
+\begin{frame}{Textové bloky}
+text nad blokem\footnote{text poznámky s \url{https://adresou.cz}}
+\begin{block}{Blok}
+  text v bloku
+\end{block}
+\begin{exampleblock}{Blok s příkladem}
+  text v bloku
+\end{exampleblock}
+\begin{alertblock}{Zvýrazněný blok}
+  text v bloku
+\end{alertblock}
+\end{frame}
+
+\begin{frame}{Obrázky}
+\begin{figure}
+  \includegraphics[width=.5\textwidth,height=.5\textheight,keepaspectratio]{cow-black.mps}
+  \caption{Kráva černostrakatého holštýnského skotu}
+\end{figure}
+\end{frame}
+
+\subsection[Název podsekce 3]{Dlouhý název podsekce 3}
+
+\begin{frame}{Tabulky}
+\begin{table}
+  \begin{tabular}{llc}
+    Jméno & Příjmení & Rok narození \\ \midrule
+    Albert & Einstein & 1879 \\
+    Marie & Curie & 1867 \\
+    Thomas & Edison & 1847 \\
+  \end{tabular}
+  \caption{Velcí vědci 19. století}
+\end{table}
+\end{frame}
+
+\begin{frame}[plain]
+\vfill
+\centerline{Děkuji Vám za pozornost!}
+\vfill\vfill
+\end{frame}
+
+\begingroup
+\setbeamercolor{background canvas}{bg=mubeamer@base}
+\begin{frame}[plain]
+\vfill
+\centering
+\includegraphics[width=\textwidth]{institution}
+\vfill
+\end{frame}
+\endgroup
+
+\end{document}
