@@ -45,6 +45,8 @@
 \let\oldfootnote\footnote
 \renewcommand\footnote[1][]{\oldfootnote[frame,#1]}
 
+\newcolumntype{s}{>{\hsize=.25\hsize}X}
+
 \begin{document}
   \frame{\maketitle}
 
@@ -165,15 +167,15 @@
       
       \begin{table}[!b]
         {\carlitoTLF % Use monospaced lining figures
-        \begin{tabularx}{\textwidth}{XX|XX}
+        \begin{tabularx}{\textwidth}{sX|sX}
           \toprule
-          \textbf{G1} & 1 & \textbf{G8} & 15 \\
-          \textbf{G2} & 2, 3 & \textbf{G9} & 16, 17, 18 \\
-          \textbf{G3} & 4 & \textbf{G10} & 19, 20, 21 \\
-          \textbf{G4} & 5 & \textbf{G11} & 22 - 29 \\
-          \textbf{G5} & 6, 7, 8, 9 & \textbf{G12} & 30 - 40 \\     
-          \textbf{G6} & 10 & \textbf{G13} & 41 - 64 \\
-          \textbf{G7} & 11, 12, 13, 14 & & \\
+          \textbf{G1} & 1 {\color[HTML]{9B9B9B} (G\&D 3.2)} & \textbf{G8} & 15 {\color[HTML]{9B9B9B} (PGP SDK 4 FIPS)} \\
+          \textbf{G2} & 2, 3 {\color[HTML]{9B9B9B} (G\&D 4+)} & \textbf{G9} & 16, 17, 18 {\color[HTML]{9B9B9B} (Infineon, Yubikey)} \\
+          \textbf{G3} & 4 {\color[HTML]{9B9B9B} (GNU 2.0.1)} & \textbf{G10} & 19, 20, 21 {\color[HTML]{9B9B9B} (NXP J2D, J2E)} \\
+          \textbf{G4} & 5 {\color[HTML]{9B9B9B} (GXP E64)} & \textbf{G11} & 22 - 29 {\color[HTML]{9B9B9B} (BC 1.54, C++, MS, $\cdots$)} \\
+          \textbf{G5} & 6, 7, 8, 9 {\color[HTML]{9B9B9B} (NXP J*A)} & \textbf{G12} & 30 - 40 {\color[HTML]{9B9B9B} (mbedTLS, putty, $\cdots$)} \\     
+          \textbf{G6} & 10 {\color[HTML]{9B9B9B} (Oberthur Dual)} & \textbf{G13} & 41 - 64 {\color[HTML]{9B9B9B} (Libgcrypt, OpenSSL FIPS, Nettle 3.*, $\cdots$)} \\
+          \textbf{G7} & 11, 12, 13, 14 {\color[HTML]{9B9B9B} (OpenSSL)} & & \\
           \bottomrule
         \end{tabularx}}
       \end{table}
@@ -315,8 +317,8 @@
       \end{table}
     \end{frame}
       
-    \subsection{Results - neural networks}
-    \begin{frame}{Results - NN model 1}
+    \subsection{Neural networks}
+    \begin{frame}{Results - NN model 1 (multilayer perceptron)}
       \begin{itemize}
         \item multi layer perceptron used
         \item {\color{fibeamer@yellow}{\textbf{grid search}}} technique used for optimal topology, activation and optimizer
@@ -335,14 +337,14 @@
       \end{itemize}
     \end{frame}
 
-    \begin{frame}{Results - NN model 1}
+    \begin{frame}{Results - NN model 1 (multilayer perceptron)}
       \begin{figure}[H]
         \centering
         \includegraphics[width=0.98\linewidth]{../tex/images/results/comparison_13.png}
       \end{figure}  
     \end{frame}
 
-    \begin{frame}{Results - NN model 2}
+    \begin{frame}{Results - NN model 2 (argmax binary classifier)}
       \begin{itemize}
         \item consists of 13 binary classifiers for each group
         \item each classifier trained and evaluated individually
@@ -365,7 +367,7 @@
       \end{figure}
     \end{frame}
 
-    \begin{frame}{Results - NN model 2}
+    \begin{frame}{Results - NN model 2 (argmax binary classifier)}
       \Fontsmall
       \begin{table}[!b]
         {\carlitoTLF % Use monospaced lining figures
@@ -410,8 +412,23 @@ TOTAL & 41.12 \% {\color[HTML]{9B9B9B} (40.34 \%)} & 59.82 \% {\color[HTML]{9B9B
 
     \begin{frame}{Conclusion}
       \begin{itemize}
-        \item TODO
+        \item detailed analysis of dataset, found singificant bias in several sources
+        \item design of an application capable of working with the data efficiently, easily extensible
+        \item worse performance with traditional methods
+        \item neural networks compared to CROCS Naive Bayes classifier:
+        \begin{itemize}
+          \item better overall performance with large data groups
+          \item {\color{fibeamer@yellow}{40 \% increase}} with Infineon and Yubikey chips (group 9)
+          \item {\color{fibeamer@yellow}{15 \% increase}} with OpenSSL (group 7)
+          \item {\color{fibeamer@yellow}{10 \% increase}} with OpenSSL FIPS, mbedTLS, Libgcrypt and others (groups 12, 13)
+          \item {\color{fibeamer@lightRed}{decrease}} with smaller groups
+        \end{itemize}
+        \item Metacentrum used for analysis and model training
       \end{itemize}
+    \end{frame}
+
+    \begin{frame}{}
+      \centering \LARGE \color{fibeamer@yellow}{\textbf{Thank you for your attention!}}
     \end{frame}
 
   \end{darkframes}
